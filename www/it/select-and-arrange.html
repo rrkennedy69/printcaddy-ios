@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="it">
+  <head><script src="/ios-shim.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Selezionare e disporre - Guida utente di PrintCaddy</title>
+    <meta name="description" content="Selezionare le forme, trovarle nell’elenco degli oggetti, allinearle, specchiarle, ruotarle, appoggiarle su una faccia e moltiplicarle con gli schemi.">
+    <link rel="canonical" href="/it/select-and-arrange.html">
+    <link rel="alternate" hreflang="en" href="/guide/select-and-arrange.html">
+    <link rel="alternate" hreflang="cs" href="/prirucka/select-and-arrange.html">
+    <link rel="alternate" hreflang="da" href="/vejledning/select-and-arrange.html">
+    <link rel="alternate" hreflang="de" href="/anleitung/auswaehlen-und-anordnen.html">
+    <link rel="alternate" hreflang="es-ES" href="/guia-es/select-and-arrange.html">
+    <link rel="alternate" hreflang="fr" href="/guide-fr/select-and-arrange.html">
+    <link rel="alternate" hreflang="it" href="/it/select-and-arrange.html">
+    <link rel="alternate" hreflang="hu" href="/utmutato/select-and-arrange.html">
+    <link rel="alternate" hreflang="nl" href="/handleiding/selecteren-en-schikken.html">
+    <link rel="alternate" hreflang="pl" href="/instrukcja/select-and-arrange.html">
+    <link rel="alternate" hreflang="sl" href="/navodila/izbiranje-in-razporejanje.html">
+    <link rel="alternate" hreflang="ru" href="/ru/select-and-arrange.html">
+    <link rel="alternate" hreflang="ar" href="/dalil/select-and-arrange.html">
+    <link rel="alternate" hreflang="zh-CN" href="/zh-cn/select-and-arrange.html">
+    <link rel="alternate" hreflang="zh-TW" href="/zh-tw/select-and-arrange.html">
+    <meta property="og:title" content="Selezionare e disporre - Guida utente di PrintCaddy">
+    <meta property="og:description" content="Selezionare le forme, trovarle nell’elenco degli oggetti, allinearle, specchiarle, ruotarle, appoggiarle su una faccia e moltiplicarle con gli schemi.">
+    <meta property="og:image" content="/assets/brand/app-social.png">
+    <link rel="icon" href="/assets/brand/app-logo.svg">
+    <script>try{var t=localStorage.getItem("layerling.theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;else if(t==="graphite"){document.documentElement.dataset.theme="dark";document.documentElement.dataset.palette="graphite"}}catch(e){}</script>
+    <style>
+:root {
+  color-scheme: light;
+  --ground: #fbf8f0; --card: #ffffff; --ink: #231a11; --muted: #7a6650; --edge: #ede4d4;
+  --accent: #ad6206; --accent-ink: #ffffff; --tint: #f6ecd9; --code: #f3ece0;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --ground: #17130e; --card: #201a13; --ink: #f1e9dc; --muted: #b3a48d; --edge: #362d21;
+    --accent: #f0a23a; --accent-ink: #1c1408; --tint: #2b2116; --code: #2a2218;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ground: #17130e; --card: #201a13; --ink: #f1e9dc; --muted: #b3a48d; --edge: #362d21;
+  --accent: #f0a23a; --accent-ink: #1c1408; --tint: #2b2116; --code: #2a2218;
+}
+/* Graphite is the dark theme with the warm browns turned grey (the program's own Graphite, see scripts/generate-graphite-theme.mjs); the orange accent stays. */
+:root[data-theme="dark"][data-palette="graphite"] {
+  --ground: #1a1a1a; --card: #202020; --ink: #e7e7e7; --muted: #8d8d8d; --edge: #303030;
+  --accent-ink: #191919; --tint: #262626; --code: #272727;
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 76px; }
+body { margin: 0; background: var(--ground); color: var(--ink); font: 16px/1.7 "Avenir Next", Avenir, "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
+a { color: var(--accent); }
+.bar { position: sticky; top: 0; z-index: 5; background: var(--ground); border-bottom: 1px solid var(--edge); }
+.bar-inner { max-width: 1100px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 14px; }
+.brand { display: flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; margin-right: auto; }
+.brand img { width: 34px; height: 34px; }
+.brand b { font-size: 19px; letter-spacing: -0.03em; }
+.brand-text { display: flex; align-items: baseline; gap: 10px; }
+.brand-note { color: var(--muted); font-size: 13px; font-weight: 600; }
+.guide-search { position: relative; flex: 0 1 280px; min-width: 0; margin: 0; }
+.guide-search input { width: 100%; padding: 7px 12px; border: 1px solid var(--edge); border-radius: 8px; background: var(--card); color: var(--ink); font: inherit; font-size: 14px; }
+.guide-search input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.guide-results { position: absolute; left: 0; right: 0; top: calc(100% + 6px); max-height: min(70vh, 460px); overflow-y: auto; background: var(--card); border: 1px solid var(--edge); border-radius: 8px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14); z-index: 7; }
+.guide-results[hidden] { display: none; }
+.guide-results a { display: block; padding: 8px 12px; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--edge); }
+.guide-results a:last-child { border-bottom: 0; }
+.guide-results a:hover, .guide-results a:focus-visible { background: var(--tint); outline: none; }
+.guide-results b { display: block; font-size: 14px; }
+.guide-results span { display: block; color: var(--muted); font-size: 13px; line-height: 1.45; }
+.guide-results mark { background: transparent; color: var(--accent); font-weight: 800; }
+.guide-results p { margin: 0; padding: 10px 12px; color: var(--muted); font-size: 14px; }
+.editor-elsewhere { max-width: 1100px; margin: 0 auto; padding: 0 16px 10px; color: var(--muted); font-size: 14px; text-align: right; }
+.editor-elsewhere[hidden] { display: none; }
+.bar a.button { padding: 7px 14px; border-radius: 8px; background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 14px; text-decoration: none; }
+.bar .lang-menu { position: relative; font-size: 14px; font-weight: 600; }
+.bar .lang-menu summary { color: var(--muted); cursor: pointer; list-style: none; }
+.bar .lang-menu summary::-webkit-details-marker { display: none; }
+.bar .lang-menu summary::after { content: " \25BE"; font-size: 11px; }
+.bar .lang-menu ul { position: absolute; right: 0; margin: 8px 0 0; padding: 4px; list-style: none; min-width: 9em; background: var(--card); border: 1px solid var(--edge); border-radius: 8px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14); }
+.bar .lang-menu a { display: block; padding: 5px 10px; border-radius: 6px; color: var(--ink); text-decoration: none; }
+.bar .lang-menu a:hover { background: var(--tint); }
+.bar .lang-menu a[aria-current] { font-weight: 800; }
+.not-translated { margin: 0 0 20px; padding: 10px 14px; border-radius: 8px; background: var(--tint); color: var(--ink); font-size: 15px; }
+.shell { max-width: 1100px; margin: 0 auto; padding: 24px 16px 72px; display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 40px; align-items: start; }
+nav.chapters { position: sticky; top: 76px; font-size: 14px; }
+nav.chapters h2 { margin: 0 0 8px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+nav.chapters ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+nav.chapters a { display: block; padding: 5px 10px; border-radius: 7px; color: var(--ink); text-decoration: none; line-height: 1.35; }
+nav.chapters a:hover { background: var(--tint); }
+nav.chapters a[aria-current="page"] { background: var(--tint); color: var(--accent); font-weight: 700; }
+main { min-width: 0; max-width: 760px; }
+h1 { margin: 0 0 8px; font-size: 34px; line-height: 1.15; letter-spacing: -0.025em; text-wrap: balance; }
+h2 { margin: 40px 0 8px; font-size: 23px; letter-spacing: -0.015em; text-wrap: balance; }
+h3 { margin: 26px 0 6px; font-size: 17px; }
+.lead { color: var(--muted); font-size: 18px; margin: 0 0 20px; }
+p, ul, ol { margin: 0 0 14px; }
+li { margin-bottom: 4px; }
+strong.ui { font-weight: 700; white-space: nowrap; }
+kbd { padding: 1px 6px; border: 1px solid var(--edge); border-bottom-width: 2px; border-radius: 5px; background: var(--card); font: 600 0.86em/1.5 ui-monospace, Consolas, monospace; }
+code { padding: 1px 5px; border-radius: 5px; background: var(--code); font: 0.9em ui-monospace, Consolas, monospace; }
+pre { overflow-x: auto; padding: 14px 16px; border-radius: 8px; background: var(--code); direction: ltr; text-align: left; }
+pre code { padding: 0; background: none; }
+figure { margin: 22px 0; }
+figure img { display: block; width: 100%; height: auto; border: 1px solid var(--edge); border-radius: 8px; background: var(--card); }
+figcaption { margin-top: 6px; color: var(--muted); font-size: 13.5px; }
+aside.tip { margin: 18px 0; padding: 12px 16px; border-radius: 8px; background: var(--tint); border: 1px solid var(--edge); }
+aside.tip > :last-child { margin-bottom: 0; }
+.table-scroll { overflow-x: auto; margin: 0 0 16px; }
+table { border-collapse: collapse; font-size: 15px; min-width: 100%; }
+table.keys { table-layout: fixed; }
+table.keys td:first-child { width: 42%; }
+th, td { padding: 7px 12px; border-bottom: 1px solid var(--edge); text-align: start; vertical-align: top; }
+th { color: var(--muted); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+/* Where a link from the program lands, the section is outlined from its heading to its end. */
+.guide-part:has(> :is(h2, h3):target) { outline: 3px solid var(--accent); outline-offset: 10px; border-radius: 6px; }
+:is(h2, h3):target { scroll-margin-top: 24px; }
+.toc { margin: 0 0 24px; padding: 12px 16px; border: 1px solid var(--edge); border-radius: 8px; background: var(--card); font-size: 14.5px; }
+.toc b { display: block; margin-bottom: 4px; color: var(--muted); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+.toc ul { margin: 0; padding-inline-start: 18px; }
+.pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 44px; padding-top: 18px; border-top: 1px solid var(--edge); }
+.pager a { display: block; max-width: 48%; padding: 10px 14px; border: 1px solid var(--edge); border-radius: 8px; background: var(--card); text-decoration: none; color: var(--ink); }
+.pager a small { display: block; color: var(--muted); font-size: 12px; }
+.pager a.next { margin-inline-start: auto; text-align: end; }
+.cards { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.cards a { display: block; height: 100%; padding: 14px 16px; border: 1px solid var(--edge); border-radius: 8px; background: var(--card); text-decoration: none; color: var(--ink); }
+.cards a:hover { border-color: var(--accent); }
+.cards b { display: block; margin-bottom: 2px; }
+.cards span { color: var(--muted); font-size: 14px; line-height: 1.45; display: block; }
+footer.note { max-width: 1100px; margin: 0 auto; padding: 0 16px 12px; color: var(--muted); font-size: 14px; }
+.site-footer { max-width: 1100px; margin: 0 auto; padding: 14px 16px 40px; border-top: 1px solid var(--edge); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px; color: var(--muted); font-size: 13px; }
+.site-footer .trademark { flex: 1 0 100%; margin: 0; font-size: 12px; line-height: 1.45; }
+.site-footer a { color: var(--muted); text-decoration: none; }
+.site-footer a:hover { color: var(--accent); text-decoration: underline; }
+.site-footer .dot { margin: 0 8px; }
+@media (max-width: 820px) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  nav.chapters { position: static; }
+  nav.chapters ol { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  h1 { font-size: 28px; }
+  .brand-note { display: none; }
+}
+@media (max-width: 720px) {
+  .bar-inner { flex-wrap: wrap; }
+  .guide-search { order: 5; flex: 1 1 100%; }
+}
+.print-link { margin: 0 0 14px; }
+.print-link a, nav.chapters .print-link a { display: flex; align-items: center; gap: 9px; padding: 9px 12px; border: 1px solid var(--accent); border-radius: 8px; background: var(--tint); color: var(--accent); font-weight: 700; line-height: 1.3; text-decoration: none; }
+.print-link a:hover, .print-link a:focus-visible, nav.chapters .print-link a:hover, nav.chapters .print-link a:focus-visible { background: var(--accent); color: var(--accent-ink); }
+.print-link svg { flex: none; }
+.print-link.in-page { margin: 0 0 22px; max-width: 360px; }
+.print-actions { margin: 0 0 24px; }
+.print-actions button { padding: 8px 16px; border: 0; border-radius: 8px; background: var(--accent); color: var(--accent-ink); font: inherit; font-weight: 700; cursor: pointer; }
+.print-chapter { margin-top: 56px; padding-top: 8px; border-top: 1px solid var(--edge); }
+.print-chapter > h2 { margin-top: 20px; font-size: 28px; }
+.print-contents { margin: 0 0 24px; padding-inline-start: 22px; columns: 2; column-gap: 32px; }
+.print-contents li { break-inside: avoid; }
+@media (max-width: 560px) { .print-contents { columns: 1; } }
+@media print {
+  @page { margin: 16mm 14mm; }
+  :root, :root[data-theme="dark"], :root[data-theme="dark"][data-palette="graphite"] {
+    color-scheme: light;
+    --ground: #ffffff; --card: #ffffff; --ink: #1a1a1a; --muted: #5c5c5c; --edge: #cfcfcf;
+    --accent: #8a4d04; --tint: #f1f1f1; --code: #f1f1f1;
+  }
+  body { font-size: 11pt; line-height: 1.55; }
+  .bar, nav.chapters, .pager, .print-actions { display: none; }
+  .shell { display: block; padding: 0; }
+  main { max-width: none; }
+  h2, h3, h4 { break-after: avoid; }
+  figure, table, pre, aside.tip { break-inside: avoid; }
+  figure img { max-height: 120mm; width: auto; max-width: 100%; }
+  .print-all .site-footer, .print-all footer.note { display: none; }
+  .print-chapter { margin-top: 0; padding-top: 0; border-top: 0; break-before: page; }
+}
+</style>
+  </head>
+  <body>
+    <header class="bar"><div class="bar-inner">
+      <a class="brand" href="/it/index.html"><img src="/assets/brand/app-logo.svg" alt=""><span class="brand-text"><b>PrintCaddy</b><span class="brand-note">Guida utente</span></span></a>
+      <form class="guide-search" id="guide-search" role="search" data-index="/it/search-index.json" data-nothing="Nessun risultato." data-umlauts="false"><input type="search" id="guide-search-input" name="q" placeholder="Cerca nella guida" aria-label="Cerca nella guida" aria-controls="guide-results" aria-expanded="false" autocomplete="off" spellcheck="false"><div class="guide-results" id="guide-results" hidden></div></form>
+      <details class="lang-menu"><summary aria-label="Lingua">Italiano</summary><ul><li><a href="/guide/select-and-arrange.html" hreflang="en" lang="en">English</a></li><li><a href="/prirucka/select-and-arrange.html" hreflang="cs" lang="cs">Čeština</a></li><li><a href="/vejledning/select-and-arrange.html" hreflang="da" lang="da">Dansk</a></li><li><a href="/anleitung/auswaehlen-und-anordnen.html" hreflang="de" lang="de">Deutsch</a></li><li><a href="/guia-es/select-and-arrange.html" hreflang="es-ES" lang="es-ES">Español</a></li><li><a href="/guide-fr/select-and-arrange.html" hreflang="fr" lang="fr">Français</a></li><li><a href="/it/select-and-arrange.html" hreflang="it" lang="it" aria-current="true">Italiano</a></li><li><a href="/utmutato/select-and-arrange.html" hreflang="hu" lang="hu">Magyar</a></li><li><a href="/handleiding/selecteren-en-schikken.html" hreflang="nl" lang="nl">Nederlands</a></li><li><a href="/instrukcja/select-and-arrange.html" hreflang="pl" lang="pl">Polski</a></li><li><a href="/guia-pt-pt/select-and-arrange.html" hreflang="pt-PT" lang="pt-PT">Português de Portugal</a></li><li><a href="/guia/select-and-arrange.html" hreflang="pt-BR" lang="pt-BR">Português do Brasil</a></li><li><a href="/navodila/izbiranje-in-razporejanje.html" hreflang="sl" lang="sl">Slovenščina</a></li><li><a href="/kilavuz/select-and-arrange.html" hreflang="tr" lang="tr">Türkçe</a></li><li><a href="/ru/select-and-arrange.html" hreflang="ru" lang="ru">Русский</a></li><li><a href="/dalil/select-and-arrange.html" hreflang="ar" lang="ar">العربية</a></li><li><a href="/guide-ja/select-and-arrange.html" hreflang="ja" lang="ja">日本語</a></li><li><a href="/zh-cn/select-and-arrange.html" hreflang="zh-CN" lang="zh-CN">简体中文</a></li><li><a href="/zh-tw/select-and-arrange.html" hreflang="zh-TW" lang="zh-TW">繁體中文</a></li></ul></details>
+      <a class="button" id="open-editor" href="/">Apri l'editor</a>
+    </div><p class="editor-elsewhere" id="editor-elsewhere" role="status" hidden>L'editor è già aperto in un'altra scheda: passa semplicemente a quella.</p></header>
+    <div class="shell">
+      <nav class="chapters" aria-label="Capitoli"><h2>Capitoli</h2><p class="print-link"><a href="/it/print-all.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg><span>Guida completa da stampare</span></a></p><ol><li><a href="/it/getting-started.html">Primi passi</a></li><li><a href="/it/view-and-workplane.html">Vista e piano di lavoro</a></li><li><a href="/it/shapes.html">Inserire e modificare le forme</a></li><li><a href="/it/select-and-arrange.html" aria-current="page">Selezionare e disporre</a></li><li><a href="/it/solids-and-holes.html">Solidi e fori</a></li><li><a href="/it/edges-and-hollowing.html">Smussare gli spigoli e svuotare i corpi</a></li><li><a href="/it/sketches.html">Schizzi: dal contorno al corpo</a></li><li><a href="/it/text.html">Testo e scritte curve</a></li><li><a href="/it/threads-and-mechanics.html">Filettature, ingranaggi e altri componenti</a></li><li><a href="/it/measuring-and-notes.html">Misurazioni e annotazioni</a></li><li><a href="/it/printing.html">Preparare la stampa 3D</a></li><li><a href="/it/files-and-saving.html">File, salvataggio e condivisione</a></li><li><a href="/it/shortcuts.html">Scorciatoie da tastiera</a></li><li><a href="/it/ai-with-mcp.html">Progettare con un’IA (MCP)</a></li><li><a href="/it/offline-and-install.html">Installare come app, lavorare offline e ospitare PrintCaddy</a></li><li><a href="/it/videos.html">Video su PrintCaddy</a></li><li><a href="/it/tablet-and-touch.html">Tablet e comandi touch</a></li></ol></nav>
+      <main>
+<h1>Selezionare e disporre</h1>
+<p class="lead">Selezionare le forme, trovarle nell’elenco degli oggetti, allinearle, specchiarle, ruotarle, appoggiarle su una faccia e moltiplicarle con gli schemi.</p>
+<div class="toc"><b>In questa pagina</b><ul><li><a href="#selezionare">Selezionare</a></li><li><a href="#l-elenco-degli-oggetti">L’elenco degli oggetti</a></li><li><a href="#digitare-una-posizione">Digitare una posizione</a></li><li><a href="#parcheggiare-parti-accanto-alla-piastra">Parcheggiare parti accanto alla piastra</a></li><li><a href="#aggancio-durante-lo-spostamento">Aggancio durante lo spostamento</a></li><li><a href="#allineare">Allineare</a></li><li><a href="#specchiare">Specchiare</a></li><li><a href="#ruotare-e-impostare-il-punto-di-rotazione">Ruotare e impostare il punto di rotazione</a></li><li><a href="#appoggiare-una-forma-su-una-faccia">Appoggiare una forma su una faccia</a></li><li><a href="#schemi-righe-e-cerchi">Schemi: righe e cerchi</a></li><li><a href="#schema-di-fori-su-una-faccia">Schema di fori su una faccia</a></li><li><a href="#estrudere-una-faccia-verso-l-esterno-o-l-interno">Estrudere una faccia verso l’esterno o l’interno</a></li><li><a href="#modificare-piu-parti-insieme">Modificare più parti insieme</a></li><li><a href="#ridimensionare-in-percentuale">Ridimensionare in percentuale</a></li><li><a href="#annullare">Annullare</a></li><li><a href="#rivedere-la-cronologia">Rivedere la cronologia</a></li></ul></div>
+<section class="guide-part"><h2 id="selezionare">Selezionare</h2>
+<p>Fai clic su una forma per selezionarla. Tieni premuto <kbd>Shift</kbd> per aggiungere altre forme alla selezione o rimuoverle. Se tieni premuto <kbd>Shift</kbd> con due o più forme selezionate, un piccolo numero sotto il puntatore indica quante sono. Fai clic nello spazio vuoto o premi <kbd>Esc</kbd> per deselezionare tutto. Trascina un riquadro sul piano di lavoro vuoto per selezionare tutto ciò che tocca; tenendo premuto <kbd>Shift</kbd>, il riquadro aggiunge gli elementi non selezionati e rimuove quelli già selezionati. Se preferisci selezionare un solo elemento in un gruppo affollato, attiva <strong class="ui">«La direzione del riquadro di selezione determina il comportamento»</strong> nelle impostazioni, nella sezione <strong class="ui">«Aspetto»</strong>: trascinando il riquadro verso destra selezioni solo gli oggetti completamente al suo interno; trascinandolo verso sinistra selezioni invece tutti quelli che tocca, e il contorno diventa tratteggiato. Tieni premuto <kbd>Alt</kbd> mentre trascini per invertire la direzione del riquadro solo per quel gesto, per esempio per selezionare interi corpi dal lato in cui la direzione normale non lo permetterebbe. <span dir="ltr"><kbd>Ctrl</kbd>+<kbd>A</kbd></span> seleziona tutti i corpi visibili. Mentre trascini un corpo o una maniglia del riquadro, <kbd>Esc</kbd> annulla l’operazione finché tieni premuto il pulsante del mouse: tutto torna com’era e la cronologia non registra alcuna modifica.</p>
+<p>Nascondi ciò che intralcia con <strong class="ui">«Nascondi selezione»</strong> o <span dir="ltr"><kbd>Ctrl</kbd>+<kbd>H</kbd></span>. Le forme nascoste restano nel progetto, ma non sono visibili e non vengono incluse nell’esportazione; la finestra di esportazione ne indica prima il numero. <span dir="ltr"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>H</kbd></span> le mostra di nuovo tutte. Blocca con il lucchetto in cima alle impostazioni gli elementi che devono restare fermi, oppure premi <span dir="ltr"><kbd>Ctrl</kbd>+<kbd>L</kbd></span>. Una forma bloccata non può essere spostata, ridimensionata, ruotata, ricolorata o eliminata: le maniglie diventano grigie, accanto alla freccia in alto compare un lucchetto e gli strumenti che la modificherebbero sono disattivati. Passando sopra una maniglia continui a vederne le dimensioni, mentre un tasto che proverebbe a modificarla mostra “Oggetto bloccato”. Se nella selezione c’è una forma bloccata, anche le altre non possono essere modificate. Restano disponibili nascondere, rinominare, copiare e duplicare.</p>
+<p>Un numero sul pulsante del gruppo <strong class="ui">«Visibilità»</strong> indica quante forme sono nascoste; facendoci clic le mostri tutte. Se apri un progetto che contiene forme nascoste, un messaggio te lo segnala una volta e offre un pulsante per mostrarle.</p>
+</section><section class="guide-part"><h2 id="l-elenco-degli-oggetti">L’elenco degli oggetti</h2>
+<p>Quando ci sono molte parti, è facile perderne qualcuna nella vista. L’elenco degli oggetti (<strong class="ui">«Mostra elenco oggetti»</strong> o <span dir="ltr"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>O</kbd></span>) mostra tutte le forme in un elenco. Rimane aperto o chiuso come l’hai lasciato, per ogni progetto, finché non lo chiudi; la scelta viene memorizzata nel browser.</p>
+<figure><img src="/guide/img/object-list.webp" alt="L’elenco degli oggetti: il gruppo “Gruppo” contiene due parti e accanto c’è una sfera. L’icona della cartella apre il gruppo." width="1280" height="800" loading="lazy"><figcaption>L’elenco degli oggetti: il gruppo “Gruppo” contiene due parti e accanto c’è una sfera. L’icona della cartella apre il gruppo.</figcaption></figure>
+<ul><li>Fai clic su una voce per selezionare la forma, anche se si trova dentro un gruppo. Tieni premuto <kbd>Shift</kbd> per aggiungere o rimuovere altre voci, proprio come nella vista. Le frecce aprono e chiudono i gruppi.</li><li>L’etichetta indica se una parte è <strong class="ui">«Solido»</strong> oppure <strong class="ui">«Foro»</strong>.</li><li>Il lucchetto e l’occhio bloccano o nascondono le singole parti.</li><li><strong class="ui">«Rinomina»</strong> assegna un nome alla parte; la matita accanto al nome in cima alle impostazioni rinomina allo stesso modo la forma selezionata. In un progetto grande, nomi chiari sono di grande aiuto.</li><li>Il campo di ricerca trova le forme per nome e per tipo, per esempio “cilindro” o “foro”. Cerca anche all’interno dei gruppi, a qualsiasi livello: se un gruppo contiene una corrispondenza, resta nell’elenco e si apre mostrando le parti trovate e i gruppi che conducono a esse. Se invece il nome del gruppo stesso corrisponde alla ricerca, aprendolo vedrai tutte le sue parti.</li><li>La freccia all’estrema sinistra della barra del titolo comprime l’elenco nella sola barra e lo riapre.</li></ul>
+<p>L’elenco è ancorato subito a destra del cubo di visualizzazione. Trascinalo dalla barra del titolo per posizionarlo ovunque sul piano di lavoro; può sovrapporsi al cubo e alla barra della telecamera. Riportalo accanto al cubo o fai doppio clic sulla barra del titolo per ancorarlo di nuovo. In questo browser vengono ricordati posizione e stato aperto o compresso.</p>
+</section><section class="guide-part"><h2 id="digitare-una-posizione">Digitare una posizione</h2>
+<p>Il riquadro <strong class="ui">«Posizione»</strong> nel pannello delle proprietà mostra la posizione del corpo selezionato e permette di modificarla digitando i valori. <strong class="ui">«X»</strong> e <strong class="ui">«Y»</strong> indicano il centro del riquadro d’ingombro sulla piastra, con gli stessi segni delle distanze mostrate sul piano di lavoro; <strong class="ui">«Z (altezza)»</strong> indica invece l’altezza della parte inferiore del corpo. X aumenta verso destra, Y verso il fondo e Z verso l’alto, secondo la regola della mano destra usata anche in Tinkercad e nei programmi CAD. Le frecce degli assi sulla piastra mostrano le direzioni. I valori usano l’unità selezionata; i cursori hanno lo stesso intervallo dello spostamento con le maniglie.</p>
+</section><section class="guide-part"><h2 id="parcheggiare-parti-accanto-alla-piastra">Parcheggiare parti accanto alla piastra</h2>
+<p>Puoi trascinare una forma oltre il bordo della piastra e lasciarla lì, fino a circa una larghezza della piastra oltre ogni lato, per conservarla e usarla più tardi. Con i tasti freccia puoi spostarla ancora più lontano. Una parte parcheggiata resta nel progetto e viene inclusa nell’esportazione insieme al resto. Per escluderla, nascondila oppure esporta solo la selezione. Se hai scelto una stampante, durante l’esportazione PrintCaddy ti avvisa quando un elemento si trova fuori dal suo piatto.</p>
+</section><section class="guide-part"><h2 id="aggancio-durante-lo-spostamento">Aggancio durante lo spostamento</h2>
+<p>Quando trascini una forma sul piano di lavoro, questa si aggancia alle altre forme: il bordo sinistro, destro, anteriore o posteriore, oppure il centro, coincide esattamente con un bordo o con il centro di un’altra forma. Una guida rosa indica il punto di aggancio. Così puoi affiancare due parti senza spazi o centrarne una dietro l’altra senza digitare valori. Funziona anche con la griglia disattivata.</p>
+<p>Tieni premuto <kbd>Shift</kbd> mentre trascini per vincolare lo spostamento a un asse: la forma segue la direzione in cui ti sei spostato di più, X oppure Y, e non si muove lungo l’altro asse. È preferibile premere <kbd>Shift</kbd> dopo aver iniziato a trascinare; se la forma non è ancora selezionata, un clic con <kbd>Shift</kbd> la aggiunge soltanto alla selezione.</p>
+<p>Se tieni già premuto <kbd>Alt</kbd> quando inizi a trascinare, sposti una copia, come in Tinkercad: la forma originale resta dov’è e la copia si posiziona quando rilasci il pulsante. Premendo <kbd>Alt</kbd> solo durante il trascinamento, sospendi l’aggancio e la forma segue soltanto la griglia. Anche la copia si aggancia solo dopo aver rilasciato <kbd>Alt</kbd>. Per disattivare definitivamente l’aggancio, usa il menu della griglia in basso a destra (<strong class="ui">«Aggancio alle forme»</strong>) o le impostazioni. Per ora l’aggancio funziona solo quando sposti una forma sul piano di lavoro normale, non quando la sollevi o la ridimensioni.</p>
+</section><section class="guide-part"><h2 id="allineare">Allineare</h2>
+<p>Seleziona almeno due forme e usa <strong class="ui">«Allinea»</strong> per allinearle: intorno alla selezione compaiono punti per allineare a sinistra, al centro o a destra, davanti, al centro o dietro, in alto, al centro o in basso. Facendo clic su un punto, tutte le forme si spostano in quella posizione. Se prima fai clic su una delle forme selezionate, questa resta ferma e le altre si allineano a essa. Se nella selezione c’è una forma bloccata, quella diventa l’unico riferimento fisso. Sinistra, destra, davanti, dietro, sopra e sotto si riferiscono al riquadro d’ingombro della forma; invece, per un triangolo, un pentagono o una stella, il centro è il centro geometrico della forma stessa. Così un foro centrato su di essa finisce nel suo centro, non in quello del riquadro.</p>
+<p>Una forma ruotata, per esempio di 45°, viene allineata usando il proprio riquadro d’ingombro e non i suoi spigoli. Per allinearla secondo gli spigoli, imposta prima il piano di lavoro su una sua faccia (<strong class="ui">«Posiziona il piano di lavoro»</strong>, poi fai clic sulla faccia): i punti corrisponderanno agli assi del piano e le forme saranno misurate e spostate lungo quegli assi, come in Tinkercad. Reimposta il piano di lavoro per tornare ad allineare rispetto alla piastra.</p>
+<figure><img src="/guide/img/align.webp" alt="Lo strumento Allinea mostra con dei punti le possibili posizioni attorno alla selezione." width="1280" height="800" loading="lazy"><figcaption>Lo strumento Allinea mostra con dei punti le possibili posizioni attorno alla selezione.</figcaption></figure>
+<p>Il tasto è <kbd>L</kbd>. <kbd>Esc</kbd> annulla.</p>
+</section><section class="guide-part"><h2 id="specchiare">Specchiare</h2>
+<p><strong class="ui">«Specchia»</strong> (<kbd>M</kbd>, oppure clic destro sulla selezione e scelta del comando) riflette la selezione rispetto a un piano: <strong class="ui">«sinistra-destra»</strong>, <strong class="ui">«fronte-retro»</strong> o <strong class="ui">«alto-basso»</strong>. Fai clic sulla freccia dell’asse corrispondente. È utile per le parti simmetriche: costruisci una metà, copiala e specchia la copia.</p>
+</section><section class="guide-part"><h2 id="ruotare-e-impostare-il-punto-di-rotazione">Ruotare e impostare il punto di rotazione</h2>
+<p>Puoi ruotare una forma con le frecce curve, con i valori nelle impostazioni oppure premendo <kbd>R</kbd>, a scatti di 45°. Trascinando la circonferenza di rotazione, la rotazione si aggancia a ogni tacca, cioè ogni 22,5°; tieni premuto <kbd>Shift</kbd> per incrementi più piccoli, con tacche aggiuntive ogni 11,25°. Trascina fuori dalla circonferenza per ruotare liberamente a incrementi di 1°, oppure di 45° con <kbd>Shift</kbd>. Di norma, la selezione ruota attorno al proprio centro. A volte serve un altro punto di rotazione, per esempio per ruotare ulteriormente l’estremità di un tubo inclinato. Usa <strong class="ui">«Imposta il centro di rotazione»</strong> e poi fai clic su una faccia. Una faccia piatta fornisce il proprio centro, per esempio l’asse dell’estremità di un tubo. Da quel momento la selezione ruota intorno a quel punto. Fai di nuovo clic sullo strumento per rimuoverlo.</p>
+<p>Gli angoli restano associati al corpo. Nelle impostazioni, <strong class="ui">«Rotazione»</strong> li mostra come <strong class="ui">«Attorno a X»</strong>, <strong class="ui">«Attorno a Y»</strong> e <strong class="ui">«Attorno a Z (altezza)»</strong>, nominati come le coordinate della posizione: Y attraversa la piastra, Z è verticale. Digita un angolo per ruotare il corpo a quel valore, attorno al proprio centro o al suo punto di rotazione personalizzato, se presente. Quando selezioni un corpo ruotato, gli angoli compaiono anche sotto di esso sul piano di lavoro; <strong class="ui">«Mostra gli angoli di rotazione dei corpi»</strong> nelle impostazioni li nasconde.</p>
+<figure><img src="/guide/img/rotation-card.webp" alt="Un corpo ruotato attorno a due assi: gli angoli sono indicati sotto di esso e il riquadro Rotazione nelle impostazioni permette di inserirli numericamente." width="1280" height="800" loading="lazy"><figcaption>Un corpo ruotato attorno a due assi: gli angoli sono indicati sotto di esso e il riquadro Rotazione nelle impostazioni permette di inserirli numericamente.</figcaption></figure>
+<p>Selezionando <strong>un solo corpo</strong>, il punto di rotazione appartiene a quel corpo: puoi selezionare altre parti e tornare a esso, il punto resta al suo posto. Si sposta, ruota e si ridimensiona insieme al corpo, viene salvato nel progetto ed è ripristinato con Annulla. In <strong class="ui">«Posizione»</strong> il punto di rotazione ha coordinate X, Y e Z proprie, che puoi digitare o regolare a piccoli incrementi; <strong class="ui">«Rimuovi»</strong> lo elimina. Puoi anche trascinare con il mouse il suo indicatore rosso: scorre sulla superficie dei corpi e si aggancia agli angoli, ai punti medi degli spigoli e agli spigoli, così il perno di una cerniera può finire esattamente su un angolo. Se selezioni più corpi, il punto di rotazione vale solo per quella selezione e scompare quando ne crei una nuova. Raggruppandoli o legandoli in un fascio resta: il gruppo lo prende come proprio perno, con X, Y e Z sotto <strong class="ui">«Posizione»</strong>.</p>
+</section><section class="guide-part"><h2 id="appoggiare-una-forma-su-una-faccia">Appoggiare una forma su una faccia</h2>
+<p>Vuoi appoggiare una parte sul lato migliore per stamparla? Selezionala, fai clic su <strong class="ui">«Appoggia una faccia sul piano»</strong> e poi sulla faccia che vuoi rivolgere verso il basso. Spostando il puntatore sulla parte, la faccia sottostante si illumina e puoi vedere quale stai per scegliere; ruota la vista per controllare gli altri lati. La parte ruota fino ad appoggiare quella faccia sul piano di lavoro.</p>
+<p>Vuoi unire due parti faccia a faccia o allinearle sullo stesso piano? Seleziona la parte da spostare, fai clic su <strong class="ui">«Allinea le facce»</strong>, poi sulla sua faccia e infine sulla faccia dell’altra parte. Nel pannello, <strong class="ui">«Faccia contro faccia»</strong> mette le facce una contro l’altra, a contatto; <strong class="ui">«A filo»</strong> le dispone sullo stesso piano, affiancate. <strong class="ui">«Distanza»</strong> lascia uno spazio tra loro, utile per esempio per il gioco. <strong class="ui">«Allinea»</strong> sposta la parte: la ruota per la via più breve finché le facce diventano parallele, oppure non la ruota affatto se lo sono già, poi la sposta soltanto verso l’altra faccia, senza modificarne la posizione laterale. L’altra parte resta ferma e un solo Annulla ripristina tutto.</p>
+<figure><img src="/guide/img/mate-faces.webp" alt="Il pannello Allinea facce: scegli la parte da spostare, poi una faccia dell’altra parte, quindi il contatto faccia a faccia o l’allineamento e, facoltativamente, la distanza." width="1280" height="800" loading="lazy"><figcaption>Il pannello Allinea facce: scegli la parte da spostare, poi una faccia dell’altra parte, quindi il contatto faccia a faccia o l’allineamento e, facoltativamente, la distanza.</figcaption></figure>
+<p><strong>Fori sullo stesso asse:</strong> <strong class="ui">«Stesso asse»</strong> allinea invece facce tonde: un foro sopra un foro, un perno in un foro, una vite nel suo foro passante. Sceglilo prima di fare clic sulle facce. Poi fai clic sull'interno tondo di un foro (o sull'esterno di un perno) del pezzo che si muove, e su una faccia tonda dell'altro pezzo; tutta la faccia tonda si illumina mentre la indichi. <strong class="ui">«Allinea»</strong> ruota il pezzo per la via più breve finché i due assi sono paralleli e lo fa scorrere di lato sull'altro asse. Lungo l'asse resta dov'era, quindi un perno mantiene la sua altezza; spingilo dentro dopo. Funziona anche con mesh importate, purché il foro sia fatto di faccette attorno a un asse.</p>
+<p><strong>Impostare un angolo preciso tra due facce:</strong> <strong class="ui">«Allinea le facce»</strong> rende le facce parallele; non esiste uno strumento dedicato per impostare un angolo tra loro, ma puoi ottenere lo stesso risultato così. Prima metti a contatto le facce con <strong class="ui">«Allinea le facce»</strong>, in modo che siano parallele. Poi imposta il punto di rotazione sullo spigolo di contatto (<strong class="ui">«Imposta il centro di rotazione»</strong>, quindi fai clic sullo spigolo o su un angolo) e inserisci l’angolo desiderato, per esempio 15 o 30, nel riquadro <strong class="ui">«Rotazione»</strong> della parte. La rotazione avviene attorno a quel punto. Gli assi del riquadro sono quelli della piastra: il metodo funziona se lo spigolo segue X, Y o Z.</p>
+<p>Puoi anche usare <strong class="ui">«Appoggia sul piano di lavoro»</strong> (<kbd>D</kbd>) per appoggiare la selezione sul piano di lavoro, oppure <strong class="ui">«Centra sul piano di lavoro»</strong>.</p>
+<p><kbd>C</kbd> solleva la selezione, come Cruise in Tinkercad: la selezione segue il puntatore e si appoggia alla faccia del corpo su cui passi, anche se inclinata. Fai clic per posizionarla; <kbd>Esc</kbd> la lascia dov’era. Il lato inferiore si appoggia alla faccia e si allinea ai suoi spigoli come farebbe una nuova forma; la selezione mantiene la propria rotazione attorno all’asse verticale. Più parti si spostano insieme mantenendo la distanza reciproca. Sopra la piastra vuota, <kbd>C</kbd> rimette in verticale una parte inclinata. Se non hai una tastiera, il menu che appare tenendo premuto offre <strong class="ui">«Posiziona su una faccia»</strong> per la stessa operazione.</p>
+</section><section class="guide-part"><h2 id="schemi-righe-e-cerchi">Schemi: righe e cerchi</h2>
+<p>Per creare griglie di fori, circonferenze di bulloni e corone dentate, usa <strong class="ui">«Crea schema ripetuto»</strong>. Seleziona le forme da moltiplicare e fai clic sullo strumento nella barra multifunzione.</p>
+<figure><img src="/guide/img/pattern-tool.webp" alt="Lo schema in modalità “Cerchio”: inizialmente le copie sono mostrate come anteprima." width="1280" height="800" loading="lazy"><figcaption>Lo schema in modalità “Cerchio”: inizialmente le copie sono mostrate come anteprima.</figcaption></figure>
+<ul><li><strong><strong class="ui">«Fila»</strong>:</strong> ripete la selezione a intervalli regolari. La riga può avanzare contemporaneamente lungo tutti e tre gli assi con <strong class="ui">«Spaziatura X»</strong>, <strong class="ui">«Spaziatura Y»</strong> e <strong class="ui">«Spaziatura Z (altezza)»</strong>: un solo valore crea una riga dritta, due o tre una riga diagonale o una scala. Un intervallo negativo inverte la direzione.</li><li><strong><strong class="ui">«Cerchio»</strong>:</strong> dispone la selezione attorno a un centro. Imposta il numero di copie con <strong class="ui">«Numero di elementi (incluso l'originale)»</strong> e usa 360° in <strong class="ui">«Angolo totale»</strong> per ottenere un cerchio completo. Puoi decidere se le copie devono ruotare lungo il percorso. <strong class="ui">«Incremento di altezza per copia»</strong> solleva ogni copia leggermente più della precedente, formando una vite o una spirale ascendente; <strong class="ui">«Variazione del raggio per copia»</strong> la allontana dal centro o l’avvicina, formando una spirale piatta. Usandoli insieme ottieni una spirale conica. La spirale compie al massimo un giro: un angolo superiore a 360° viene considerato un cerchio completo e il numero di copie non può superare 100.</li></ul>
+<p>Suggerimento: imposta prima il punto di rotazione su una faccia con <strong class="ui">«Imposta il centro di rotazione»</strong>, così il centro del cerchio coinciderà esattamente con quel punto.</p>
+<figure><img src="/guide/img/pattern-spiral.webp" alt="Lo schema in modalità “Cerchio”, con un incremento di altezza e una variazione del raggio per ogni copia: le copie salgono e si allargano formando una spirale." width="1280" height="800" loading="lazy"><figcaption>Lo schema in modalità “Cerchio”, con un incremento di altezza e una variazione del raggio per ogni copia: le copie salgono e si allargano formando una spirale.</figcaption></figure>
+<p>Inizialmente le copie sono mostrate come anteprima. Solo <strong class="ui">«Crea»</strong> le crea. Se sono fori, al termine raggruppali con il corpo da tagliare.</p>
+</section><section class="guide-part"><h2 id="schema-di-fori-su-una-faccia">Schema di fori su una faccia</h2>
+<p>Per creare prese d’aria, griglie per altoparlanti, cestini e involucri, <strong class="ui">«Schema di fori»</strong> distribuisce regolarmente i fori su una faccia piatta. Non devi più creare un foro, duplicarlo e posizionarlo sulla parete. Seleziona esattamente un corpo e fai clic su <strong class="ui">«Schema di fori»</strong> nel gruppo <strong class="ui">«Modifica»</strong> della barra degli strumenti, accanto allo strumento per gli schemi. Puoi anche fare clic destro sul corpo o cercare lo strumento con <span dir="ltr"><kbd>Ctrl</kbd>+<kbd>K</kbd></span>.</p>
+<ol><li>Fai clic su una faccia piatta del corpo. Viene considerata tutta la faccia piatta intorno al punto, non solo il triangolo sotto il puntatore. Le facce curve non sono supportate: compare un suggerimento e puoi fare clic su una faccia piatta.</li><li>Nella finestra, imposta forma e disposizione dei fori:</li></ol>
+<ul><li><strong><strong class="ui">«Forma del foro»</strong>:</strong> <strong class="ui">«Circolare»</strong>, <strong class="ui">«Quadrata»</strong>, <strong class="ui">«Rettangolare»</strong>, <strong class="ui">«Esagonale»</strong> o <strong class="ui">«Asola»</strong>.</li><li><strong>Dimensioni:</strong> <strong class="ui">«Diametro (Ø)»</strong> per il diametro di un foro rotondo, <strong class="ui">«Lunghezza del lato»</strong> per il lato di un quadrato e <strong class="ui">«Larghezza»</strong> e <strong class="ui">«Altezza»</strong> per rettangoli e asole. Per gli esagoni, la misura è <strong class="ui">«Diametro tra gli angoli opposti (Ø)»</strong>.</li><li><strong><strong class="ui">«Distanza da centro a centro»</strong>:</strong> distanza tra i centri di due fori consecutivi. Se è troppo piccola rispetto ai fori, PrintCaddy la aumenta fino al minimo possibile per mantenere una parete tra i fori.</li><li><strong><strong class="ui">«Parete tra i fori»</strong>:</strong> esprime la stessa misura come larghezza della parete rimasta tra due fori vicini, cioè lo spessore che avrà nella stampa. Modificando questo valore, cambia la distanza tra i centri, e viceversa. Per esagoni, rettangoli e asole PrintCaddy calcola la distanza minima tra i bordi.</li><li><strong><strong class="ui">«Disposizione»</strong>:</strong> <strong class="ui">«Griglia»</strong> dispone i fori in righe e colonne; <strong class="ui">«Sfalsata»</strong> sposta di metà passo ogni seconda riga e avvicina le righe, così ciascun foro è alla stessa distanza dai vicini. Con gli esagoni, questa disposizione crea un alveare.</li><li><strong><strong class="ui">«Margine dal bordo della faccia»</strong>:</strong> distanza libera tra i fori e il bordo della faccia. Vengono creati solo i fori che rientrano completamente nella faccia al netto di questo margine; quelli che lo oltrepasserebbero sono esclusi. Il margine viene mantenuto anche attorno alle aperture presenti sulla faccia.</li><li><strong><strong class="ui">«Profondità»</strong>:</strong> <strong class="ui">«Attraverso tutto il corpo»</strong> (impostazione iniziale) attraversa l’intera parete; con <strong class="ui">«Profondità personalizzata»</strong> puoi impostare la profondità in millimetri, per esempio per creare incavi.</li></ul>
+<ol><li>Un’anteprima dei fori compare subito sulla faccia e si aggiorna con ogni valore. La finestra indica quanti fori entrano. <strong class="ui">«Un'altra faccia»</strong> permette di scegliere un’altra faccia; <kbd>Esc</kbd> chiude lo strumento. Come le altre finestre degli strumenti, puoi spostarla trascinando la barra del titolo.</li><li>Solo <strong class="ui">«Crea»</strong> crea i fori.</li></ol>
+<p>I fori sono normali forme raggruppate con il corpo, come dopo aver usato <strong class="ui">«Raggruppa»</strong>: non vengono incorporati in modo permanente. <strong class="ui">«Separa gruppo»</strong> scioglie di nuovo il gruppo e libera ogni foro, che puoi poi spostare, modificare o eliminare singolarmente. L’intera operazione è un solo passaggio per <strong class="ui">«Annulla»</strong>. Lo strumento crea al massimo 400 fori per volta; se ne servono di più, aumenta la dimensione dei fori o la loro spaziatura.</p>
+<p>Un’IA può eseguire la stessa operazione tramite il bridge MCP con <code>layerling_perforate_face</code> (vedi il capitolo <a href="/it/ai-with-mcp.html">Progettare con un’IA (MCP)</a>).</p>
+</section><section class="guide-part"><h2 id="estrudere-una-faccia-verso-l-esterno-o-l-interno">Estrudere una faccia verso l’esterno o l’interno</h2>
+<p>Per ispessire una parete, aggiungere una sporgenza su una faccia o ricavarvi una cavità, lo strumento <strong class="ui">«Faccia»</strong> agisce su una singola faccia piatta. Funziona anche con un file STL importato, che non contiene schizzi modificabili. Seleziona esattamente un corpo e fai clic su <strong class="ui">«Faccia»</strong> nel gruppo <strong class="ui">«Modifica»</strong> della barra degli strumenti, accanto allo schema di fori. Puoi anche fare clic destro sul corpo o cercare lo strumento con <span dir="ltr"><kbd>Ctrl</kbd>+<kbd>K</kbd></span>.</p>
+<ol><li>Fai clic su una faccia piatta del corpo. Come per lo schema di fori, viene considerata l’intera faccia piatta intorno al punto; le facce curve non sono supportate.</li><li>Nella finestra:</li></ol>
+<ul><li><strong><strong class="ui">«Direzione»</strong>:</strong> scegli <strong class="ui">«Verso l'esterno: aggiungi materiale»</strong> per aggiungere materiale sulla faccia o <strong class="ui">«Verso l'interno: scava una cavità»</strong> per ricavare una cavità. La cavità non può essere più profonda del corpo dietro la faccia; in un corpo cavo può comunque raggiungere la cavità interna.</li><li><strong><strong class="ui">«Distanza dal bordo della faccia»</strong>:</strong> definisce quanto il nuovo contorno deve restare all’interno rispetto al bordo della faccia. Quando aggiungi materiale verso l’esterno, il valore 0 usa tutta la faccia e ispessisce la parete. Anche le aperture sulla faccia si allargano della stessa misura.</li><li><strong><strong class="ui">«Raggio degli angoli»</strong>:</strong> arrotonda tutti gli angoli del contorno, compresi quelli interni, così anche una punta aguzza termina con un arco. Un intaglio più stretto del doppio del raggio si chiude; una parte della faccia più stretta del doppio dell’incasso più il raggio viene esclusa.</li><li><strong><strong class="ui">«Profondità»</strong>:</strong> indica quanto il nuovo elemento sporge dalla faccia o la profondità della cavità.</li></ul>
+<ol><li>Il risultato appare subito come anteprima e si aggiorna con ogni valore. <strong class="ui">«Un'altra faccia»</strong> permette di scegliere un’altra faccia; <kbd>Esc</kbd> chiude lo strumento.</li><li>Solo <strong class="ui">«Crea»</strong> applica la modifica.</li></ol>
+<p>L’elemento aggiunto è un normale corpo creato da uno schizzo e raggruppato con il corpo originale: non viene incorporato in modo permanente. <strong class="ui">«Modifica gruppo»</strong> apre il gruppo e <strong class="ui">«Modifica schizzo»</strong> sulla nuova parte mostra il contorno seguito. Sulla faccia superiore o inferiore di un corpo creato da uno schizzo semplice — una sola area, non raggruppata, specchiata, rastremata, attorcigliata o inclinata e senza estrusione di contorno, anello portachiavi, raccordo o smusso — viene usato il contorno originale del corpo. Le linee e gli archi restano così esatti, ovunque il kernel CAD possa definirli come tali, per gli strumenti sugli spigoli e per l’esportazione STEP. Se in seguito ridimensioni la parte, l’incasso resta invariato. Su qualsiasi altra faccia, e su tutte le facce di una mesh importata, il contorno segue i triangoli della faccia e le curve diventano una serie di brevi segmenti rettilinei. L’intera operazione è un solo passaggio per <strong class="ui">«Annulla»</strong>. Per modificare in seguito l’incasso o il raggio, annulla l’operazione e usa di nuovo lo strumento. Per arrotondare il bordo superiore, usa <strong class="ui">«Arrotonda»</strong> con <strong class="ui">«Spigoli superiori»</strong> sul gruppo come ultimo passaggio: come ogni trattamento degli spigoli applicato a un gruppo, lo unisce in un unico corpo.</p>
+<p>Un’IA può eseguire la stessa operazione tramite il bridge MCP con <code>layerling_push_face</code> (vedi il capitolo <a href="/it/ai-with-mcp.html">Progettare con un’IA (MCP)</a>).</p>
+</section><section class="guide-part"><h2 id="modificare-piu-parti-insieme">Modificare più parti insieme</h2>
+<p>Quando selezioni più parti, il pannello delle proprietà a destra mostra quante sono e offre le operazioni applicabili a tutte: <strong class="ui">«Solido»</strong> o <strong class="ui">«Foro»</strong>, un unico colore (facendo clic su <strong class="ui">«Solido»</strong> si apre la scelta dei colori) e il blocco. Se la selezione contiene sia solidi sia fori, un clic li trasforma tutti in solidi oppure tutti in fori. Se anche una sola parte è bloccata, puoi usare soltanto il comando per bloccare o sbloccare. Modifica le dimensioni con le maniglie, con <strong class="ui">«Ridimensiona in percentuale»</strong> o digitando un valore nella quota della forma. Con più parti selezionate, la quota si riferisce all’intera selezione: tutte le parti si ingrandiscono in proporzione, compresi gli spazi che le separano, come quando trascini una maniglia. Anche solido e foro si possono impostare con il clic destro o con i tasti <kbd>S</kbd> e <kbd>H</kbd>.</p>
+</section><section class="guide-part"><h2 id="ridimensionare-in-percentuale">Ridimensionare in percentuale</h2>
+<p>Per ingrandire o rimpicciolire una o più parti della stessa percentuale, per esempio tutte le parti di un file di stampa del 20%, usa <strong class="ui">«Ridimensiona in percentuale»</strong>. Seleziona le parti, fai clic destro e scegli <strong class="ui">«Ridimensiona in percentuale»</strong>, oppure cercalo con <span dir="ltr"><kbd>Ctrl</kbd>+<kbd>K</kbd></span>.</p>
+<p>In <strong class="ui">«Nuova dimensione»</strong> digita la nuova dimensione come percentuale di quella attuale: 120% è un quinto in più, 50% è la metà. Larghezza, profondità e altezza cambiano nella stessa proporzione, mantenendo la forma. La base resta nella posizione iniziale, così l’oggetto non sprofonda nella piastra.</p>
+<p>Selezionando più parti, puoi scegliere come ridimensionarle:</p>
+<ul><li><strong><strong class="ui">«Insieme»</strong>:</strong> le parti crescono attorno al centro comune e anche le distanze tra loro aumentano. L’intero insieme si ingrandisce come fosse un unico oggetto.</li><li><strong><strong class="ui">«Ognuna nella propria posizione»</strong>:</strong> ogni parte si ridimensiona nella posizione in cui si trova e le distanze tra le parti restano invariate.</li></ul>
+<p>Solo <strong class="ui">«Ridimensiona»</strong> modifica il progetto; un solo Annulla ripristina la situazione precedente. Se nella selezione c’è una parte bloccata, lo strumento non si apre.</p>
+</section><section class="guide-part"><h2 id="annullare">Annullare</h2>
+<p><strong class="ui">«Annulla»</strong> (<span dir="ltr"><kbd>Ctrl</kbd>+<kbd>Z</kbd></span>) e <strong class="ui">«Ripeti»</strong> (<span dir="ltr"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd></span> o <span dir="ltr"><kbd>Ctrl</kbd>+<kbd>Y</kbd></span>) permettono di scorrere la cronologia. Nelle impostazioni, sotto <strong class="ui">«Cronologia»</strong>, scegli quante operazioni mantenere nel progetto salvato.</p>
+</section><section class="guide-part"><h2 id="rivedere-la-cronologia">Rivedere la cronologia</h2>
+<p><strong class="ui">«Cronologia»</strong>, accanto ai comandi Annulla e Ripeti, apre una vista della cronologia senza modificare nulla. L’area di lavoro mostra il progetto com’era e un cursore in basso scorre tutti i passaggi annullabili: all’estrema destra trovi lo stato corrente; ogni passo verso sinistra mostra uno stato precedente, mentre gli stati già annullati si trovano a destra di quello corrente. I tasti freccia passano da uno stato all’altro; <kbd>Esc</kbd> torna allo stato corrente. Anche la rotellina sopra il cursore scorre la cronologia, uno stato per scatto, verso quelli precedenti; <kbd>Page Up</kbd> e <kbd>Page Down</kbd> saltano dieci stati, <kbd>Home</kbd> mostra il più vecchio e <kbd>End</kbd> torna a quello corrente. Nel frattempo puoi ruotare e ingrandire la vista e fare clic sugli oggetti per recuperarli, come descritto qui sotto, ma non puoi spostarli: il progetto non viene modificato. Se la barra copre qualcosa, spostala trascinando la barra del titolo; un doppio clic la riporta al suo posto.</p>
+<p>Puoi recuperare due elementi da uno stato precedente. <strong class="ui">«Crea un nuovo progetto da questo stato»</strong> crea un nuovo progetto nella panoramica, con il nome del progetto corrente seguito tra parentesi dall’ora di quello stato; se il progetto era stato salvato prima che PrintCaddy registrasse gli orari, lo chiama “copia”. Il nuovo progetto contiene la cronologia fino a quel punto e permette quindi di continuare a usare Annulla. <strong class="ui">«Esporta questo stato»</strong> apre la normale finestra di esportazione usando quello stato come progetto, così puoi salvarlo in STL, 3MF, STEP, come immagine o come file LYL con la cronologia fino a quel momento.</p>
+<p>Puoi anche recuperare singoli oggetti nel progetto corrente. Fai clic su un oggetto nello stato visualizzato; <kbd>Shift</kbd>+clic ne aggiunge altri o li rimuove dalla selezione, mentre un clic nello spazio vuoto deseleziona tutto. Poi scegli <strong class="ui">«Ripristina nel progetto»</strong>. La vista si chiude e nel progetto corrente viene inserita una copia di ciascun oggetto, esattamente com’era e nella posizione che occupava in quello stato. Le copie vengono selezionate e aggiunte accanto agli elementi che il progetto contiene già; nient’altro cambia. È un’unica operazione, quindi Annulla la rimuove. Puoi usarla per recuperare una versione precedente di una parte modificata o una parte eliminata. Un gruppo viene recuperato per intero; le note e i punti di riferimento associati a un oggetto non vengono copiati. Il nome include l’ora dello stato, per esempio “Scatola (12:32)”, così puoi distinguerlo dalla versione attuale. Per recuperare una parte interna a un gruppo, seleziona il gruppo e scegli <strong class="ui">«Apri gruppo»</strong> o premi <kbd>E</kbd>, come nel progetto: le parti vengono disposte come quando si modifica il gruppo e puoi selezionare quella che ti serve; la barra indica il gruppo aperto. <strong class="ui">«Torna fuori»</strong> lo chiude. Questa operazione serve solo a esplorare: gruppo, progetto e cronologia non vengono modificati.</p>
+<p><strong class="ui">«Elimina cronologia»</strong> si trova da solo in basso a sinistra sulla barra. Dopo una richiesta di conferma, elimina definitivamente tutti i passaggi precedenti: il progetto conserva lo stato attuale, non quello visualizzato, e Annulla non ha più operazioni a cui tornare. I file salvati in seguito non conterranno la cronologia. Puoi usarlo per condividere un progetto senza il suo passato o per ricominciare la cronologia da zero. L’eliminazione non si può annullare; se vuoi esportare un file senza modificare il tuo progetto, scegli <strong class="ui">«Nessuna»</strong> durante l’esportazione.</p></section>
+<div class="pager"><a href="/it/shapes.html"><small>Capitolo precedente</small>Inserire e modificare le forme</a><a class="next" href="/it/solids-and-holes.html"><small>Capitolo successivo</small>Solidi e fori</a></div>
+      </main>
+    </div>
+    <footer class="note">Questa guida cresce insieme al programma. Se manca qualcosa o trovi un errore, segnalalo nelle</footer>
+    <footer class="site-footer"><div></div><div><a href="/source/">Source code &amp; license (AGPL-3.0)</a></div><p class="trademark">Tinkercad è un marchio di Autodesk, Inc. PrintCaddy è un progetto indipendente, non affiliato ad Autodesk né approvato o sponsorizzato da essa.</p><p class="trademark">PrintCaddy – Based on layerling by henmedia (github.com/henmedia/layerling), licensed under the GNU AGPL-3.0. Copyright © henmedia and the layerling contributors.</p></footer>
+    <script>(function(){var b=document.getElementById("open-editor");if(!b||typeof BroadcastChannel==="undefined")return;var elsewhere=false,c=new BroadcastChannel("layerling-tabs"),id="guide-"+Math.random().toString(36).slice(2);c.onmessage=function(e){var m=e.data;if(m&&m.kind==="here"&&m.tabId!==id&&!elsewhere){elsewhere=true;b.textContent="Torna all'editor";}};c.postMessage({kind:"ask",tabId:id});b.addEventListener("click",function(e){if(!elsewhere)return;e.preventDefault();window.close();setTimeout(function(){elsewhere=false;b.textContent="Apri l'editor";var n=document.getElementById("editor-elsewhere");if(n)n.hidden=false;},400);});})();</script>
+    <script>
+function guideFold(text        )         {
+  var out = "";
+  for (var i = 0; i < text.length; i++) {
+    var letter = text.charAt(i).toLowerCase().normalize("NFD").charAt(0);
+    // "ł" has no decomposition, so it is mapped by hand (Polish): one letter in, one letter out.
+    out += letter === "ł" ? "l" : letter;
+  }
+  return out;
+}
+function guideForms(word        , umlauts         )           {
+  var forms = [word];
+  if (umlauts) { var plain = word.split("ae").join("a").split("oe").join("o").split("ue").join("u"); if (plain !== word) forms.push(plain); }
+  if (word.indexOf("ss") >= 0) forms.push(word.split("ss").join(String.fromCharCode(223)));
+  if (word.indexOf(String.fromCharCode(223)) >= 0) forms.push(word.split(String.fromCharCode(223)).join("ss"));
+  return forms;
+}
+function guideFind(text        , forms          , from        )                    {
+  var best                    = null;
+  for (var i = 0; i < forms.length; i++) { var k = text.indexOf(forms[i], from); if (k >= 0 && (!best || k < best.at)) best = { at: k, len: forms[i].length }; }
+  return best;
+}
+function guidePrepare(entries                    )                  {
+  return entries.map(function (e) { return { e: e, c: guideFold(e.c), h: guideFold(e.h), t: guideFold(e.t) }; });
+}
+function guideTokens(query        )           {
+  return guideFold(query).split(" ").filter(function (w) { return w.length > 0; });
+}
+function guideSearch(prepared                 , query        , limit         , umlauts          )             {
+  var tokens = guideTokens(query); if (!tokens.length) return [];
+  var forms = tokens.map(function (w) { return guideForms(w, !!umlauts); }), phrase = guideForms(tokens.join(" "), !!umlauts), found             = [];
+  prepared.forEach(function (p) {
+    var score = 0;
+    for (var i = 0; i < tokens.length; i++) {
+      var inH = guideFind(p.h, forms[i], 0), inC = guideFind(p.c, forms[i], 0), at = guideFind(p.t, forms[i], 0);
+      if (!inH && !inC && !at) return;
+      if (inH) score += 10;
+      if (inC) score += 3;
+      if (at) { score += 1; var n = 0, k                    = at; while (k && n < 5) { n++; k = guideFind(p.t, forms[i], k.at + k.len); } score += n * 0.3; }
+    }
+    if (tokens.length > 1 && (guideFind(p.h, phrase, 0) || guideFind(p.t, phrase, 0))) score += 6;
+    found.push({ entry: p.e, score: score, folded: p.t, forms: forms });
+  });
+  found.sort(function (a, b) { return b.score - a.score; });
+  return found.slice(0, limit || 8);
+}
+
+function guideSnippet(hit){
+  var text=hit.entry.t,first=-1;
+  hit.forms.forEach(function(group){var f=guideFind(hit.folded,group,0);if(f&&(first<0||f.at<first))first=f.at;});
+  var from=first>40?first-40:0;
+  if(from>0){var gap=text.indexOf(" ",from);if(gap>=0&&gap<first)from=gap+1;}
+  var end=Math.min(text.length,from+150),marked=[];
+  for(var i=from;i<end;i++)marked.push(false);
+  hit.forms.forEach(function(group){var f=guideFind(hit.folded,group,from);while(f&&f.at<end){for(var j=f.at;j<f.at+f.len&&j<end;j++)marked[j-from]=true;f=guideFind(hit.folded,group,f.at+f.len);}});
+  var parts=[],run="",state=false;
+  if(from>0)parts.push({text:"... ",mark:false});
+  for(var m=0;m<marked.length;m++){if(marked[m]!==state&&run){parts.push({text:run,mark:state});run="";}state=marked[m];run+=text.charAt(from+m);}
+  if(run)parts.push({text:run,mark:state});
+  if(end<text.length)parts.push({text:" ...",mark:false});
+  return parts;
+}
+(function(){
+  var form=document.getElementById("guide-search");if(!form||!window.fetch)return;
+  var input=form.querySelector("input"),box=document.getElementById("guide-results"),prepared=null,loading=null;
+  function load(){if(!loading){loading=fetch(form.getAttribute("data-index")).then(function(r){return r.json();}).then(function(list){prepared=guidePrepare(list);}).catch(function(){loading=null;});}return loading;}
+  function close(){box.hidden=true;input.setAttribute("aria-expanded","false");}
+  function render(){
+    if(!guideTokens(input.value).length){close();return;}
+    if(!prepared){load().then(function(){if(prepared)render();});return;}
+    var hits=guideSearch(prepared,input.value,8,form.getAttribute("data-umlauts")==="true");
+    box.textContent="";
+    if(!hits.length){var none=document.createElement("p");none.textContent=form.getAttribute("data-nothing");box.appendChild(none);}
+    hits.forEach(function(hit){
+      var link=document.createElement("a"),title=document.createElement("b"),line=document.createElement("span");
+      link.href=hit.entry.u;
+      title.textContent=hit.entry.h?hit.entry.c+" > "+hit.entry.h:hit.entry.c;
+      guideSnippet(hit).forEach(function(part){if(part.mark){var mark=document.createElement("mark");mark.textContent=part.text;line.appendChild(mark);}else line.appendChild(document.createTextNode(part.text));});
+      link.appendChild(title);link.appendChild(line);box.appendChild(link);
+    });
+    box.hidden=false;input.setAttribute("aria-expanded","true");
+  }
+  input.addEventListener("input",render);
+  input.addEventListener("focus",function(){load();if(input.value)render();});
+  input.addEventListener("keydown",function(e){
+    if(e.key==="ArrowDown"){var first=box.querySelector("a");if(first){e.preventDefault();first.focus();}}
+    else if(e.key==="Escape"){input.value="";close();}
+  });
+  form.addEventListener("submit",function(e){e.preventDefault();var first=box.querySelector("a");if(first)window.location.href=first.href;});
+  box.addEventListener("keydown",function(e){
+    var current=document.activeElement;
+    if(e.key==="ArrowDown"&&current.nextElementSibling){e.preventDefault();current.nextElementSibling.focus();}
+    else if(e.key==="ArrowUp"){e.preventDefault();if(current.previousElementSibling)current.previousElementSibling.focus();else input.focus();}
+    else if(e.key==="Escape"){input.focus();close();}
+  });
+  box.addEventListener("click",close);
+  document.addEventListener("click",function(e){if(!form.contains(e.target))close();});
+})();
+</script>
+  </body>
+</html>

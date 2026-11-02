@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head><script src="/ios-shim.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>测量与备注 - PrintCaddy 用户指南</title>
+    <meta name="description" content="卷尺、标尺与角尺，到原点的距离，附着在零件上的备注，以及可供吸附的参考点。">
+    <link rel="canonical" href="/zh-cn/measuring-and-notes.html">
+    <link rel="alternate" hreflang="en" href="/guide/measuring-and-notes.html">
+    <link rel="alternate" hreflang="cs" href="/prirucka/measuring-and-notes.html">
+    <link rel="alternate" hreflang="da" href="/vejledning/measuring-and-notes.html">
+    <link rel="alternate" hreflang="de" href="/anleitung/messen-und-notizen.html">
+    <link rel="alternate" hreflang="es-ES" href="/guia-es/measuring-and-notes.html">
+    <link rel="alternate" hreflang="fr" href="/guide-fr/measuring-and-notes.html">
+    <link rel="alternate" hreflang="it" href="/it/measuring-and-notes.html">
+    <link rel="alternate" hreflang="hu" href="/utmutato/measuring-and-notes.html">
+    <link rel="alternate" hreflang="nl" href="/handleiding/meten-en-notities.html">
+    <link rel="alternate" hreflang="pl" href="/instrukcja/measuring-and-notes.html">
+    <link rel="alternate" hreflang="sl" href="/navodila/merjenje-in-opombe.html">
+    <link rel="alternate" hreflang="ru" href="/ru/measuring-and-notes.html">
+    <link rel="alternate" hreflang="ar" href="/dalil/measuring-and-notes.html">
+    <link rel="alternate" hreflang="zh-CN" href="/zh-cn/measuring-and-notes.html">
+    <link rel="alternate" hreflang="zh-TW" href="/zh-tw/measuring-and-notes.html">
+    <meta property="og:title" content="测量与备注 - PrintCaddy 用户指南">
+    <meta property="og:description" content="卷尺、标尺与角尺，到原点的距离，附着在零件上的备注，以及可供吸附的参考点。">
+    <meta property="og:image" content="/assets/brand/app-social.png">
+    <link rel="icon" href="/assets/brand/app-logo.svg">
+    <script>try{var t=localStorage.getItem("layerling.theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;else if(t==="graphite"){document.documentElement.dataset.theme="dark";document.documentElement.dataset.palette="graphite"}}catch(e){}</script>
+    <style>
+:root {
+  color-scheme: light;
+  --ground: #fbf8f0; --card: #ffffff; --ink: #231a11; --muted: #7a6650; --edge: #ede4d4;
+  --accent: #ad6206; --accent-ink: #ffffff; --tint: #f6ecd9; --code: #f3ece0;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --ground: #17130e; --card: #201a13; --ink: #f1e9dc; --muted: #b3a48d; --edge: #362d21;
+    --accent: #f0a23a; --accent-ink: #1c1408; --tint: #2b2116; --code: #2a2218;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ground: #17130e; --card: #201a13; --ink: #f1e9dc; --muted: #b3a48d; --edge: #362d21;
+  --accent: #f0a23a; --accent-ink: #1c1408; --tint: #2b2116; --code: #2a2218;
+}
+/* Graphite is the dark theme with the warm browns turned grey (the program's own Graphite, see scripts/generate-graphite-theme.mjs); the orange accent stays. */
+:root[data-theme="dark"][data-palette="graphite"] {
+  --ground: #1a1a1a; --card: #202020; --ink: #e7e7e7; --muted: #8d8d8d; --edge: #303030;
+  --accent-ink: #191919; --tint: #262626; --code: #272727;
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 76px; }
+body { margin: 0; background: var(--ground); color: var(--ink); font: 16px/1.7 "Avenir Next", Avenir, "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
+a { color: var(--accent); }
+.bar { position: sticky; top: 0; z-index: 5; background: var(--ground); border-bottom: 1px solid var(--edge); }
+.bar-inner { max-width: 1100px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 14px; }
+.brand { display: flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; margin-right: auto; }
+.brand img { width: 34px; height: 34px; }
+.brand b { font-size: 19px; letter-spacing: -0.03em; }
+.brand-text { display: flex; align-items: baseline; gap: 10px; }
+.brand-note { color: var(--muted); font-size: 13px; font-weight: 600; }
+.guide-search { position: relative; flex: 0 1 280px; min-width: 0; margin: 0; }
+.guide-search input { width: 100%; padding: 7px 12px; border: 1px solid var(--edge); border-radius: 8px; background: var(--card); color: var(--ink); font: inherit; font-size: 14px; }
+.guide-search input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.guide-results { position: absolute; left: 0; right: 0; top: calc(100% + 6px); max-height: min(70vh, 460px); overflow-y: auto; background: var(--card); border: 1px solid var(--edge); border-radius: 8px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14); z-index: 7; }
+.guide-results[hidden] { display: none; }
+.guide-results a { display: block; padding: 8px 12px; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--edge); }
+.guide-results a:last-child { border-bottom: 0; }
+.guide-results a:hover, .guide-results a:focus-visible { background: var(--tint); outline: none; }
+.guide-results b { display: block; font-size: 14px; }
+.guide-results span { display: block; color: var(--muted); font-size: 13px; line-height: 1.45; }
+.guide-results mark { background: transparent; color: var(--accent); font-weight: 800; }
+.guide-results p { margin: 0; padding: 10px 12px; color: var(--muted); font-size: 14px; }
+.editor-elsewhere { max-width: 1100px; margin: 0 auto; padding: 0 16px 10px; color: var(--muted); font-size: 14px; text-align: right; }
+.editor-elsewhere[hidden] { display: none; }
+.bar a.button { padding: 7px 14px; border-radius: 8px; background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 14px; text-decoration: none; }
+.bar .lang-menu { position: relative; font-size: 14px; font-weight: 600; }
+.bar .lang-menu summary { color: var(--muted); cursor: pointer; list-style: none; }
+.bar .lang-menu summary::-webkit-details-marker { display: none; }
+.bar .lang-menu summary::after { content: " \25BE"; font-size: 11px; }
+.bar .lang-menu ul { position: absolute; right: 0; margin: 8px 0 0; padding: 4px; list-style: none; min-width: 9em; background: var(--card); border: 1px solid var(--edge); border-radius: 8px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14); }
+.bar .lang-menu a { display: block; padding: 5px 10px; border-radius: 6px; color: var(--ink); text-decoration: none; }
+.bar .lang-menu a:hover { background: var(--tint); }
+.bar .lang-menu a[aria-current] { font-weight: 800; }
+.not-translated { margin: 0 0 20px; padding: 10px 14px; border-radius: 8px; background: var(--tint); color: var(--ink); font-size: 15px; }
+.shell { max-width: 1100px; margin: 0 auto; padding: 24px 16px 72px; display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 40px; align-items: start; }
+nav.chapters { position: sticky; top: 76px; font-size: 14px; }
+nav.chapters h2 { margin: 0 0 8px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+nav.chapters ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+nav.chapters a { display: block; padding: 5px 10px; border-radius: 7px; color: var(--ink); text-decoration: none; line-height: 1.35; }
+nav.chapters a:hover { background: var(--tint); }
+nav.chapters a[aria-current="page"] { background: var(--tint); color: var(--accent); font-weight: 700; }
+main { min-width: 0; max-width: 760px; }
+h1 { margin: 0 0 8px; font-size: 34px; line-height: 1.15; letter-spacing: -0.025em; text-wrap: balance; }
+h2 { margin: 40px 0 8px; font-size: 23px; letter-spacing: -0.015em; text-wrap: balance; }
+h3 { margin: 26px 0 6px; font-size: 17px; }
+.lead { color: var(--muted); font-size: 18px; margin: 0 0 20px; }
+p, ul, ol { margin: 0 0 14px; }
+li { margin-bottom: 4px; }
+strong.ui { font-weight: 700; white-space: nowrap; }
+kbd { padding: 1px 6px; border: 1px solid var(--edge); border-bottom-width: 2px; border-radius: 5px; background: var(--card); font: 600 0.86em/1.5 ui-monospace, Consolas, monospace; }
+code { padding: 1px 5px; border-radius: 5px; background: var(--code); font: 0.9em ui-monospace, Consolas, monospace; }
+pre { overflow-x: auto; padding: 14px 16px; border-radius: 8px; background: var(--code); direction: ltr; text-align: left; }
+pre code { padding: 0; background: none; }
+figure { margin: 22px 0; }
+figure img { display: block; width: 100%; height: auto; border: 1px solid var(--edge); border-radius: 8px; background: var(--card); }
+figcaption { margin-top: 6px; color: var(--muted); font-size: 13.5px; }
+aside.tip { margin: 18px 0; padding: 12px 16px; border-radius: 8px; background: var(--tint); border: 1px solid var(--edge); }
+aside.tip > :last-child { margin-bottom: 0; }
+.table-scroll { overflow-x: auto; margin: 0 0 16px; }
+table { border-collapse: collapse; font-size: 15px; min-width: 100%; }
+table.keys { table-layout: fixed; }
+table.keys td:first-child { width: 42%; }
+th, td { padding: 7px 12px; border-bottom: 1px solid var(--edge); text-align: start; vertical-align: top; }
+th { color: var(--muted); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+/* Where a link from the program lands, the section is outlined from its heading to its end. */
+.guide-part:has(> :is(h2, h3):target) { outline: 3px solid var(--accent); outline-offset: 10px; border-radius: 6px; }
+:is(h2, h3):target { scroll-margin-top: 24px; }
+.toc { margin: 0 0 24px; padding: 12px 16px; border: 1px solid var(--edge); border-radius: 8px; background: var(--card); font-size: 14.5px; }
+.toc b { display: block; margin-bottom: 4px; color: var(--muted); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+.toc ul { margin: 0; padding-inline-start: 18px; }
+.pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 44px; padding-top: 18px; border-top: 1px solid var(--edge); }
+.pager a { display: block; max-width: 48%; padding: 10px 14px; border: 1px solid var(--edge); border-radius: 8px; background: var(--card); text-decoration: none; color: var(--ink); }
+.pager a small { display: block; color: var(--muted); font-size: 12px; }
+.pager a.next { margin-inline-start: auto; text-align: end; }
+.cards { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.cards a { display: block; height: 100%; padding: 14px 16px; border: 1px solid var(--edge); border-radius: 8px; background: var(--card); text-decoration: none; color: var(--ink); }
+.cards a:hover { border-color: var(--accent); }
+.cards b { display: block; margin-bottom: 2px; }
+.cards span { color: var(--muted); font-size: 14px; line-height: 1.45; display: block; }
+footer.note { max-width: 1100px; margin: 0 auto; padding: 0 16px 12px; color: var(--muted); font-size: 14px; }
+.site-footer { max-width: 1100px; margin: 0 auto; padding: 14px 16px 40px; border-top: 1px solid var(--edge); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px; color: var(--muted); font-size: 13px; }
+.site-footer .trademark { flex: 1 0 100%; margin: 0; font-size: 12px; line-height: 1.45; }
+.site-footer a { color: var(--muted); text-decoration: none; }
+.site-footer a:hover { color: var(--accent); text-decoration: underline; }
+.site-footer .dot { margin: 0 8px; }
+@media (max-width: 820px) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  nav.chapters { position: static; }
+  nav.chapters ol { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  h1 { font-size: 28px; }
+  .brand-note { display: none; }
+}
+@media (max-width: 720px) {
+  .bar-inner { flex-wrap: wrap; }
+  .guide-search { order: 5; flex: 1 1 100%; }
+}
+.print-link { margin: 0 0 14px; }
+.print-link a, nav.chapters .print-link a { display: flex; align-items: center; gap: 9px; padding: 9px 12px; border: 1px solid var(--accent); border-radius: 8px; background: var(--tint); color: var(--accent); font-weight: 700; line-height: 1.3; text-decoration: none; }
+.print-link a:hover, .print-link a:focus-visible, nav.chapters .print-link a:hover, nav.chapters .print-link a:focus-visible { background: var(--accent); color: var(--accent-ink); }
+.print-link svg { flex: none; }
+.print-link.in-page { margin: 0 0 22px; max-width: 360px; }
+.print-actions { margin: 0 0 24px; }
+.print-actions button { padding: 8px 16px; border: 0; border-radius: 8px; background: var(--accent); color: var(--accent-ink); font: inherit; font-weight: 700; cursor: pointer; }
+.print-chapter { margin-top: 56px; padding-top: 8px; border-top: 1px solid var(--edge); }
+.print-chapter > h2 { margin-top: 20px; font-size: 28px; }
+.print-contents { margin: 0 0 24px; padding-inline-start: 22px; columns: 2; column-gap: 32px; }
+.print-contents li { break-inside: avoid; }
+@media (max-width: 560px) { .print-contents { columns: 1; } }
+@media print {
+  @page { margin: 16mm 14mm; }
+  :root, :root[data-theme="dark"], :root[data-theme="dark"][data-palette="graphite"] {
+    color-scheme: light;
+    --ground: #ffffff; --card: #ffffff; --ink: #1a1a1a; --muted: #5c5c5c; --edge: #cfcfcf;
+    --accent: #8a4d04; --tint: #f1f1f1; --code: #f1f1f1;
+  }
+  body { font-size: 11pt; line-height: 1.55; }
+  .bar, nav.chapters, .pager, .print-actions { display: none; }
+  .shell { display: block; padding: 0; }
+  main { max-width: none; }
+  h2, h3, h4 { break-after: avoid; }
+  figure, table, pre, aside.tip { break-inside: avoid; }
+  figure img { max-height: 120mm; width: auto; max-width: 100%; }
+  .print-all .site-footer, .print-all footer.note { display: none; }
+  .print-chapter { margin-top: 0; padding-top: 0; border-top: 0; break-before: page; }
+}
+</style>
+  </head>
+  <body>
+    <header class="bar"><div class="bar-inner">
+      <a class="brand" href="/zh-cn/index.html"><img src="/assets/brand/app-logo.svg" alt=""><span class="brand-text"><b>PrintCaddy</b><span class="brand-note">用户指南</span></span></a>
+      <form class="guide-search" id="guide-search" role="search" data-index="/zh-cn/search-index.json" data-nothing="未找到结果。" data-umlauts="false"><input type="search" id="guide-search-input" name="q" placeholder="搜索指南" aria-label="搜索指南" aria-controls="guide-results" aria-expanded="false" autocomplete="off" spellcheck="false"><div class="guide-results" id="guide-results" hidden></div></form>
+      <details class="lang-menu"><summary aria-label="语言">简体中文</summary><ul><li><a href="/guide/measuring-and-notes.html" hreflang="en" lang="en">English</a></li><li><a href="/prirucka/measuring-and-notes.html" hreflang="cs" lang="cs">Čeština</a></li><li><a href="/vejledning/measuring-and-notes.html" hreflang="da" lang="da">Dansk</a></li><li><a href="/anleitung/messen-und-notizen.html" hreflang="de" lang="de">Deutsch</a></li><li><a href="/guia-es/measuring-and-notes.html" hreflang="es-ES" lang="es-ES">Español</a></li><li><a href="/guide-fr/measuring-and-notes.html" hreflang="fr" lang="fr">Français</a></li><li><a href="/it/measuring-and-notes.html" hreflang="it" lang="it">Italiano</a></li><li><a href="/utmutato/measuring-and-notes.html" hreflang="hu" lang="hu">Magyar</a></li><li><a href="/handleiding/meten-en-notities.html" hreflang="nl" lang="nl">Nederlands</a></li><li><a href="/instrukcja/measuring-and-notes.html" hreflang="pl" lang="pl">Polski</a></li><li><a href="/guia-pt-pt/measuring-and-notes.html" hreflang="pt-PT" lang="pt-PT">Português de Portugal</a></li><li><a href="/guia/measuring-and-notes.html" hreflang="pt-BR" lang="pt-BR">Português do Brasil</a></li><li><a href="/navodila/merjenje-in-opombe.html" hreflang="sl" lang="sl">Slovenščina</a></li><li><a href="/kilavuz/measuring-and-notes.html" hreflang="tr" lang="tr">Türkçe</a></li><li><a href="/ru/measuring-and-notes.html" hreflang="ru" lang="ru">Русский</a></li><li><a href="/dalil/measuring-and-notes.html" hreflang="ar" lang="ar">العربية</a></li><li><a href="/guide-ja/measuring-and-notes.html" hreflang="ja" lang="ja">日本語</a></li><li><a href="/zh-cn/measuring-and-notes.html" hreflang="zh-CN" lang="zh-CN" aria-current="true">简体中文</a></li><li><a href="/zh-tw/measuring-and-notes.html" hreflang="zh-TW" lang="zh-TW">繁體中文</a></li></ul></details>
+      <a class="button" id="open-editor" href="/">打开编辑器</a>
+    </div><p class="editor-elsewhere" id="editor-elsewhere" role="status" hidden>编辑器已在另一个标签页中打开，请切换到那里。</p></header>
+    <div class="shell">
+      <nav class="chapters" aria-label="章节"><h2>章节</h2><p class="print-link"><a href="/zh-cn/print-all.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg><span>打印完整指南</span></a></p><ol><li><a href="/zh-cn/getting-started.html">快速上手</a></li><li><a href="/zh-cn/view-and-workplane.html">视图与工作平面</a></li><li><a href="/zh-cn/shapes.html">放置与调整形状</a></li><li><a href="/zh-cn/select-and-arrange.html">选择与排列</a></li><li><a href="/zh-cn/solids-and-holes.html">实体与孔</a></li><li><a href="/zh-cn/edges-and-hollowing.html">处理边与抽壳实体</a></li><li><a href="/zh-cn/sketches.html">草图：从轮廓到实体</a></li><li><a href="/zh-cn/text.html">文字与弧形文字</a></li><li><a href="/zh-cn/threads-and-mechanics.html">螺纹、齿轮和其他零件</a></li><li><a href="/zh-cn/measuring-and-notes.html" aria-current="page">测量与备注</a></li><li><a href="/zh-cn/printing.html">为 3D 打印做准备</a></li><li><a href="/zh-cn/files-and-saving.html">文件、保存与分享</a></li><li><a href="/zh-cn/shortcuts.html">键盘快捷键</a></li><li><a href="/zh-cn/ai-with-mcp.html">用 AI 搭建（MCP）</a></li><li><a href="/zh-cn/offline-and-install.html">安装为应用、离线使用与自托管</a></li><li><a href="/zh-cn/videos.html">关于 PrintCaddy 的视频</a></li><li><a href="/zh-cn/tablet-and-touch.html">平板与触控</a></li></ol></nav>
+      <main>
+<h1>测量与备注</h1>
+<p class="lead">卷尺、标尺与角尺，到原点的距离，附着在零件上的备注，以及可供吸附的参考点。</p>
+<div class="toc"><b>本页内容</b><ul><li><a href="#the-tape-measure">卷尺</a></li><li><a href="#the-ruler">标尺</a></li><li><a href="#the-framing-square">角尺</a></li><li><a href="#distances-to-the-origin-and-while-moving">到原点的距离与移动时的距离</a></li><li><a href="#notes">备注</a></li><li><a href="#reference-points">参考点</a></li><li><a href="#reference-images">参考图片</a></li></ul></div>
+<p>要精确地做出一个零件，就必须测量。PrintCaddy 为此提供了几种工具，它们都不会出现在导出文件里。零件内部的壁厚和间隙，最好在<a href="/zh-cn/view-and-workplane.html">剖视图</a>中用 <strong class="ui">“测量”</strong> 测量。</p>
+<section class="guide-part"><h2 id="the-tape-measure">卷尺</h2>
+<p>卷尺位于左边缘相机栏的下端（<strong class="ui">“卷尺”</strong>）。它测量角、边和面之间的距离。单击它会展开五个按钮。如果它们挡住了你想测量的地方，就抓住左侧的握柄，把它们拖到工作平面上的任意位置；双击握柄即可归位：</p>
+<figure><img src="/guide/img/tape-menu.webp" alt="卷尺及其按钮：添加测量、移动测量点、删除测量、整条边、删除全部测量。" width="1280" height="800" loading="lazy"><figcaption>卷尺及其按钮：添加测量、移动测量点、删除测量、整条边、删除全部测量。</figcaption></figure>
+<ol><li><strong><strong class="ui">“添加测量”</strong>：</strong> 单击一个点，拖到下一个点再单击，距离就会标注出来，前面标出它沿哪些轴：直线为 X、Y 或 Z，跨越一个平面为 XY、XZ 或 YZ，三个轴都有则为 3D。指针悬停在标签上可看到测量沿每个轴的长度，悬停在点上可看到它的坐标。放置第二个点时，轴、距离和沿每个轴的长度会显示在指针旁边。大部分位于另一个物体后面的测量会变淡；指针悬停在它的线或标签上时会恢复清晰。在相对的边或面上，当指针靠近时，第二个点会以直角吸附到第一个点——或者按住 <kbd>Shift</kbd> 时，可落在该边或该面上的任意位置。在同一面内或工作平面上，<kbd>Shift</kbd> 会让测量沿主轴保持笔直。</li><li><strong><strong class="ui">“移动测量点”</strong>：</strong> 抓住这些点移动，数字会跟着变化。</li><li><strong><strong class="ui">“删除测量段”</strong>：</strong> 之后单击某条测量即可删除它。<strong><strong class="ui">“添加测量”</strong></strong> 处于激活状态时，按住 <kbd>Shift</kbd> 或 <kbd>Ctrl</kbd>（Mac 上为 <kbd>Cmd</kbd>）单击测量点或测量线，就能直接删除，无需切换模式。</li><li><strong><strong class="ui">“测量整条边”</strong>：</strong> 单击一条边会测量它的全长，例如一个圆的周长。关闭此项后，单击会在边上放置一个点，第二个点可以放到任意位置，于是你能测量直径或任何其他距离。按住 <kbd>Alt</kbd> 可让该开关对这一次单击取反。在圆上，当指针靠近时，与第一个点相对的点会自动吸附，而且点落在真实圆周上，因此直径是精确的。</li><li><strong><strong class="ui">“删除所有测量”</strong>：</strong> 一次删除所有测量。由于无法撤销，PrintCaddy 会先询问；没有测量时则无事可做。</li><li><strong><strong class="ui">“将中点标记为参考点”</strong>：</strong> 每条测量的正中都有一个小圆形标记，下半部分填满。它会在测量的正中放置一个<a href="#reference-points">参考点</a>：单击圆形边（例如孔的边缘）后，放在该圆的圆心——导入的网格也一样，那里没有别的东西标出孔心——对于直径或任何直线测量，则放在其中点。之后拖动形状时，它会以自身中心吸附到该点。已经存在的点不会重复创建。卷尺吸附参考点就像吸附角一样，因此你可以从圆心或线段中点开始测量：先标记，再单击该点。</li><li><strong><strong class="ui">“输入长度:第二个点处的物体沿线移动;负值会把它移过第一个点”</strong>:</strong> 只要一条直线测量至少有一端落在物体上,就可以点击它的数字。输入新的长度并按 <kbd>Enter</kbd>:第二个点处的物体会沿着测量线移动,直到距离正好等于该值,就像 Tinkercad 的标尺一样。如果只选中了第一个点处的物体,则移动它。测量点留在物体上,所以测量会跟着移动。从角、边或<a href="#reference-points">参考点</a>(例如圆心)开始测量,就能把零件放在精确的距离上。负数长度会让它越过第一个点同样的距离,例如在盒子边缘以内 5 mm。</li></ol>
+<p>按 <kbd>Esc</kbd> 退出测量模式。</p>
+</section><section class="guide-part"><h2 id="the-ruler">标尺</h2>
+<p>从形状库中取出<strong class="ui">“标尺”</strong>。它纯粹是测量工具：不会出现在任何导出中，也不能分组或剪切。对于每个接触或与标尺重叠的实体，它会在视图中直接以浮动数字显示其范围。你可以就地修改该数字，实体随之改变。浮动的加号会创建被测形状的副本。它印制的刻度是毫米；把单位切换为英寸后（右下角的开关），刻度就是英寸，每十六分之一英寸一条线，整英寸处标有数字。</p>
+</section><section class="guide-part"><h2 id="the-framing-square">角尺</h2>
+<p>有时在直角方向测量更方便。单击相机栏中的 <strong class="ui">“放置直角尺”</strong>，再单击工作平面。一把两臂成直角、带类似直角尺刻度线的角尺便会放置在那里。它同样没有自己的实体。单击实体角附近，它的角就会精确吸附到那里。</p>
+<p>角尺平放在工作平面上。如果该平面位于某个实体的侧面上，角尺也平放在那个侧面上，参见<a href="/zh-cn/view-and-workplane.html">视图与工作平面</a>。在竖直墙面上标注尺寸就是这么做的：把工作平面放到墙上，将角尺放在左上角，然后连续单击握柄，直到两臂指向右和下。</p>
+<ul><li><strong>拖动握柄</strong>可移动它。</li><li><strong>短促地单击握柄</strong>使它旋转 90°。</li><li><strong>旁边的 ×</strong> 可移除它。</li><li><strong>握柄左侧的小按钮</strong>切换测量基准：实体的外侧（端点，带线条的图标）或它的中间（中点，十字准线）。每个绿色数字旁边都有一个同类小开关，只设置该数字：对竖立的圆柱体，两臂方向取中间、高度取底部；对横躺的圆柱体，横向取中间、沿轴向取一端。当三者再次一致时，握柄处的按钮会显示这个共同的模式。</li></ul>
+<p>如果实体位于某条臂上，角尺会自动显示它们的尺寸。这只在基板上有效，在实体侧面上无效。 角尺手柄下方带箭头的按钮可以关闭这一点，使只有选中的实体显示尺寸；它随设计保存。</p>
+<p>选中一个实体后，角尺会用绿色显示它距角点的远近，包括沿两条臂的方向和高度。单击绿色数字输入距离，实体就会精确移到那里。选中多个实体时，它们被当作一个整体：标尺测量它们共同的外轮廓，输入数值会让它们一起移动，而彼此的相对位置不变。</p>
+<p>绿色数字的引导线沿地面（即角尺所在的平面）延伸到实体下方或旁边的点；高度则有自己的箭头。每个数字的开关位于数字的边框内。两臂和刻度是空间中的线条：挡在它们前面的实体会遮住它们，就像真实的角尺会被遮住一样。握柄下方的眼睛图标可切换这一点：眼睛带斜线时，实体遮挡角尺（初始状态）；眼睛打开时，角尺始终显示在所有东西之上。当实体挡在两臂前面时，臂上的数字会淡出。</p>
+<p>使用中点模式时，绿色数字量到实体的中间，高度也一样。这样你可以把球体的中心正好放在距某条边 15 mm 的位置，而不用减去半径。在墙面上把孔放在距左边 40 mm、距顶部 190 mm 处，可以这样做：选中孔，切换到中点，输入 40 和 190。此时高度从墙面起向外计算。</p>
+<p>卷尺和角尺在你进入草图再回到 3D 视图的过程中都会留在原处。两者都不进入历史记录。角尺随设计保存，卷尺的测量也一样，保存在浏览器和 .lyl 文件中：打开设计时它们会再次出现。卷尺按钮中的眼睛按钮会隐藏所有测量并可再次显示；是否隐藏也会一并保存，添加、移动或删除测量时会先把它们显示出来。</p>
+</section><section class="guide-part"><h2 id="distances-to-the-origin-and-while-moving">到原点的距离与移动时的距离</h2>
+<p>在设置中的 <strong class="ui">“外观”</strong> 下，有两个用于实时尺寸的开关：</p>
+<ul><li><strong class="ui">“显示移动尺寸”</strong> 显示拖动时移动了多少。用物体上方的黑色箭头抬起时也会显示，距离标在它的前角。松开后，点击这样的数字即可输入确切的距离；负数表示向下。</li><li><strong class="ui">“显示到原点的距离”</strong> 显示所选对象到平台原点的距离，选中多个实体时同样有效。</li></ul>
+<p>启用 <strong class="ui">“尺寸始终可见”</strong> 后，尺寸会一直可见。</p>
+<p>想暂时去掉它们时，按 <kbd>Q</kbd>：所选对象周围的尺寸和距离会消失，正在移动的部件更容易看清。再按一次 <kbd>Q</kbd> 即可恢复。指向某个手柄时，它仍会显示自己的尺寸。</p>
+</section><section class="guide-part"><h2 id="notes">备注</h2>
+<p>备注记录几何本身说不出来的事：“这颗螺钉紧了 0.3 mm”“盖子还要打印”“尺寸来自 Peter”。用 <strong class="ui">“备注”</strong> 或按 <kbd>N</kbd> 键放置一条。</p>
+<ul><li>如果把备注放在<strong>实体上</strong>，它会跟着实体移动。</li><li>如果放在<strong>旁边</strong>，它会留在工作平面上（<strong class="ui">“位于工作平面”</strong>）。</li><li><strong class="ui">“从对象上解除”</strong> 会把附着的备注从实体上解下。</li><li><strong class="ui">“分组”</strong> 会把附着的备注收进分组；<strong class="ui">“取消分组”</strong> 会把它交给下面可见的部件，包括其中的分组。用 <strong class="ui">“编辑分组”</strong> 打开分组时，备注随其下方部件移动，再用 <strong class="ui">“完成”</strong> 回到分组中；取消则恢复原样。</li><li>如果它依附的实体被删除，或者它下方不再有可见实体，备注会留在原处，即工作平面上。</li><li>拖动图钉可移动备注。单击图钉会把卡片收起，只留下那个小数字；再单击一次可重新展开。单击文字即可编辑。</li><li>书写时，<kbd>Enter</kbd> 保存文字，<kbd>Esc</kbd> 恢复到你开始之前的样子；<span dir="ltr"><kbd>Shift</kbd>+<kbd>Enter</kbd></span> 换行。</li><li><strong>在草图中</strong>，<strong class="ui">“备注”</strong>（位于 <strong class="ui">“管理”</strong>）或 <kbd>N</kbd> 同样可以放置备注，放在草图上的任意位置。草图的所有备注都属于它的实体：在 3D 视图中，它们位于实体上——用 <strong class="ui">“拉伸草图”</strong> 或 <strong class="ui">“扫掠草图”</strong> 生成的实体的顶面上，以及用 <strong class="ui">“旋转草图”</strong> 生成的实体所绘制的轮廓上——并随实体一起移动。再次打开草图时，会显示该实体的备注，包括在 3D 中放置的备注。在草图中，<strong class="ui">“草图撤销”</strong> 会像撤销线条一样撤销备注，<strong class="ui">“取消”</strong> 会放弃你对备注所做的更改。<span dir="ltr"><kbd>Shift</kbd>+<kbd>N</kbd></span> 在这里同样可以显示或隐藏备注。</li></ul>
+<p>备注会保存在设计中，不出现在任何导出里，可用 <strong class="ui">“显示便签和参考点”</strong> 显示或隐藏（位于 <strong class="ui">“可见性选项”</strong> 中，眼睛图标旁的箭头），也可按 <span dir="ltr"><kbd>Shift</kbd>+<kbd>N</kbd></span>。</p>
+</section><section class="guide-part"><h2 id="reference-points">参考点</h2>
+<p>参考点是空间中的一个纯标记，就像车间里的铅笔记号或放样点：它不属于任何实体，永远不会被打印，其他东西会吸附到它上面。右键单击实体，选择 <strong class="ui">“标记中心”</strong>、<strong class="ui">“标记角点”</strong> 或 <strong class="ui">“标记边中点”</strong>：点会出现在实体的顶面上（如果选中了多个，则出现在整个选择的顶面上）。 <strong class="ui">“标记此面的中心”</strong> 则把点放在你右键单击的那个平面的中心，例如侧面或端面。设置了旋转中心时，<strong class="ui">“标记旋转中心”</strong>会在其上放一个点，这样另一个零件的中心就能吸附到选择所绕的那个点上。</p>
+<ul><li>拖动点可移动它，或单击它查看坐标并输入新坐标；坐标使用你设定的单位。如果卡片挡住了东西，可以抓住它的标题单独拖开：其他卡片留在原处，双击标题即可归位。你最后碰过的卡片显示在其他卡片前面。卡片中的 <strong>Delete all</strong>，或右键菜单（实体的，或 3D 视图中空白处的）中的 <strong>Delete all reference points</strong>，会一次删除所有点。<strong class="ui">“删除”</strong> 删除它。</li><li>卷尺也能标记点：<strong class="ui">“将中点标记为参考点”</strong>，即测量正中那个半填充的标记，会在测量中间放置一个点，例如圆孔的中心。它也能从一个点开始测量：卷尺吸附参考点就像吸附角一样。</li><li>拖动形状时，它的边和中心会吸附到点，就像吸附到其他形状一样（<strong class="ui">“移动时吸附到其他形状”</strong>）。角尺也会吸附到点。</li><li>点保存在设计中，不出现在任何导出里，并随备注一起由 <strong class="ui">“显示便签和参考点”</strong>（<span dir="ltr"><kbd>Shift</kbd>+<kbd>N</kbd></span>）显示或隐藏。</li><li>AI 可以用 <code>layerling_add_reference_points</code>、<code>layerling_list_reference_points</code> 和 <code>layerling_remove_reference_points</code> 标记、列出和移除它们。</li></ul>
+</section><section class="guide-part"><h2 id="reference-images">参考图片</h2>
+<p>参考图片是用来对齐零件的图片：把电路板的照片放在外壳底部，然后直接在上面放置支柱、孔和接口开口。它是辅助参考，不是实体：永远不会被打印或导出（STL、3MF、OBJ、STEP、SVG），永远不会成为组合、捆绑或切割的一部分，打印估算也不会计入它。</p>
+<ul><li>打开 <strong class="ui">“导入”</strong> 并选择 <strong class="ui">“参考图片”</strong>，然后选择一张 PNG、JPG、WebP、GIF 或 BMP 图片。它会放在工作平面上——底板上，或你设置工作平面的那个面上——长边为 100 mm，半透明。</li><li>像任何形状一样用控制柄移动、旋转和调整大小。它前面的实体会被优先选中，因此在它上面操作不会抓起图片。</li><li>设置中的 <strong class="ui">“透明度 (%)”</strong> 可以把它从不透明淡化到几乎看不见。</li><li><strong class="ui">“校准”</strong> 让它恢复真实尺寸，与草图中相同：单击图片上两个你知道实际距离的点——例如电路板的两个安装孔——并在 <strong class="ui">“实际距离 (mm)”</strong> 中输入该距离。图片会保持比例和中心不变。</li><li>用设置标题栏中的锁将它锁定，它就会固定不动：点击会穿过它落到底板上。在对象列表中选中它即可解锁。</li><li>无论复制或撤销多少次，图片在设计文件中只保存一次。大图片会让文件相应变大；添加时的提示会说明它的大小。</li><li>AI 可以用 <code>layerling_reference_image</code> 添加、移动、校准、淡化和锁定参考图片。</li></ul></section>
+<div class="pager"><a href="/zh-cn/threads-and-mechanics.html"><small>上一章</small>螺纹、齿轮和其他零件</a><a class="next" href="/zh-cn/printing.html"><small>下一章</small>为 3D 打印做准备</a></div>
+      </main>
+    </div>
+    <footer class="note">本指南随程序一同完善。如有缺漏或错误，请到</footer>
+    <footer class="site-footer"><div></div><div><a href="/source/">Source code &amp; license (AGPL-3.0)</a></div><p class="trademark">Tinkercad 是 Autodesk, Inc. 的商标。PrintCaddy 是一个独立项目，与 Autodesk 无关联，也未获其认可或赞助。</p><p class="trademark">PrintCaddy – Based on layerling by henmedia (github.com/henmedia/layerling), licensed under the GNU AGPL-3.0. Copyright © henmedia and the layerling contributors.</p></footer>
+    <script>(function(){var b=document.getElementById("open-editor");if(!b||typeof BroadcastChannel==="undefined")return;var elsewhere=false,c=new BroadcastChannel("layerling-tabs"),id="guide-"+Math.random().toString(36).slice(2);c.onmessage=function(e){var m=e.data;if(m&&m.kind==="here"&&m.tabId!==id&&!elsewhere){elsewhere=true;b.textContent="返回编辑器";}};c.postMessage({kind:"ask",tabId:id});b.addEventListener("click",function(e){if(!elsewhere)return;e.preventDefault();window.close();setTimeout(function(){elsewhere=false;b.textContent="打开编辑器";var n=document.getElementById("editor-elsewhere");if(n)n.hidden=false;},400);});})();</script>
+    <script>
+function guideFold(text        )         {
+  var out = "";
+  for (var i = 0; i < text.length; i++) {
+    var letter = text.charAt(i).toLowerCase().normalize("NFD").charAt(0);
+    // "ł" has no decomposition, so it is mapped by hand (Polish): one letter in, one letter out.
+    out += letter === "ł" ? "l" : letter;
+  }
+  return out;
+}
+function guideForms(word        , umlauts         )           {
+  var forms = [word];
+  if (umlauts) { var plain = word.split("ae").join("a").split("oe").join("o").split("ue").join("u"); if (plain !== word) forms.push(plain); }
+  if (word.indexOf("ss") >= 0) forms.push(word.split("ss").join(String.fromCharCode(223)));
+  if (word.indexOf(String.fromCharCode(223)) >= 0) forms.push(word.split(String.fromCharCode(223)).join("ss"));
+  return forms;
+}
+function guideFind(text        , forms          , from        )                    {
+  var best                    = null;
+  for (var i = 0; i < forms.length; i++) { var k = text.indexOf(forms[i], from); if (k >= 0 && (!best || k < best.at)) best = { at: k, len: forms[i].length }; }
+  return best;
+}
+function guidePrepare(entries                    )                  {
+  return entries.map(function (e) { return { e: e, c: guideFold(e.c), h: guideFold(e.h), t: guideFold(e.t) }; });
+}
+function guideTokens(query        )           {
+  return guideFold(query).split(" ").filter(function (w) { return w.length > 0; });
+}
+function guideSearch(prepared                 , query        , limit         , umlauts          )             {
+  var tokens = guideTokens(query); if (!tokens.length) return [];
+  var forms = tokens.map(function (w) { return guideForms(w, !!umlauts); }), phrase = guideForms(tokens.join(" "), !!umlauts), found             = [];
+  prepared.forEach(function (p) {
+    var score = 0;
+    for (var i = 0; i < tokens.length; i++) {
+      var inH = guideFind(p.h, forms[i], 0), inC = guideFind(p.c, forms[i], 0), at = guideFind(p.t, forms[i], 0);
+      if (!inH && !inC && !at) return;
+      if (inH) score += 10;
+      if (inC) score += 3;
+      if (at) { score += 1; var n = 0, k                    = at; while (k && n < 5) { n++; k = guideFind(p.t, forms[i], k.at + k.len); } score += n * 0.3; }
+    }
+    if (tokens.length > 1 && (guideFind(p.h, phrase, 0) || guideFind(p.t, phrase, 0))) score += 6;
+    found.push({ entry: p.e, score: score, folded: p.t, forms: forms });
+  });
+  found.sort(function (a, b) { return b.score - a.score; });
+  return found.slice(0, limit || 8);
+}
+
+function guideSnippet(hit){
+  var text=hit.entry.t,first=-1;
+  hit.forms.forEach(function(group){var f=guideFind(hit.folded,group,0);if(f&&(first<0||f.at<first))first=f.at;});
+  var from=first>40?first-40:0;
+  if(from>0){var gap=text.indexOf(" ",from);if(gap>=0&&gap<first)from=gap+1;}
+  var end=Math.min(text.length,from+150),marked=[];
+  for(var i=from;i<end;i++)marked.push(false);
+  hit.forms.forEach(function(group){var f=guideFind(hit.folded,group,from);while(f&&f.at<end){for(var j=f.at;j<f.at+f.len&&j<end;j++)marked[j-from]=true;f=guideFind(hit.folded,group,f.at+f.len);}});
+  var parts=[],run="",state=false;
+  if(from>0)parts.push({text:"... ",mark:false});
+  for(var m=0;m<marked.length;m++){if(marked[m]!==state&&run){parts.push({text:run,mark:state});run="";}state=marked[m];run+=text.charAt(from+m);}
+  if(run)parts.push({text:run,mark:state});
+  if(end<text.length)parts.push({text:" ...",mark:false});
+  return parts;
+}
+(function(){
+  var form=document.getElementById("guide-search");if(!form||!window.fetch)return;
+  var input=form.querySelector("input"),box=document.getElementById("guide-results"),prepared=null,loading=null;
+  function load(){if(!loading){loading=fetch(form.getAttribute("data-index")).then(function(r){return r.json();}).then(function(list){prepared=guidePrepare(list);}).catch(function(){loading=null;});}return loading;}
+  function close(){box.hidden=true;input.setAttribute("aria-expanded","false");}
+  function render(){
+    if(!guideTokens(input.value).length){close();return;}
+    if(!prepared){load().then(function(){if(prepared)render();});return;}
+    var hits=guideSearch(prepared,input.value,8,form.getAttribute("data-umlauts")==="true");
+    box.textContent="";
+    if(!hits.length){var none=document.createElement("p");none.textContent=form.getAttribute("data-nothing");box.appendChild(none);}
+    hits.forEach(function(hit){
+      var link=document.createElement("a"),title=document.createElement("b"),line=document.createElement("span");
+      link.href=hit.entry.u;
+      title.textContent=hit.entry.h?hit.entry.c+" > "+hit.entry.h:hit.entry.c;
+      guideSnippet(hit).forEach(function(part){if(part.mark){var mark=document.createElement("mark");mark.textContent=part.text;line.appendChild(mark);}else line.appendChild(document.createTextNode(part.text));});
+      link.appendChild(title);link.appendChild(line);box.appendChild(link);
+    });
+    box.hidden=false;input.setAttribute("aria-expanded","true");
+  }
+  input.addEventListener("input",render);
+  input.addEventListener("focus",function(){load();if(input.value)render();});
+  input.addEventListener("keydown",function(e){
+    if(e.key==="ArrowDown"){var first=box.querySelector("a");if(first){e.preventDefault();first.focus();}}
+    else if(e.key==="Escape"){input.value="";close();}
+  });
+  form.addEventListener("submit",function(e){e.preventDefault();var first=box.querySelector("a");if(first)window.location.href=first.href;});
+  box.addEventListener("keydown",function(e){
+    var current=document.activeElement;
+    if(e.key==="ArrowDown"&&current.nextElementSibling){e.preventDefault();current.nextElementSibling.focus();}
+    else if(e.key==="ArrowUp"){e.preventDefault();if(current.previousElementSibling)current.previousElementSibling.focus();else input.focus();}
+    else if(e.key==="Escape"){input.focus();close();}
+  });
+  box.addEventListener("click",close);
+  document.addEventListener("click",function(e){if(!form.contains(e.target))close();});
+})();
+</script>
+  </body>
+</html>

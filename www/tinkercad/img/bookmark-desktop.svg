@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" font-family="Arial,Helvetica,sans-serif" font-size="12">
+<rect x="1" y="1" width="318" height="178" rx="10" fill="#f6f8fb" stroke="#c9d3df"/>
+<rect x="12" y="12" width="296" height="22" rx="5" fill="#fff" stroke="#c9d3df"/><text x="20" y="27" fill="#777">Bookmarks bar</text>
+<rect x="120" y="15" width="110" height="16" rx="8" fill="#e8f0fe" stroke="#1a73e8" stroke-dasharray="4 3"/>
+<rect x="60" y="110" width="150" height="34" rx="17" fill="#1a73e8"/><text x="78" y="132" fill="#fff" font-weight="bold">Export to PrintCaddy</text>
+<path d="M140 106 C150 70 165 50 172 36" stroke="#e8710a" stroke-width="3" fill="none" marker-end="url(#a)"/><defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#e8710a"/></marker></defs>
+<text x="180" y="78" fill="#e8710a" font-weight="bold">Drag the blue</text><text x="180" y="94" fill="#e8710a" font-weight="bold">button up here</text>
+<text x="20" y="166" fill="#555">No bookmarks bar? Press Ctrl+Shift+B (Mac: Cmd+Shift+B)</text>
+</svg>

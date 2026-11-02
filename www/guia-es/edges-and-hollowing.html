@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="es-ES">
+  <head><script src="/ios-shim.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Romper aristas y vaciar cuerpos - Guía de usuario de PrintCaddy</title>
+    <meta name="description" content="Chaflanes y redondeos en las aristas que elijas, y paredes de grosor uniforme para cajas, vasos y carcasas.">
+    <link rel="canonical" href="/guia-es/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="en" href="/guide/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="cs" href="/prirucka/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="da" href="/vejledning/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="de" href="/anleitung/kanten-und-aushoehlen.html">
+    <link rel="alternate" hreflang="es-ES" href="/guia-es/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="fr" href="/guide-fr/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="it" href="/it/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="hu" href="/utmutato/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="nl" href="/handleiding/randen-en-uithollen.html">
+    <link rel="alternate" hreflang="pl" href="/instrukcja/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="sl" href="/navodila/robovi-in-izdolbljenje.html">
+    <link rel="alternate" hreflang="ru" href="/ru/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="ar" href="/dalil/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="zh-CN" href="/zh-cn/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="zh-TW" href="/zh-tw/edges-and-hollowing.html">
+    <meta property="og:title" content="Romper aristas y vaciar cuerpos - Guía de usuario de PrintCaddy">
+    <meta property="og:description" content="Chaflanes y redondeos en las aristas que elijas, y paredes de grosor uniforme para cajas, vasos y carcasas.">
+    <meta property="og:image" content="/assets/brand/app-social.png">
+    <link rel="icon" href="/assets/brand/app-logo.svg">
+    <script>try{var t=localStorage.getItem("layerling.theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;else if(t==="graphite"){document.documentElement.dataset.theme="dark";document.documentElement.dataset.palette="graphite"}}catch(e){}</script>
+    <style>
+:root {
+  color-scheme: light;
+  --ground: #fbf8f0; --card: #ffffff; --ink: #231a11; --muted: #7a6650; --edge: #ede4d4;
+  --accent: #ad6206; --accent-ink: #ffffff; --tint: #f6ecd9; --code: #f3ece0;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --ground: #17130e; --card: #201a13; --ink: #f1e9dc; --muted: #b3a48d; --edge: #362d21;
+    --accent: #f0a23a; --accent-ink: #1c1408; --tint: #2b2116; --code: #2a2218;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ground: #17130e; --card: #201a13; --ink: #f1e9dc; --muted: #b3a48d; --edge: #362d21;
+  --accent: #f0a23a; --accent-ink: #1c1408; --tint: #2b2116; --code: #2a2218;
+}
+/* Graphite is the dark theme with the warm browns turned grey (the program's own Graphite, see scripts/generate-graphite-theme.mjs); the orange accent stays. */
+:root[data-theme="dark"][data-palette="graphite"] {
+  --ground: #1a1a1a; --card: #202020; --ink: #e7e7e7; --muted: #8d8d8d; --edge: #303030;
+  --accent-ink: #191919; --tint: #262626; --code: #272727;
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 76px; }
+body { margin: 0; background: var(--ground); color: var(--ink); font: 16px/1.7 "Avenir Next", Avenir, "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
+a { color: var(--accent); }
+.bar { position: sticky; top: 0; z-index: 5; background: var(--ground); border-bottom: 1px solid var(--edge); }
+.bar-inner { max-width: 1100px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 14px; }
+.brand { display: flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; margin-right: auto; }
+.brand img { width: 34px; height: 34px; }
+.brand b { font-size: 19px; letter-spacing: -0.03em; }
+.brand-text { display: flex; align-items: baseline; gap: 10px; }
+.brand-note { color: var(--muted); font-size: 13px; font-weight: 600; }
+.guide-search { position: relative; flex: 0 1 280px; min-width: 0; margin: 0; }
+.guide-search input { width: 100%; padding: 7px 12px; border: 1px solid var(--edge); border-radius: 8px; background: var(--card); color: var(--ink); font: inherit; font-size: 14px; }
+.guide-search input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.guide-results { position: absolute; left: 0; right: 0; top: calc(100% + 6px); max-height: min(70vh, 460px); overflow-y: auto; background: var(--card); border: 1px solid var(--edge); border-radius: 8px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14); z-index: 7; }
+.guide-results[hidden] { display: none; }
+.guide-results a { display: block; padding: 8px 12px; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--edge); }
+.guide-results a:last-child { border-bottom: 0; }
+.guide-results a:hover, .guide-results a:focus-visible { background: var(--tint); outline: none; }
+.guide-results b { display: block; font-size: 14px; }
+.guide-results span { display: block; color: var(--muted); font-size: 13px; line-height: 1.45; }
+.guide-results mark { background: transparent; color: var(--accent); font-weight: 800; }
+.guide-results p { margin: 0; padding: 10px 12px; color: var(--muted); font-size: 14px; }
+.editor-elsewhere { max-width: 1100px; margin: 0 auto; padding: 0 16px 10px; color: var(--muted); font-size: 14px; text-align: right; }
+.editor-elsewhere[hidden] { display: none; }
+.bar a.button { padding: 7px 14px; border-radius: 8px; background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 14px; text-decoration: none; }
+.bar .lang-menu { position: relative; font-size: 14px; font-weight: 600; }
+.bar .lang-menu summary { color: var(--muted); cursor: pointer; list-style: none; }
+.bar .lang-menu summary::-webkit-details-marker { display: none; }
+.bar .lang-menu summary::after { content: " \25BE"; font-size: 11px; }
+.bar .lang-menu ul { position: absolute; right: 0; margin: 8px 0 0; padding: 4px; list-style: none; min-width: 9em; background: var(--card); border: 1px solid var(--edge); border-radius: 8px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14); }
+.bar .lang-menu a { display: block; padding: 5px 10px; border-radius: 6px; color: var(--ink); text-decoration: none; }
+.bar .lang-menu a:hover { background: var(--tint); }
+.bar .lang-menu a[aria-current] { font-weight: 800; }
+.not-translated { margin: 0 0 20px; padding: 10px 14px; border-radius: 8px; background: var(--tint); color: var(--ink); font-size: 15px; }
+.shell { max-width: 1100px; margin: 0 auto; padding: 24px 16px 72px; display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 40px; align-items: start; }
+nav.chapters { position: sticky; top: 76px; font-size: 14px; }
+nav.chapters h2 { margin: 0 0 8px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+nav.chapters ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+nav.chapters a { display: block; padding: 5px 10px; border-radius: 7px; color: var(--ink); text-decoration: none; line-height: 1.35; }
+nav.chapters a:hover { background: var(--tint); }
+nav.chapters a[aria-current="page"] { background: var(--tint); color: var(--accent); font-weight: 700; }
+main { min-width: 0; max-width: 760px; }
+h1 { margin: 0 0 8px; font-size: 34px; line-height: 1.15; letter-spacing: -0.025em; text-wrap: balance; }
+h2 { margin: 40px 0 8px; font-size: 23px; letter-spacing: -0.015em; text-wrap: balance; }
+h3 { margin: 26px 0 6px; font-size: 17px; }
+.lead { color: var(--muted); font-size: 18px; margin: 0 0 20px; }
+p, ul, ol { margin: 0 0 14px; }
+li { margin-bottom: 4px; }
+strong.ui { font-weight: 700; white-space: nowrap; }
+kbd { padding: 1px 6px; border: 1px solid var(--edge); border-bottom-width: 2px; border-radius: 5px; background: var(--card); font: 600 0.86em/1.5 ui-monospace, Consolas, monospace; }
+code { padding: 1px 5px; border-radius: 5px; background: var(--code); font: 0.9em ui-monospace, Consolas, monospace; }
+pre { overflow-x: auto; padding: 14px 16px; border-radius: 8px; background: var(--code); direction: ltr; text-align: left; }
+pre code { padding: 0; background: none; }
+figure { margin: 22px 0; }
+figure img { display: block; width: 100%; height: auto; border: 1px solid var(--edge); border-radius: 8px; background: var(--card); }
+figcaption { margin-top: 6px; color: var(--muted); font-size: 13.5px; }
+aside.tip { margin: 18px 0; padding: 12px 16px; border-radius: 8px; background: var(--tint); border: 1px solid var(--edge); }
+aside.tip > :last-child { margin-bottom: 0; }
+.table-scroll { overflow-x: auto; margin: 0 0 16px; }
+table { border-collapse: collapse; font-size: 15px; min-width: 100%; }
+table.keys { table-layout: fixed; }
+table.keys td:first-child { width: 42%; }
+th, td { padding: 7px 12px; border-bottom: 1px solid var(--edge); text-align: start; vertical-align: top; }
+th { color: var(--muted); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+/* Where a link from the program lands, the section is outlined from its heading to its end. */
+.guide-part:has(> :is(h2, h3):target) { outline: 3px solid var(--accent); outline-offset: 10px; border-radius: 6px; }
+:is(h2, h3):target { scroll-margin-top: 24px; }
+.toc { margin: 0 0 24px; padding: 12px 16px; border: 1px solid var(--edge); border-radius: 8px; background: var(--card); font-size: 14.5px; }
+.toc b { display: block; margin-bottom: 4px; color: var(--muted); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+.toc ul { margin: 0; padding-inline-start: 18px; }
+.pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 44px; padding-top: 18px; border-top: 1px solid var(--edge); }
+.pager a { display: block; max-width: 48%; padding: 10px 14px; border: 1px solid var(--edge); border-radius: 8px; background: var(--card); text-decoration: none; color: var(--ink); }
+.pager a small { display: block; color: var(--muted); font-size: 12px; }
+.pager a.next { margin-inline-start: auto; text-align: end; }
+.cards { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.cards a { display: block; height: 100%; padding: 14px 16px; border: 1px solid var(--edge); border-radius: 8px; background: var(--card); text-decoration: none; color: var(--ink); }
+.cards a:hover { border-color: var(--accent); }
+.cards b { display: block; margin-bottom: 2px; }
+.cards span { color: var(--muted); font-size: 14px; line-height: 1.45; display: block; }
+footer.note { max-width: 1100px; margin: 0 auto; padding: 0 16px 12px; color: var(--muted); font-size: 14px; }
+.site-footer { max-width: 1100px; margin: 0 auto; padding: 14px 16px 40px; border-top: 1px solid var(--edge); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px; color: var(--muted); font-size: 13px; }
+.site-footer .trademark { flex: 1 0 100%; margin: 0; font-size: 12px; line-height: 1.45; }
+.site-footer a { color: var(--muted); text-decoration: none; }
+.site-footer a:hover { color: var(--accent); text-decoration: underline; }
+.site-footer .dot { margin: 0 8px; }
+@media (max-width: 820px) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  nav.chapters { position: static; }
+  nav.chapters ol { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  h1 { font-size: 28px; }
+  .brand-note { display: none; }
+}
+@media (max-width: 720px) {
+  .bar-inner { flex-wrap: wrap; }
+  .guide-search { order: 5; flex: 1 1 100%; }
+}
+.print-link { margin: 0 0 14px; }
+.print-link a, nav.chapters .print-link a { display: flex; align-items: center; gap: 9px; padding: 9px 12px; border: 1px solid var(--accent); border-radius: 8px; background: var(--tint); color: var(--accent); font-weight: 700; line-height: 1.3; text-decoration: none; }
+.print-link a:hover, .print-link a:focus-visible, nav.chapters .print-link a:hover, nav.chapters .print-link a:focus-visible { background: var(--accent); color: var(--accent-ink); }
+.print-link svg { flex: none; }
+.print-link.in-page { margin: 0 0 22px; max-width: 360px; }
+.print-actions { margin: 0 0 24px; }
+.print-actions button { padding: 8px 16px; border: 0; border-radius: 8px; background: var(--accent); color: var(--accent-ink); font: inherit; font-weight: 700; cursor: pointer; }
+.print-chapter { margin-top: 56px; padding-top: 8px; border-top: 1px solid var(--edge); }
+.print-chapter > h2 { margin-top: 20px; font-size: 28px; }
+.print-contents { margin: 0 0 24px; padding-inline-start: 22px; columns: 2; column-gap: 32px; }
+.print-contents li { break-inside: avoid; }
+@media (max-width: 560px) { .print-contents { columns: 1; } }
+@media print {
+  @page { margin: 16mm 14mm; }
+  :root, :root[data-theme="dark"], :root[data-theme="dark"][data-palette="graphite"] {
+    color-scheme: light;
+    --ground: #ffffff; --card: #ffffff; --ink: #1a1a1a; --muted: #5c5c5c; --edge: #cfcfcf;
+    --accent: #8a4d04; --tint: #f1f1f1; --code: #f1f1f1;
+  }
+  body { font-size: 11pt; line-height: 1.55; }
+  .bar, nav.chapters, .pager, .print-actions { display: none; }
+  .shell { display: block; padding: 0; }
+  main { max-width: none; }
+  h2, h3, h4 { break-after: avoid; }
+  figure, table, pre, aside.tip { break-inside: avoid; }
+  figure img { max-height: 120mm; width: auto; max-width: 100%; }
+  .print-all .site-footer, .print-all footer.note { display: none; }
+  .print-chapter { margin-top: 0; padding-top: 0; border-top: 0; break-before: page; }
+}
+</style>
+  </head>
+  <body>
+    <header class="bar"><div class="bar-inner">
+      <a class="brand" href="/guia-es/index.html"><img src="/assets/brand/app-logo.svg" alt=""><span class="brand-text"><b>PrintCaddy</b><span class="brand-note">Guía de usuario</span></span></a>
+      <form class="guide-search" id="guide-search" role="search" data-index="/guia-es/search-index.json" data-nothing="No se ha encontrado nada." data-umlauts="false"><input type="search" id="guide-search-input" name="q" placeholder="Buscar en la guía" aria-label="Buscar en la guía" aria-controls="guide-results" aria-expanded="false" autocomplete="off" spellcheck="false"><div class="guide-results" id="guide-results" hidden></div></form>
+      <details class="lang-menu"><summary aria-label="Idioma">Español</summary><ul><li><a href="/guide/edges-and-hollowing.html" hreflang="en" lang="en">English</a></li><li><a href="/prirucka/edges-and-hollowing.html" hreflang="cs" lang="cs">Čeština</a></li><li><a href="/vejledning/edges-and-hollowing.html" hreflang="da" lang="da">Dansk</a></li><li><a href="/anleitung/kanten-und-aushoehlen.html" hreflang="de" lang="de">Deutsch</a></li><li><a href="/guia-es/edges-and-hollowing.html" hreflang="es-ES" lang="es-ES" aria-current="true">Español</a></li><li><a href="/guide-fr/edges-and-hollowing.html" hreflang="fr" lang="fr">Français</a></li><li><a href="/it/edges-and-hollowing.html" hreflang="it" lang="it">Italiano</a></li><li><a href="/utmutato/edges-and-hollowing.html" hreflang="hu" lang="hu">Magyar</a></li><li><a href="/handleiding/randen-en-uithollen.html" hreflang="nl" lang="nl">Nederlands</a></li><li><a href="/instrukcja/edges-and-hollowing.html" hreflang="pl" lang="pl">Polski</a></li><li><a href="/guia-pt-pt/edges-and-hollowing.html" hreflang="pt-PT" lang="pt-PT">Português de Portugal</a></li><li><a href="/guia/edges-and-hollowing.html" hreflang="pt-BR" lang="pt-BR">Português do Brasil</a></li><li><a href="/navodila/robovi-in-izdolbljenje.html" hreflang="sl" lang="sl">Slovenščina</a></li><li><a href="/kilavuz/edges-and-hollowing.html" hreflang="tr" lang="tr">Türkçe</a></li><li><a href="/ru/edges-and-hollowing.html" hreflang="ru" lang="ru">Русский</a></li><li><a href="/dalil/edges-and-hollowing.html" hreflang="ar" lang="ar">العربية</a></li><li><a href="/guide-ja/edges-and-hollowing.html" hreflang="ja" lang="ja">日本語</a></li><li><a href="/zh-cn/edges-and-hollowing.html" hreflang="zh-CN" lang="zh-CN">简体中文</a></li><li><a href="/zh-tw/edges-and-hollowing.html" hreflang="zh-TW" lang="zh-TW">繁體中文</a></li></ul></details>
+      <a class="button" id="open-editor" href="/">Abrir el editor</a>
+    </div><p class="editor-elsewhere" id="editor-elsewhere" role="status" hidden>El editor ya está abierto en otra pestaña: cambia a ella.</p></header>
+    <div class="shell">
+      <nav class="chapters" aria-label="Capítulos"><h2>Capítulos</h2><p class="print-link"><a href="/guia-es/print-all.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg><span>Guía completa, para imprimir</span></a></p><ol><li><a href="/guia-es/getting-started.html">Primeros pasos</a></li><li><a href="/guia-es/view-and-workplane.html">Vista y plano de trabajo</a></li><li><a href="/guia-es/shapes.html">Colocar y ajustar formas</a></li><li><a href="/guia-es/select-and-arrange.html">Seleccionar y organizar</a></li><li><a href="/guia-es/solids-and-holes.html">Sólidos y orificios</a></li><li><a href="/guia-es/edges-and-hollowing.html" aria-current="page">Romper aristas y vaciar cuerpos</a></li><li><a href="/guia-es/sketches.html">Bocetos: del contorno al cuerpo</a></li><li><a href="/guia-es/text.html">Texto y letras en arco</a></li><li><a href="/guia-es/threads-and-mechanics.html">Roscas, engranajes y otras piezas</a></li><li><a href="/guia-es/measuring-and-notes.html">Medidas y notas</a></li><li><a href="/guia-es/printing.html">Preparar la impresión 3D</a></li><li><a href="/guia-es/files-and-saving.html">Archivos: guardar y compartir</a></li><li><a href="/guia-es/shortcuts.html">Atajos de teclado</a></li><li><a href="/guia-es/ai-with-mcp.html">Construir con una IA (MCP)</a></li><li><a href="/guia-es/offline-and-install.html">Instalar como aplicación, trabajar sin conexión y alojarlo tú mismo</a></li><li><a href="/guia-es/videos.html">Vídeos sobre PrintCaddy</a></li><li><a href="/guia-es/tablet-and-touch.html">Tableta y pantalla táctil</a></li></ol></nav>
+      <main>
+<h1>Romper aristas y vaciar cuerpos</h1>
+<p class="lead">Chaflanes y redondeos en las aristas que elijas, y paredes de grosor uniforme para cajas, vasos y carcasas.</p>
+<div class="toc"><b>En esta página</b><ul><li><a href="#achaflanar-y-redondear-aristas">Achaflanar y redondear aristas</a></li><li><a href="#vaciar-cuerpos">Vaciar cuerpos</a></li><li><a href="#desfasar-cuerpos">Desfasar cuerpos</a></li><li><a href="#eliminar-caras">Eliminar caras</a></li></ul></div>
+<section class="guide-part"><h2 id="achaflanar-y-redondear-aristas">Achaflanar y redondear aristas</h2>
+<p>Las aristas vivas rara vez quedan bien en una pieza impresa, y tampoco son especialmente resistentes. Un <strong>chaflán</strong> corta la arista en ángulo; un <strong>redondeo</strong> la redondea. Los dos actúan sobre las aristas en las que hagas clic.</p>
+<ol><li>Selecciona el cuerpo (o el grupo).</li><li>Haz clic en <strong class="ui">«Redondeo»</strong> o <strong class="ui">«Chaflán»</strong> en la cinta, pulsa <kbd>B</kbd> para el redondeo o <span dir="ltr"><kbd>Shift</kbd>+<kbd>B</kbd></span> para el chaflán, o haz clic derecho en el cuerpo y elige la opción en el menú.</li><li>Las aristas del cuerpo se resaltan. Haz clic en las que quieras modificar. Otro clic vuelve a quitar una arista. Con <kbd>Mayús</kbd> añades o quitas una sola arista.</li><li>Ajusta el tamaño y confirma con <strong class="ui">«Aplicar»</strong> o <kbd>Intro</kbd>. Después, la ventana sigue abierta sobre el cuerpo nuevo con el mismo tamaño, para que puedas hacer enseguida el siguiente redondeo o chaflán; <strong class="ui">«Listo»</strong>, <kbd>Esc</kbd> o la cruz la cierran. Si mantienes pulsada <kbd>Mayús</kbd> o <kbd>Ctrl</kbd>, un clic en <strong class="ui">«Aristas superiores»</strong>, <strong class="ui">«Aristas inferiores»</strong>, <strong class="ui">«Aristas verticales»</strong> o <strong class="ui">«Aristas horizontales»</strong> añade esas aristas a las que ya habías elegido en lugar de sustituirlas.</li></ol>
+<figure><img src="/guide/img/fillet-preview.webp" alt="La herramienta «Redondear aristas»: todas las aristas vivas están seleccionadas y la imagen muestra la vista previa con un radio de 4 mm." width="1280" height="800" loading="lazy"><figcaption>La herramienta «Redondear aristas»: todas las aristas vivas están seleccionadas y la imagen muestra la vista previa con un radio de 4 mm.</figcaption></figure>
+<p>El panel está arriba a la derecha. Si tapa aristas en las que quieres hacer clic, arrástralo por su barra de título; la próxima vez se abrirá también ahí, y lo mismo pasa con <strong class="ui">«Vaciar»</strong> y <strong class="ui">«Patrón»</strong>. Un doble clic en la barra de título lo devuelve a su sitio.</p>
+<p>Si eliges una forma de la lista de formas con el panel abierto, este se cierra sin aplicar nada y se olvidan las aristas en las que habías hecho clic. Entonces el clic coloca la forma nueva en lugar de elegir aristas.</p>
+<p>En el panel encontrarás:</p>
+<ul><li><strong class="ui">«Todas las aristas vivas»</strong> selecciona todas las aristas a la vez, y <strong class="ui">«Borrar selección»</strong> vacía la selección.</li><li><strong><strong class="ui">«Radio»</strong></strong>, para el redondeo. Para el chaflán ajustas <strong class="ui">«Distancia»</strong> o <strong class="ui">«Ángulo»</strong>.</li><li><strong class="ui">«Radio variable»</strong> (solo en el redondeo) hace que el radio cambie a lo largo de una arista: pequeño en un extremo, mayor en el otro y uniforme entre ambos, como donde una pared recta se encuentra con una inclinada. Haz clic en una sola arista y ajusta <strong class="ui">«Radio al principio»</strong> y <strong class="ui">«Radio al final»</strong>. Qué extremo cuenta como el principio depende de cómo se construyó la arista; si el radio mayor sale en el extremo equivocado, <strong class="ui">«Intercambiar extremos»</strong> le da la vuelta. Funciona con una arista cada vez, así que redondea varias aristas una tras otra. <strong class="ui">«Editar»</strong> recupera los dos valores.</li><li><strong class="ui">«Umbral de arista viva»</strong> decide qué aristas cuentan como vivas. Con un valor de 25°, solo los quiebros claros se tratan como aristas y las transiciones suaves se dejan como están.</li><li><strong class="ui">«Aristas verticales»</strong> elige las aristas que van en vertical, como las esquinas de una caja: así, un solo redondeo redondea a la vez todas las esquinas verticales.</li><li><strong class="ui">«Aristas superiores»</strong> elige solo las aristas de la parte más alta del cuerpo. Es la forma rápida de hacer un cortador de galletas: crea el contorno en un boceto como trazo y luego achaflana las aristas superiores. <strong class="ui">«Ángulo»</strong> fija la inclinación del chaflán; no puede ir más allá del grosor de la pared.</li><li><strong class="ui">«Aristas inferiores»</strong> elige solo las aristas de la parte más baja del cuerpo, el reflejo de <strong class="ui">«Aristas superiores»</strong>. Es la forma rápida de redondear o achaflanar solo el pie de una pieza.</li><li><strong class="ui">«Chaflán redondeado»</strong>, que se elige arriba en la ventana de chaflán, junto a <strong class="ui">«Chaflán»</strong>, hace el pie imprimible de una pieza: un chaflán junto a la placa que se funde tangencialmente con un redondeo hacia la pared, para que las primeras capas no necesiten soportes y la arista termine suave de todos modos. <strong class="ui">«Distancia»</strong> es la altura que ocupa el pie, y <strong class="ui">«Ángulo»</strong> (de 15° a 75°), la inclinación del chaflán junto a la placa. Elige las aristas con <strong class="ui">«Aristas inferiores»</strong>.</li><li><strong class="ui">«Solo aristas visibles»</strong> oculta las aristas que quedan detrás del cuerpo desde donde miras. De forma predeterminada, todas las aristas se ven a través del cuerpo, lo que resulta confuso en una pieza complicada; con el interruptor activado solo ves las aristas que dan hacia ti, y solo puedes hacer clic en ellas. Gira la vista para llegar a las demás. Una arista dibujada en rojo (ver más abajo) se ve siempre.</li><li><strong class="ui">«Un clic también selecciona las aristas que continúan de forma suave»</strong>: un clic elige también las aristas que se continúan suavemente unas en otras, por ejemplo todas las aristas alrededor de una cara con esquinas redondeadas. El interruptor solo decide qué elige un clic: el núcleo CAD siempre prolonga un chaflán o un redondeo por esas aristas que continúan suavemente. El panel te dice por cuántas aristas más pasa.</li><li><strong class="ui">«Conservar la medida de las aristas al redimensionar»</strong> mantiene el chaflán o el redondeo con el tamaño que tiene, aunque luego escales el cuerpo.</li><li><strong class="ui">«Calidad de la vista previa»</strong> (<strong class="ui">«Borrador»</strong>, <strong class="ui">«Estándar»</strong> o <strong class="ui">«Fina»</strong>) decide con qué detalle se calcula la vista previa. Para piezas difíciles, <strong class="ui">«Borrador»</strong> es más rápido.</li></ul>
+<p>Mientras ajustas el tamaño, PrintCaddy recalcula la vista previa. Puede tardar un momento. Puedes seguir ajustando: lo que se calcula es el último valor que hayas elegido.</p>
+<p>Si el tamaño es demasiado grande para la arista, PrintCaddy te lo dice y te propone un valor menor. A menudo basta con uno o dos milímetros menos. En ángulos agudos, un redondeo necesita más espacio del que hace pensar su radio. En una pantalla pequeña, el panel se desplaza solo hacia abajo para que el mensaje quede a la vista.</p>
+<p>Si una selección que funcionaba falla al hacer clic en una arista más, esa arista se pone roja y se dibuja más gruesa: es la que no se puede tratar junto con las demás con ese tamaño. Vuelve a hacer clic en ella para quitarla, o reduce el tamaño. Si haces clic en más aristas mientras el mensaje sigue ahí, la primera sigue en rojo. Cuando no hay una selección anterior que funcionara (en el primerísimo clic, o con un tamaño que acabas de aumentar), se ponen en rojo las aristas que fallan incluso por sí solas, o todas, si lo que falla es solo su combinación.</p>
+<p>La arista que hay bajo el puntero también se dibuja más gruesa, para que veas cuál va a elegir el clic.</p>
+<section class="guide-part"><h3 id="deshacer-una-operacion-de-aristas">Deshacer una operación de aristas</h3>
+<p>Un cuerpo con chaflanes, redondeos o vaciado siempre se puede volver a modificar. Selecciónalo de nuevo y abre la herramienta (Redondeo, Chaflán o Vaciar; todas muestran la lista): en <strong class="ui">«Deshacer una operación de aristas»</strong> ves lo que ya tiene aplicado. <strong class="ui">«Deshacer»</strong> deshace una sola operación. Atención: si hay operaciones más recientes encima, se van con ella, y el panel te dice cuántas.</p>
+<p>Junto a un chaflán, un redondeo o un vaciado aparece también <strong class="ui">«Editar»</strong>. Deshace la operación del mismo modo, pero vuelve a abrir enseguida la herramienta con las mismas aristas y el valor anterior. Cambias el valor y lo vuelves a aplicar: un redondeo de 3 mm pasa a ser de 5 mm sin tener que volver a hacer clic en las aristas. Si hay operaciones más recientes encima, aquí también se van con ella. Esto vale para las operaciones de aristas que hagas a partir de ahora; las más antiguas solo ofrecen deshacerlas, y lo mismo ocurre con las piezas sueltas de un grupo.</p>
+<p>En un grupo, por ejemplo un cilindro con un orificio, la arista tratada pertenece al cuerpo terminado, no a una de sus piezas. Por eso el grupo pasa a ser un único cuerpo. <strong class="ui">«Desagrupar»</strong> sigue funcionando con él: primero retira las operaciones de aristas y después desagrupa, todo en un solo paso que puedes deshacer con <span dir="ltr"><kbd>Ctrl</kbd>+<kbd>Z</kbd></span>. Si deshaces la operación como se explica más arriba, el grupo vuelve con todas sus piezas. Lo más sencillo es tratar las aristas al final. Eso vale también para las roscas: la herramienta de aristas toma una rosca como su cuerpo exacto, así que a un bloque con un orificio roscado se le redondean las aristas con la rosca en su sitio. Calcular las aristas de una rosca lleva más tiempo que en una forma sencilla: unos segundos para una M6 y cerca de medio minuto para una rosca de tubo G1/2.</p>
+<aside class="tip"><p><strong>Conviene saber:</strong> Para los redondeos y chaflanes, PrintCaddy trabaja con geometría CAD real, no solo con una malla de triángulos. Por eso una arista redondeada sigue siendo una arista redondeada en la exportación STEP.</p></aside>
+<p>Una pieza importada en STEP también conserva su geometría CAD: los chaflanes, los redondeos y el vaciado trabajan sobre el cuerpo del archivo, por muy detallada que se dibuje la pieza en pantalla. STL, OBJ y 3MF solo traen triángulos, y una pieza dibujada con mucho detalle puede ser demasiado densa para la herramienta de aristas. Si una pieza también está disponible en STEP, importa esa.</p>
+</section></section><section class="guide-part"><h2 id="vaciar-cuerpos">Vaciar cuerpos</h2>
+<p>Cajas, vasos, carcasas y tapas tienen algo en común: están huecos por dentro, con paredes de grosor uniforme. Eso es justo lo que hace <strong class="ui">«Vaciar»</strong>.</p>
+<ol><li>Selecciona el cuerpo y haz clic en <strong class="ui">«Vaciar»</strong>, o haz clic derecho en el cuerpo y elige la opción en el menú.</li><li>Ajusta el <strong class="ui">«Grosor de pared»</strong>.</li><li>En <strong class="ui">«Lados abiertos»</strong>, activa los lados que se quedan abiertos: <strong class="ui">«Arriba»</strong>, <strong class="ui">«Abajo»</strong>, <strong class="ui">«Delante»</strong>, <strong class="ui">«Detrás»</strong>, <strong class="ui">«Izquierda»</strong> o <strong class="ui">«Derecha»</strong>, tantos como quieras. Solo con <strong class="ui">«Delante»</strong> sale el hueco para un cajón; con <strong class="ui">«Izquierda»</strong> y <strong class="ui">«Derecha»</strong>, un túnel. Si no activas ningún lado, el cuerpo queda cerrado por todas partes, con una cavidad en el centro. <strong class="ui">«Cerrado (cavidad interior)»</strong> desactiva todos los lados con un solo clic. <strong class="ui">«Arriba»</strong> ya está activado al abrir el panel; un clic sobre él vuelve a cerrar la parte de arriba. Un cuerpo cerrado por todas partes se ve igual desde fuera: la vista de sección muestra la cavidad.</li><li>En <strong class="ui">«Aristas interiores»</strong>, elige <strong class="ui">«Redondeadas»</strong> o <strong class="ui">«Vivas»</strong>.</li><li>Haz clic en <strong class="ui">«Vaciar»</strong>.</li></ol>
+<figure><img src="/guide/img/hollow-panel.webp" alt="El panel de vaciado con el grosor de pared, un interruptor para cada lado que queda abierto y las aristas interiores." width="1280" height="800" loading="lazy"><figcaption>El panel de vaciado con el grosor de pared, un interruptor para cada lado que queda abierto y las aristas interiores.</figcaption></figure>
+<p>Las paredes crecen hacia dentro. El exterior se queda como está.</p>
+<p>Lo que elijas en <strong class="ui">«Aristas interiores»</strong> solo importa donde las paredes interiores se separan: en un escalón del cuerpo o alrededor de una abertura. Las esquinas de la cavidad de una caja sencilla son siempre vivas, con cualquiera de los dos ajustes. Para un interior redondeado, redondea primero las aristas exteriores del cuerpo (ver más arriba) y luego vacíalo: el interior sigue la forma con el radio menos el grosor de pared. Si no se puede construir el interior redondeado, algo que puede pasar con un contorno hecho de muchísimos tramos rectos cortos, como un dibujo vectorizado, PrintCaddy construye en su lugar el mismo cuerpo hueco con esquinas interiores vivas.</p>
+<figure><img src="/guide/img/hollow-result.webp" alt="El resultado: un cuerpo hueco con una pared de 3 mm, abierto por arriba." width="1280" height="800" loading="lazy"><figcaption>El resultado: un cuerpo hueco con una pared de 3 mm, abierto por arriba.</figcaption></figure>
+<figure><img src="/guide/img/hollow-sides.webp" alt="La misma caja con solo el lado delantero abierto: el hueco para un cajón." width="1280" height="800" loading="lazy"><figcaption>La misma caja con solo el lado delantero abierto: el hueco para un cajón.</figcaption></figure>
+<p>Para cada lado abierto, el cuerpo necesita una cara plana en su extremo de ese lado. Por eso las esferas y las formas libres no se pueden vaciar así. Si la pared es demasiado gruesa para el cuerpo, PrintCaddy te avisa y te pide una más fina. Una caja redondeada con las aristas superiores e inferiores también redondeadas es uno de esos casos: su pared tiene que ser claramente más fina que ese redondeo, o pon antes el redondeo a 0.</p>
+<p>Un cuerpo con un hueco (un bloque con un orificio que no llega a atravesarlo, hecho agrupando una caja con un orificio elevado) también se puede vaciar, con la parte de arriba abierta: las paredes alrededor del hueco también se vacían, de modo que entre la pared exterior y el hueco queda un anillo de cavidad abierto por arriba, y bajo el fondo del hueco queda una cavidad fina.</p>
+<p><strong>Los cuerpos que terminan en punta,</strong> como un cono o un triángulo convertido en cuerpo de revolución, no tienen arriba una cara plana que pueda quedar abierta. Tampoco funciona una cavidad totalmente cerrada, porque una punta no se puede desfasar hacia dentro: incluso con una pared de 1 mm aparece el mensaje de que las paredes no pueden ser tan gruesas. En su lugar, dibuja la pared en el perfil antes de la revolución: duplica el contorno, reduce la copia de forma uniforme, colócala en el centro del contorno grande y corta el grande con ella; después aplica la revolución al resultado (capítulo Bocetos, apartado Revolución). La distancia entre los dos contornos es el grosor de la pared.</p>
+<p>Si más adelante cambias el tamaño de un cuerpo vaciado, PrintCaddy lo vuelve a vaciar al momento con el tamaño nuevo. La pared mantiene el grosor que elegiste, también en los cuerpos redondos. Un cilindro que estires más en una dirección que en la otra se convierte en una elipse.</p>
+<aside class="tip"><p><strong>Consejo:</strong> Con una boquilla de 0,4 mm, una pared de 1,2 a 2 mm es un buen punto de partida: lo bastante fina para ahorrar material y lo bastante gruesa para que la pieza sea resistente.</p></aside>
+</section><section class="guide-part"><h2 id="desfasar-cuerpos">Desfasar cuerpos</h2>
+<p>Cada cara de un cuerpo puede moverse la misma distancia, hacia fuera o hacia dentro. Eso necesita un ajuste, una tapa o una unión a presión: una holgura de 0,1 a 0,3 mm alrededor mientras los detalles quedan donde están, algo que el escalado no da.</p>
+<ol><li>Selecciona un cuerpo y haz clic en <strong class="ui">«Desfase»</strong>, o haz clic derecho en el cuerpo y elígelo ahí.</li><li>Elige <strong class="ui">«Agrandar»</strong> o <strong class="ui">«Reducir»</strong> y fija la <strong class="ui">«Distancia»</strong>.</li><li>Los <strong class="ui">«Esquinas exteriores»</strong> deciden las esquinas exteriores: redondeado mantiene redonda la superficie desfasada, afilado deja que las caras sigan hasta encontrarse.</li><li>Marca <strong class="ui">«Conservar el original y añadir el cuerpo desfasado como hueco»</strong> para conservar la pieza tal cual y obtener el cuerpo agrandado como una copia que ya es un hueco. Agrupa ese hueco con la pieza que encaja y corta exactamente la holgura elegida.</li><li>Haz clic en <strong class="ui">«Desfasar»</strong>.</li></ol>
+<p>Sin la marca se desfasa el propio cuerpo. Pasa a ser un cuerpo exacto fijo, como tras un chaflán: la lista de arriba del panel deshace el desfase, y <strong class="ui">«Editar»</strong> abre de nuevo la herramienta con la distancia anterior. Solo se pueden desfasar cuerpos CAD exactos - cajas, cilindros y las demás formas, sus grupos, piezas STEP importadas. Un cuerpo que es solo una malla de triángulos, como muchas importaciones STL, a menudo no se puede. Una distancia demasiado grande para el cuerpo, por ejemplo reducir más allá de su pared más fina, se rechaza.</p>
+</section><section class="guide-part"><h2 id="eliminar-caras">Eliminar caras</h2>
+<p>Un redondeo que estorba, un orificio en el sitio equivocado, un saliente que ya no necesitas: <strong class="ui">«Eliminar cara»</strong> lo quita del cuerpo sin tener que volver a construirlo.</p>
+<ol><li>Selecciona el cuerpo y haz clic en <strong class="ui">«Eliminar cara»</strong>, o haz clic derecho en el cuerpo y elige la opción en el menú.</li><li>Haz clic en todas las caras de lo que quieras quitar: las caras de una arista redondeada, la pared de un orificio, el lateral y la parte superior de un saliente. Una cara elegida se resalta; otro clic la vuelve a quitar. El panel cuenta las caras.</li><li>Haz clic en <strong class="ui">«Eliminar»</strong> o pulsa <kbd>Supr</kbd>. <kbd>Esc</kbd> cierra la herramienta sin cambiar nada.</li></ol>
+<p>Las caras que rodean a las eliminadas crecen hasta cerrar el hueco. Una caja con las aristas superiores redondeadas recupera sus aristas vivas, un orificio se rellena, un saliente desaparece. El cuerpo sigue siendo exacto, así que se puede volver a redondear y achaflanar, y la exportación STEP conserva sus caras reales. <span dir="ltr"><kbd>Ctrl</kbd>+<kbd>Z</kbd></span> deshace la eliminación en un solo paso. También aparece en <strong class="ui">«Deshacer una operación de aristas»</strong> junto con los redondeos y chaflanes, donde <strong class="ui">«Deshacer»</strong> la deshace; para ella no hay <strong class="ui">«Editar»</strong>. En un grupo, el resultado es un único cuerpo, como con una operación de aristas.</p>
+<p>Elige todas las caras de lo que quieras quitar, y solo esas. Si las caras de alrededor no pueden cerrar el hueco, PrintCaddy te lo dice y no cambia nada: una cara principal de una caja, por ejemplo, no tiene ninguna vecina que pueda ocupar su lugar. Si eliminas solo el fondo de un hueco, se convierte en un orificio pasante, porque las paredes del hueco continúan hasta el otro lado.</p>
+<p><strong class="ui">«Eliminar cara»</strong> necesita caras exactas: funciona en piezas importadas en STEP y en las formas de PrintCaddy. Lo que PrintCaddy guarda como malla no las tiene: un STL, OBJ o 3MF importado, un cuerpo dividido, envuelto o simplificado, o una forma muy detallada, como un texto largo. Si puedes, importa la pieza en STEP. En una pieza importada muy detallada, unas pocas caras pueden ser demasiado para el núcleo CAD: a los 45 segundos se detiene la eliminación y no cambia nada. Un cuerpo al que se ha cambiado el tamaño después de una operación de aristas, manteniendo el tamaño de las aristas, no tiene caras exactas con su nuevo tamaño hasta que se deshace ese cambio de tamaño.</p></section>
+<div class="pager"><a href="/guia-es/solids-and-holes.html"><small>Capítulo anterior</small>Sólidos y orificios</a><a class="next" href="/guia-es/sketches.html"><small>Capítulo siguiente</small>Bocetos: del contorno al cuerpo</a></div>
+      </main>
+    </div>
+    <footer class="note">Esta guía crece con el programa. Si falta algo o algo no es correcto, dínoslo en las</footer>
+    <footer class="site-footer"><div></div><div><a href="/source/">Source code &amp; license (AGPL-3.0)</a></div><p class="trademark">Tinkercad es una marca comercial de Autodesk, Inc. PrintCaddy es un proyecto independiente: no está afiliado a Autodesk ni cuenta con su respaldo o su patrocinio.</p><p class="trademark">PrintCaddy – Based on layerling by henmedia (github.com/henmedia/layerling), licensed under the GNU AGPL-3.0. Copyright © henmedia and the layerling contributors.</p></footer>
+    <script>(function(){var b=document.getElementById("open-editor");if(!b||typeof BroadcastChannel==="undefined")return;var elsewhere=false,c=new BroadcastChannel("layerling-tabs"),id="guide-"+Math.random().toString(36).slice(2);c.onmessage=function(e){var m=e.data;if(m&&m.kind==="here"&&m.tabId!==id&&!elsewhere){elsewhere=true;b.textContent="Volver al editor";}};c.postMessage({kind:"ask",tabId:id});b.addEventListener("click",function(e){if(!elsewhere)return;e.preventDefault();window.close();setTimeout(function(){elsewhere=false;b.textContent="Abrir el editor";var n=document.getElementById("editor-elsewhere");if(n)n.hidden=false;},400);});})();</script>
+    <script>
+function guideFold(text        )         {
+  var out = "";
+  for (var i = 0; i < text.length; i++) {
+    var letter = text.charAt(i).toLowerCase().normalize("NFD").charAt(0);
+    // "ł" has no decomposition, so it is mapped by hand (Polish): one letter in, one letter out.
+    out += letter === "ł" ? "l" : letter;
+  }
+  return out;
+}
+function guideForms(word        , umlauts         )           {
+  var forms = [word];
+  if (umlauts) { var plain = word.split("ae").join("a").split("oe").join("o").split("ue").join("u"); if (plain !== word) forms.push(plain); }
+  if (word.indexOf("ss") >= 0) forms.push(word.split("ss").join(String.fromCharCode(223)));
+  if (word.indexOf(String.fromCharCode(223)) >= 0) forms.push(word.split(String.fromCharCode(223)).join("ss"));
+  return forms;
+}
+function guideFind(text        , forms          , from        )                    {
+  var best                    = null;
+  for (var i = 0; i < forms.length; i++) { var k = text.indexOf(forms[i], from); if (k >= 0 && (!best || k < best.at)) best = { at: k, len: forms[i].length }; }
+  return best;
+}
+function guidePrepare(entries                    )                  {
+  return entries.map(function (e) { return { e: e, c: guideFold(e.c), h: guideFold(e.h), t: guideFold(e.t) }; });
+}
+function guideTokens(query        )           {
+  return guideFold(query).split(" ").filter(function (w) { return w.length > 0; });
+}
+function guideSearch(prepared                 , query        , limit         , umlauts          )             {
+  var tokens = guideTokens(query); if (!tokens.length) return [];
+  var forms = tokens.map(function (w) { return guideForms(w, !!umlauts); }), phrase = guideForms(tokens.join(" "), !!umlauts), found             = [];
+  prepared.forEach(function (p) {
+    var score = 0;
+    for (var i = 0; i < tokens.length; i++) {
+      var inH = guideFind(p.h, forms[i], 0), inC = guideFind(p.c, forms[i], 0), at = guideFind(p.t, forms[i], 0);
+      if (!inH && !inC && !at) return;
+      if (inH) score += 10;
+      if (inC) score += 3;
+      if (at) { score += 1; var n = 0, k                    = at; while (k && n < 5) { n++; k = guideFind(p.t, forms[i], k.at + k.len); } score += n * 0.3; }
+    }
+    if (tokens.length > 1 && (guideFind(p.h, phrase, 0) || guideFind(p.t, phrase, 0))) score += 6;
+    found.push({ entry: p.e, score: score, folded: p.t, forms: forms });
+  });
+  found.sort(function (a, b) { return b.score - a.score; });
+  return found.slice(0, limit || 8);
+}
+
+function guideSnippet(hit){
+  var text=hit.entry.t,first=-1;
+  hit.forms.forEach(function(group){var f=guideFind(hit.folded,group,0);if(f&&(first<0||f.at<first))first=f.at;});
+  var from=first>40?first-40:0;
+  if(from>0){var gap=text.indexOf(" ",from);if(gap>=0&&gap<first)from=gap+1;}
+  var end=Math.min(text.length,from+150),marked=[];
+  for(var i=from;i<end;i++)marked.push(false);
+  hit.forms.forEach(function(group){var f=guideFind(hit.folded,group,from);while(f&&f.at<end){for(var j=f.at;j<f.at+f.len&&j<end;j++)marked[j-from]=true;f=guideFind(hit.folded,group,f.at+f.len);}});
+  var parts=[],run="",state=false;
+  if(from>0)parts.push({text:"... ",mark:false});
+  for(var m=0;m<marked.length;m++){if(marked[m]!==state&&run){parts.push({text:run,mark:state});run="";}state=marked[m];run+=text.charAt(from+m);}
+  if(run)parts.push({text:run,mark:state});
+  if(end<text.length)parts.push({text:" ...",mark:false});
+  return parts;
+}
+(function(){
+  var form=document.getElementById("guide-search");if(!form||!window.fetch)return;
+  var input=form.querySelector("input"),box=document.getElementById("guide-results"),prepared=null,loading=null;
+  function load(){if(!loading){loading=fetch(form.getAttribute("data-index")).then(function(r){return r.json();}).then(function(list){prepared=guidePrepare(list);}).catch(function(){loading=null;});}return loading;}
+  function close(){box.hidden=true;input.setAttribute("aria-expanded","false");}
+  function render(){
+    if(!guideTokens(input.value).length){close();return;}
+    if(!prepared){load().then(function(){if(prepared)render();});return;}
+    var hits=guideSearch(prepared,input.value,8,form.getAttribute("data-umlauts")==="true");
+    box.textContent="";
+    if(!hits.length){var none=document.createElement("p");none.textContent=form.getAttribute("data-nothing");box.appendChild(none);}
+    hits.forEach(function(hit){
+      var link=document.createElement("a"),title=document.createElement("b"),line=document.createElement("span");
+      link.href=hit.entry.u;
+      title.textContent=hit.entry.h?hit.entry.c+" > "+hit.entry.h:hit.entry.c;
+      guideSnippet(hit).forEach(function(part){if(part.mark){var mark=document.createElement("mark");mark.textContent=part.text;line.appendChild(mark);}else line.appendChild(document.createTextNode(part.text));});
+      link.appendChild(title);link.appendChild(line);box.appendChild(link);
+    });
+    box.hidden=false;input.setAttribute("aria-expanded","true");
+  }
+  input.addEventListener("input",render);
+  input.addEventListener("focus",function(){load();if(input.value)render();});
+  input.addEventListener("keydown",function(e){
+    if(e.key==="ArrowDown"){var first=box.querySelector("a");if(first){e.preventDefault();first.focus();}}
+    else if(e.key==="Escape"){input.value="";close();}
+  });
+  form.addEventListener("submit",function(e){e.preventDefault();var first=box.querySelector("a");if(first)window.location.href=first.href;});
+  box.addEventListener("keydown",function(e){
+    var current=document.activeElement;
+    if(e.key==="ArrowDown"&&current.nextElementSibling){e.preventDefault();current.nextElementSibling.focus();}
+    else if(e.key==="ArrowUp"){e.preventDefault();if(current.previousElementSibling)current.previousElementSibling.focus();else input.focus();}
+    else if(e.key==="Escape"){input.focus();close();}
+  });
+  box.addEventListener("click",close);
+  document.addEventListener("click",function(e){if(!form.contains(e.target))close();});
+})();
+</script>
+  </body>
+</html>

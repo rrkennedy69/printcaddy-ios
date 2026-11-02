@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" font-family="Arial,Helvetica,sans-serif" font-size="12">
+<rect x="1" y="1" width="318" height="178" rx="10" fill="#f6f8fb" stroke="#c9d3df"/>
+<rect x="40" y="30" width="240" height="120" rx="10" fill="#fff" stroke="#1a73e8" stroke-width="2" stroke-dasharray="8 6"/>
+<rect x="60" y="56" width="44" height="54" rx="4" fill="#e8f0fe" stroke="#1a73e8"/><text x="66" y="88" fill="#1a73e8" font-weight="bold">.STL</text>
+<path d="M112 84 L170 84" stroke="#e8710a" stroke-width="3" marker-end="url(#a)"/><defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#e8710a"/></marker></defs>
+<text x="180" y="80" fill="#333" font-weight="bold">Drop it here</text><text x="180" y="98" fill="#555">or tap “Choose file”</text>
+<text x="70" y="138" fill="#555">Each object becomes its own piece</text>
+</svg>

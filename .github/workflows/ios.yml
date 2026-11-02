@@ -1,0 +1,51 @@
+name: Build unsigned iPad IPA
+on:
+  push: { branches: [main] }
+  workflow_dispatch:
+permissions: { contents: write }
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm install
+      - name: Add iOS platform
+        run: |
+          npx cap add ios
+          npx cap sync ios
+      - name: Configure app (name, icon, orientations, iPad, files)
+        run: |
+          P=ios/App/App/Info.plist
+          B=/usr/libexec/PlistBuddy
+          $B -c "Set :CFBundleDisplayName PrintCaddy" $P || $B -c "Add :CFBundleDisplayName string PrintCaddy" $P
+          for k in UISupportedInterfaceOrientations "UISupportedInterfaceOrientations~ipad"; do
+            $B -c "Delete :$k" $P || true
+            $B -c "Add :$k array" $P
+            i=0; for o in UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight; do $B -c "Add :$k:$i string $o" $P; i=$((i+1)); done
+          done
+          $B -c "Add :UIFileSharingEnabled bool true" $P || true
+          $B -c "Add :LSSupportsOpeningDocumentsInPlace bool true" $P || true
+          $B -c "Add :UIRequiresFullScreen bool false" $P || true
+          ICON=$(ls ios/App/App/Assets.xcassets/AppIcon.appiconset/*.png | head -1)
+          cp resources/icon-1024.png "$ICON"
+          sed -i '' 's/TARGETED_DEVICE_FAMILY = .*;/TARGETED_DEVICE_FAMILY = "1,2";/' ios/App/App.xcodeproj/project.pbxproj
+          grep -n "TARGETED_DEVICE_FAMILY\|PRODUCT_BUNDLE_IDENTIFIER" ios/App/App.xcodeproj/project.pbxproj
+      - name: Archive (unsigned)
+        run: |
+          xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Release \
+            -sdk iphoneos -destination 'generic/platform=iOS' -archivePath $PWD/build/App.xcarchive \
+            archive CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" | tail -40
+      - name: Package IPA
+        run: |
+          mkdir -p out/Payload
+          cp -R build/App.xcarchive/Products/Applications/App.app out/Payload/PrintCaddy.app
+          cd out && zip -qry PrintCaddy.ipa Payload && ls -la PrintCaddy.ipa
+      - uses: actions/upload-artifact@v4
+        with: { name: PrintCaddy-ipa, path: out/PrintCaddy.ipa }
+      - name: Release
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: |
+          TAG=build-$(date -u +%Y%m%d%H%M)-${GITHUB_SHA::7}
+          gh release create "$TAG" out/PrintCaddy.ipa --title "PrintCaddy iPad $TAG" --notes "Unsigned IPA for AltStore sideloading." --latest

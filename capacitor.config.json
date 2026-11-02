@@ -1,0 +1,3 @@
+{ "appId": "com.rrkennedy.printcaddy", "appName": "PrintCaddy", "webDir": "www",
+  "ios": { "scheme": "PrintCaddy", "contentInset": "never", "limitsNavigationsToAppBoundDomains": false, "webContentsDebuggingEnabled": true },
+  "server": { "iosScheme": "capacitor", "hostname": "localhost" } }

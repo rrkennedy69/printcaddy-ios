@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head><script src="/ios-shim.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>处理边与抽壳实体 - PrintCaddy 用户指南</title>
+    <meta name="description" content="对指定的边做倒角或圆角，为盒子、杯子和壳体抽出等壁厚的空腔。">
+    <link rel="canonical" href="/zh-cn/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="en" href="/guide/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="cs" href="/prirucka/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="da" href="/vejledning/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="de" href="/anleitung/kanten-und-aushoehlen.html">
+    <link rel="alternate" hreflang="es-ES" href="/guia-es/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="fr" href="/guide-fr/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="it" href="/it/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="hu" href="/utmutato/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="nl" href="/handleiding/randen-en-uithollen.html">
+    <link rel="alternate" hreflang="pl" href="/instrukcja/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="sl" href="/navodila/robovi-in-izdolbljenje.html">
+    <link rel="alternate" hreflang="ru" href="/ru/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="ar" href="/dalil/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="zh-CN" href="/zh-cn/edges-and-hollowing.html">
+    <link rel="alternate" hreflang="zh-TW" href="/zh-tw/edges-and-hollowing.html">
+    <meta property="og:title" content="处理边与抽壳实体 - PrintCaddy 用户指南">
+    <meta property="og:description" content="对指定的边做倒角或圆角，为盒子、杯子和壳体抽出等壁厚的空腔。">
+    <meta property="og:image" content="/assets/brand/app-social.png">
+    <link rel="icon" href="/assets/brand/app-logo.svg">
+    <script>try{var t=localStorage.getItem("layerling.theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;else if(t==="graphite"){document.documentElement.dataset.theme="dark";document.documentElement.dataset.palette="graphite"}}catch(e){}</script>
+    <style>
+:root {
+  color-scheme: light;
+  --ground: #fbf8f0; --card: #ffffff; --ink: #231a11; --muted: #7a6650; --edge: #ede4d4;
+  --accent: #ad6206; --accent-ink: #ffffff; --tint: #f6ecd9; --code: #f3ece0;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --ground: #17130e; --card: #201a13; --ink: #f1e9dc; --muted: #b3a48d; --edge: #362d21;
+    --accent: #f0a23a; --accent-ink: #1c1408; --tint: #2b2116; --code: #2a2218;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ground: #17130e; --card: #201a13; --ink: #f1e9dc; --muted: #b3a48d; --edge: #362d21;
+  --accent: #f0a23a; --accent-ink: #1c1408; --tint: #2b2116; --code: #2a2218;
+}
+/* Graphite is the dark theme with the warm browns turned grey (the program's own Graphite, see scripts/generate-graphite-theme.mjs); the orange accent stays. */
+:root[data-theme="dark"][data-palette="graphite"] {
+  --ground: #1a1a1a; --card: #202020; --ink: #e7e7e7; --muted: #8d8d8d; --edge: #303030;
+  --accent-ink: #191919; --tint: #262626; --code: #272727;
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 76px; }
+body { margin: 0; background: var(--ground); color: var(--ink); font: 16px/1.7 "Avenir Next", Avenir, "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
+a { color: var(--accent); }
+.bar { position: sticky; top: 0; z-index: 5; background: var(--ground); border-bottom: 1px solid var(--edge); }
+.bar-inner { max-width: 1100px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 14px; }
+.brand { display: flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; margin-right: auto; }
+.brand img { width: 34px; height: 34px; }
+.brand b { font-size: 19px; letter-spacing: -0.03em; }
+.brand-text { display: flex; align-items: baseline; gap: 10px; }
+.brand-note { color: var(--muted); font-size: 13px; font-weight: 600; }
+.guide-search { position: relative; flex: 0 1 280px; min-width: 0; margin: 0; }
+.guide-search input { width: 100%; padding: 7px 12px; border: 1px solid var(--edge); border-radius: 8px; background: var(--card); color: var(--ink); font: inherit; font-size: 14px; }
+.guide-search input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.guide-results { position: absolute; left: 0; right: 0; top: calc(100% + 6px); max-height: min(70vh, 460px); overflow-y: auto; background: var(--card); border: 1px solid var(--edge); border-radius: 8px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14); z-index: 7; }
+.guide-results[hidden] { display: none; }
+.guide-results a { display: block; padding: 8px 12px; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--edge); }
+.guide-results a:last-child { border-bottom: 0; }
+.guide-results a:hover, .guide-results a:focus-visible { background: var(--tint); outline: none; }
+.guide-results b { display: block; font-size: 14px; }
+.guide-results span { display: block; color: var(--muted); font-size: 13px; line-height: 1.45; }
+.guide-results mark { background: transparent; color: var(--accent); font-weight: 800; }
+.guide-results p { margin: 0; padding: 10px 12px; color: var(--muted); font-size: 14px; }
+.editor-elsewhere { max-width: 1100px; margin: 0 auto; padding: 0 16px 10px; color: var(--muted); font-size: 14px; text-align: right; }
+.editor-elsewhere[hidden] { display: none; }
+.bar a.button { padding: 7px 14px; border-radius: 8px; background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 14px; text-decoration: none; }
+.bar .lang-menu { position: relative; font-size: 14px; font-weight: 600; }
+.bar .lang-menu summary { color: var(--muted); cursor: pointer; list-style: none; }
+.bar .lang-menu summary::-webkit-details-marker { display: none; }
+.bar .lang-menu summary::after { content: " \25BE"; font-size: 11px; }
+.bar .lang-menu ul { position: absolute; right: 0; margin: 8px 0 0; padding: 4px; list-style: none; min-width: 9em; background: var(--card); border: 1px solid var(--edge); border-radius: 8px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14); }
+.bar .lang-menu a { display: block; padding: 5px 10px; border-radius: 6px; color: var(--ink); text-decoration: none; }
+.bar .lang-menu a:hover { background: var(--tint); }
+.bar .lang-menu a[aria-current] { font-weight: 800; }
+.not-translated { margin: 0 0 20px; padding: 10px 14px; border-radius: 8px; background: var(--tint); color: var(--ink); font-size: 15px; }
+.shell { max-width: 1100px; margin: 0 auto; padding: 24px 16px 72px; display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 40px; align-items: start; }
+nav.chapters { position: sticky; top: 76px; font-size: 14px; }
+nav.chapters h2 { margin: 0 0 8px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+nav.chapters ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+nav.chapters a { display: block; padding: 5px 10px; border-radius: 7px; color: var(--ink); text-decoration: none; line-height: 1.35; }
+nav.chapters a:hover { background: var(--tint); }
+nav.chapters a[aria-current="page"] { background: var(--tint); color: var(--accent); font-weight: 700; }
+main { min-width: 0; max-width: 760px; }
+h1 { margin: 0 0 8px; font-size: 34px; line-height: 1.15; letter-spacing: -0.025em; text-wrap: balance; }
+h2 { margin: 40px 0 8px; font-size: 23px; letter-spacing: -0.015em; text-wrap: balance; }
+h3 { margin: 26px 0 6px; font-size: 17px; }
+.lead { color: var(--muted); font-size: 18px; margin: 0 0 20px; }
+p, ul, ol { margin: 0 0 14px; }
+li { margin-bottom: 4px; }
+strong.ui { font-weight: 700; white-space: nowrap; }
+kbd { padding: 1px 6px; border: 1px solid var(--edge); border-bottom-width: 2px; border-radius: 5px; background: var(--card); font: 600 0.86em/1.5 ui-monospace, Consolas, monospace; }
+code { padding: 1px 5px; border-radius: 5px; background: var(--code); font: 0.9em ui-monospace, Consolas, monospace; }
+pre { overflow-x: auto; padding: 14px 16px; border-radius: 8px; background: var(--code); direction: ltr; text-align: left; }
+pre code { padding: 0; background: none; }
+figure { margin: 22px 0; }
+figure img { display: block; width: 100%; height: auto; border: 1px solid var(--edge); border-radius: 8px; background: var(--card); }
+figcaption { margin-top: 6px; color: var(--muted); font-size: 13.5px; }
+aside.tip { margin: 18px 0; padding: 12px 16px; border-radius: 8px; background: var(--tint); border: 1px solid var(--edge); }
+aside.tip > :last-child { margin-bottom: 0; }
+.table-scroll { overflow-x: auto; margin: 0 0 16px; }
+table { border-collapse: collapse; font-size: 15px; min-width: 100%; }
+table.keys { table-layout: fixed; }
+table.keys td:first-child { width: 42%; }
+th, td { padding: 7px 12px; border-bottom: 1px solid var(--edge); text-align: start; vertical-align: top; }
+th { color: var(--muted); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+/* Where a link from the program lands, the section is outlined from its heading to its end. */
+.guide-part:has(> :is(h2, h3):target) { outline: 3px solid var(--accent); outline-offset: 10px; border-radius: 6px; }
+:is(h2, h3):target { scroll-margin-top: 24px; }
+.toc { margin: 0 0 24px; padding: 12px 16px; border: 1px solid var(--edge); border-radius: 8px; background: var(--card); font-size: 14.5px; }
+.toc b { display: block; margin-bottom: 4px; color: var(--muted); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+.toc ul { margin: 0; padding-inline-start: 18px; }
+.pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 44px; padding-top: 18px; border-top: 1px solid var(--edge); }
+.pager a { display: block; max-width: 48%; padding: 10px 14px; border: 1px solid var(--edge); border-radius: 8px; background: var(--card); text-decoration: none; color: var(--ink); }
+.pager a small { display: block; color: var(--muted); font-size: 12px; }
+.pager a.next { margin-inline-start: auto; text-align: end; }
+.cards { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.cards a { display: block; height: 100%; padding: 14px 16px; border: 1px solid var(--edge); border-radius: 8px; background: var(--card); text-decoration: none; color: var(--ink); }
+.cards a:hover { border-color: var(--accent); }
+.cards b { display: block; margin-bottom: 2px; }
+.cards span { color: var(--muted); font-size: 14px; line-height: 1.45; display: block; }
+footer.note { max-width: 1100px; margin: 0 auto; padding: 0 16px 12px; color: var(--muted); font-size: 14px; }
+.site-footer { max-width: 1100px; margin: 0 auto; padding: 14px 16px 40px; border-top: 1px solid var(--edge); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px; color: var(--muted); font-size: 13px; }
+.site-footer .trademark { flex: 1 0 100%; margin: 0; font-size: 12px; line-height: 1.45; }
+.site-footer a { color: var(--muted); text-decoration: none; }
+.site-footer a:hover { color: var(--accent); text-decoration: underline; }
+.site-footer .dot { margin: 0 8px; }
+@media (max-width: 820px) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  nav.chapters { position: static; }
+  nav.chapters ol { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  h1 { font-size: 28px; }
+  .brand-note { display: none; }
+}
+@media (max-width: 720px) {
+  .bar-inner { flex-wrap: wrap; }
+  .guide-search { order: 5; flex: 1 1 100%; }
+}
+.print-link { margin: 0 0 14px; }
+.print-link a, nav.chapters .print-link a { display: flex; align-items: center; gap: 9px; padding: 9px 12px; border: 1px solid var(--accent); border-radius: 8px; background: var(--tint); color: var(--accent); font-weight: 700; line-height: 1.3; text-decoration: none; }
+.print-link a:hover, .print-link a:focus-visible, nav.chapters .print-link a:hover, nav.chapters .print-link a:focus-visible { background: var(--accent); color: var(--accent-ink); }
+.print-link svg { flex: none; }
+.print-link.in-page { margin: 0 0 22px; max-width: 360px; }
+.print-actions { margin: 0 0 24px; }
+.print-actions button { padding: 8px 16px; border: 0; border-radius: 8px; background: var(--accent); color: var(--accent-ink); font: inherit; font-weight: 700; cursor: pointer; }
+.print-chapter { margin-top: 56px; padding-top: 8px; border-top: 1px solid var(--edge); }
+.print-chapter > h2 { margin-top: 20px; font-size: 28px; }
+.print-contents { margin: 0 0 24px; padding-inline-start: 22px; columns: 2; column-gap: 32px; }
+.print-contents li { break-inside: avoid; }
+@media (max-width: 560px) { .print-contents { columns: 1; } }
+@media print {
+  @page { margin: 16mm 14mm; }
+  :root, :root[data-theme="dark"], :root[data-theme="dark"][data-palette="graphite"] {
+    color-scheme: light;
+    --ground: #ffffff; --card: #ffffff; --ink: #1a1a1a; --muted: #5c5c5c; --edge: #cfcfcf;
+    --accent: #8a4d04; --tint: #f1f1f1; --code: #f1f1f1;
+  }
+  body { font-size: 11pt; line-height: 1.55; }
+  .bar, nav.chapters, .pager, .print-actions { display: none; }
+  .shell { display: block; padding: 0; }
+  main { max-width: none; }
+  h2, h3, h4 { break-after: avoid; }
+  figure, table, pre, aside.tip { break-inside: avoid; }
+  figure img { max-height: 120mm; width: auto; max-width: 100%; }
+  .print-all .site-footer, .print-all footer.note { display: none; }
+  .print-chapter { margin-top: 0; padding-top: 0; border-top: 0; break-before: page; }
+}
+</style>
+  </head>
+  <body>
+    <header class="bar"><div class="bar-inner">
+      <a class="brand" href="/zh-cn/index.html"><img src="/assets/brand/app-logo.svg" alt=""><span class="brand-text"><b>PrintCaddy</b><span class="brand-note">用户指南</span></span></a>
+      <form class="guide-search" id="guide-search" role="search" data-index="/zh-cn/search-index.json" data-nothing="未找到结果。" data-umlauts="false"><input type="search" id="guide-search-input" name="q" placeholder="搜索指南" aria-label="搜索指南" aria-controls="guide-results" aria-expanded="false" autocomplete="off" spellcheck="false"><div class="guide-results" id="guide-results" hidden></div></form>
+      <details class="lang-menu"><summary aria-label="语言">简体中文</summary><ul><li><a href="/guide/edges-and-hollowing.html" hreflang="en" lang="en">English</a></li><li><a href="/prirucka/edges-and-hollowing.html" hreflang="cs" lang="cs">Čeština</a></li><li><a href="/vejledning/edges-and-hollowing.html" hreflang="da" lang="da">Dansk</a></li><li><a href="/anleitung/kanten-und-aushoehlen.html" hreflang="de" lang="de">Deutsch</a></li><li><a href="/guia-es/edges-and-hollowing.html" hreflang="es-ES" lang="es-ES">Español</a></li><li><a href="/guide-fr/edges-and-hollowing.html" hreflang="fr" lang="fr">Français</a></li><li><a href="/it/edges-and-hollowing.html" hreflang="it" lang="it">Italiano</a></li><li><a href="/utmutato/edges-and-hollowing.html" hreflang="hu" lang="hu">Magyar</a></li><li><a href="/handleiding/randen-en-uithollen.html" hreflang="nl" lang="nl">Nederlands</a></li><li><a href="/instrukcja/edges-and-hollowing.html" hreflang="pl" lang="pl">Polski</a></li><li><a href="/guia-pt-pt/edges-and-hollowing.html" hreflang="pt-PT" lang="pt-PT">Português de Portugal</a></li><li><a href="/guia/edges-and-hollowing.html" hreflang="pt-BR" lang="pt-BR">Português do Brasil</a></li><li><a href="/navodila/robovi-in-izdolbljenje.html" hreflang="sl" lang="sl">Slovenščina</a></li><li><a href="/kilavuz/edges-and-hollowing.html" hreflang="tr" lang="tr">Türkçe</a></li><li><a href="/ru/edges-and-hollowing.html" hreflang="ru" lang="ru">Русский</a></li><li><a href="/dalil/edges-and-hollowing.html" hreflang="ar" lang="ar">العربية</a></li><li><a href="/guide-ja/edges-and-hollowing.html" hreflang="ja" lang="ja">日本語</a></li><li><a href="/zh-cn/edges-and-hollowing.html" hreflang="zh-CN" lang="zh-CN" aria-current="true">简体中文</a></li><li><a href="/zh-tw/edges-and-hollowing.html" hreflang="zh-TW" lang="zh-TW">繁體中文</a></li></ul></details>
+      <a class="button" id="open-editor" href="/">打开编辑器</a>
+    </div><p class="editor-elsewhere" id="editor-elsewhere" role="status" hidden>编辑器已在另一个标签页中打开，请切换到那里。</p></header>
+    <div class="shell">
+      <nav class="chapters" aria-label="章节"><h2>章节</h2><p class="print-link"><a href="/zh-cn/print-all.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg><span>打印完整指南</span></a></p><ol><li><a href="/zh-cn/getting-started.html">快速上手</a></li><li><a href="/zh-cn/view-and-workplane.html">视图与工作平面</a></li><li><a href="/zh-cn/shapes.html">放置与调整形状</a></li><li><a href="/zh-cn/select-and-arrange.html">选择与排列</a></li><li><a href="/zh-cn/solids-and-holes.html">实体与孔</a></li><li><a href="/zh-cn/edges-and-hollowing.html" aria-current="page">处理边与抽壳实体</a></li><li><a href="/zh-cn/sketches.html">草图：从轮廓到实体</a></li><li><a href="/zh-cn/text.html">文字与弧形文字</a></li><li><a href="/zh-cn/threads-and-mechanics.html">螺纹、齿轮和其他零件</a></li><li><a href="/zh-cn/measuring-and-notes.html">测量与备注</a></li><li><a href="/zh-cn/printing.html">为 3D 打印做准备</a></li><li><a href="/zh-cn/files-and-saving.html">文件、保存与分享</a></li><li><a href="/zh-cn/shortcuts.html">键盘快捷键</a></li><li><a href="/zh-cn/ai-with-mcp.html">用 AI 搭建（MCP）</a></li><li><a href="/zh-cn/offline-and-install.html">安装为应用、离线使用与自托管</a></li><li><a href="/zh-cn/videos.html">关于 PrintCaddy 的视频</a></li><li><a href="/zh-cn/tablet-and-touch.html">平板与触控</a></li></ol></nav>
+      <main>
+<h1>处理边与抽壳实体</h1>
+<p class="lead">对指定的边做倒角或圆角，为盒子、杯子和壳体抽出等壁厚的空腔。</p>
+<div class="toc"><b>本页内容</b><ul><li><a href="#chamfering-and-filleting-edges">为边做倒角与圆角</a></li><li><a href="#hollowing-bodies">抽壳实体</a></li><li><a href="#offsetting-bodies">偏移实体</a></li><li><a href="#deleting-faces">删除面</a></li></ul></div>
+<section class="guide-part"><h2 id="chamfering-and-filleting-edges">为边做倒角与圆角</h2>
+<p>在打印件上，锋利的边很少好看，也并不特别结实。<strong>倒角</strong>把边斜着切掉，<strong>圆角</strong>把边磨圆。两者都作用于你点击的边。</p>
+<ol><li>选中实体（或分组）。</li><li>在功能区点击 <strong class="ui">“圆角”</strong> 或 <strong class="ui">“倒角”</strong>，按 <kbd>B</kbd> 打开圆角、按 <span dir="ltr"><kbd>Shift</kbd>+<kbd>B</kbd></span> 打开倒角，或右键点击实体并从菜单中选择。</li><li>实体的边会亮起。点击要处理的边。再点一次可将该边取消。按住 <kbd>Shift</kbd> 可单独添加或移除一条边。</li><li>设置尺寸，然后用 <strong class="ui">“应用”</strong> 或 <kbd>Enter</kbd> 确认。之后窗口会带着相同尺寸停在新实体上，马上就能接着做下一个圆角或倒角；<strong class="ui">“完成”</strong>、<kbd>Esc</kbd> 或叉号可关闭它。按住 <kbd>Shift</kbd> 或 <kbd>Ctrl</kbd> 点击 <strong class="ui">“顶部边”</strong>、<strong class="ui">“底部边”</strong>、<strong class="ui">“竖直边”</strong> 或 <strong class="ui">“水平边”</strong> 时，这些边会加入已选的边，而不是替换它们。</li></ol>
+<figure><img src="/guide/img/fillet-preview.webp" alt="“圆角边”工具：已选中所有锋利的边，图中显示 4 mm 半径的预览。" width="1280" height="800" loading="lazy"><figcaption>“圆角边”工具：已选中所有锋利的边，图中显示 4 mm 半径的预览。</figcaption></figure>
+<p>面板位于右上角。如果它挡住了你要点击的边，抓住标题栏把它拖开；下次它也会在那里打开，<strong class="ui">“抽壳”</strong> 和 <strong class="ui">“阵列”</strong> 同样如此。双击标题栏可将其复位。</p>
+<p>面板打开时从形状列表中选取形状会关闭面板，不应用任何更改，你点过的边也会被遗忘。这一次点击会放置新形状，而不是选取边。</p>
+<p>面板中包括：</p>
+<ul><li><strong class="ui">“所有锐边”</strong> 一次选中所有边，<strong class="ui">“清除”</strong> 清空选择。</li><li>圆角用 <strong><strong class="ui">“半径”</strong></strong>。倒角则设置 <strong class="ui">“距离”</strong> 或 <strong class="ui">“角度”</strong>。</li><li><strong class="ui">“可变半径”</strong>（仅圆角）让半径沿一条边变化：一端小，另一端大，中间匀速过渡，例如直壁与斜壁相交处。先点击单条边，再设置 <strong class="ui">“起点半径”</strong> 和 <strong class="ui">“终点半径”</strong>。哪一端算起点取决于这条边是如何生成的；如果较大的半径出现在错误的一端，可用 <strong class="ui">“交换两端”</strong> 对调。它一次只处理一条边，所以多条边要依次倒圆。<strong class="ui">“编辑”</strong> 可把两个数值调回来。</li><li><strong class="ui">“锐边阈值”</strong> 决定哪些边算作锋利的边。设为 25° 时，只有明显的折角才算边，平缓过渡不受影响。</li><li><strong class="ui">“竖直边”</strong> 选取竖直向上的边，例如长方体的角：一次圆角就能把所有竖直的角一起倒圆。</li><li><strong class="ui">“顶部边”</strong> 只选取实体最顶部的边。做饼干模具时这是快捷做法：在草图里用描边画出轮廓，再对顶部边做倒角。<strong class="ui">“角度”</strong> 设置倒角的陡峭程度；倒角深度不会超过壁厚。</li><li><strong class="ui">“底部边”</strong> 只选取实体最底部的边，是 <strong class="ui">“顶部边”</strong> 的镜像。想只对零件底部做圆角或倒角时，这是快捷做法。</li><li>在倒角窗口顶部 <strong class="ui">“倒角”</strong> 旁选择的 <strong class="ui">“圆滑倒角”</strong>，用于做零件可打印的底部：在平台上是一段倒角，朝壁面方向相切地过渡为圆角，这样最初几层不需要支撑，边的收尾依然柔和。<strong class="ui">“距离”</strong> 是底部占用的高度，<strong class="ui">“角度”</strong>（15° 到 75°）是平台处倒角的陡峭程度。用 <strong class="ui">“底部边”</strong> 选取边。</li><li><strong class="ui">“仅可见边”</strong> 隐藏从你的视角看位于实体背后的边。默认情况下所有边都会透过实体显示，零件复杂时容易看花眼；打开此开关后，你只能看到并点击朝向你的边。转动视图才能处理其余的边。以红色显示的边（见下文）始终可见。</li><li><strong class="ui">“单击还会选中平滑延续的边”</strong>：点击时还会一并选取彼此平滑相接的边，例如带圆角的面周围的所有边。这个开关只决定点击选取哪些边：CAD 内核总会让倒角或圆角沿着这类平滑延续的边延伸下去。面板会告诉你它还沿多少条边延伸。</li><li><strong class="ui">“缩放时保持边尺寸”</strong> 即使之后缩放实体，也让倒角或圆角保持原来的大小。</li><li><strong class="ui">“预览质量”</strong>（<strong class="ui">“草稿”</strong>、<strong class="ui">“标准”</strong> 或 <strong class="ui">“精细”</strong>）决定预览的计算精度。零件复杂时 <strong class="ui">“草稿”</strong> 更快。</li></ul>
+<p>调整尺寸时，PrintCaddy 会重新计算预览。这可能需要一点时间。你可以继续调整；最终计算的是你最后选择的数值。</p>
+<p>如果尺寸对这条边来说太大，PrintCaddy 会提示并建议一个更小的值。通常少一两毫米就够了。在尖锐的夹角处，圆角需要的空间比半径看起来更大。屏幕较小时，面板会自动向下滚动，让提示信息显示出来。</p>
+<p>如果原本可行的选择在又点了一条边后失败，那条边会变红并画得更粗：在当前尺寸下，它无法与其他边一起处理。再点一次可将它取消，或把尺寸调小。提示仍在时继续点击其他边，最早出问题的那条会保持红色。如果没有先前可行的选择——比如第一次点击，或你刚调大的尺寸——则单独处理也失败的边会变红；若只是它们的组合失败，则全部变红。</p>
+<p>指针下方的边也会画得更粗，方便你看出点击会选中哪一条。</p>
+<section class="guide-part"><h3 id="taking-an-edge-treatment-back">撤销边处理</h3>
+<p>处理过的实体随时可以再次处理。重新选中它并打开工具——圆角、倒角或抽壳都会显示这份列表：在 <strong class="ui">“撤销边特征”</strong> 下可以看到它上面已经有哪些处理。<strong class="ui">“撤销”</strong> 可撤销单次处理。注意：如果上面还叠着更新的处理，它们会一并撤销，面板会告诉你有多少个。</p>
+<p>倒角、圆角或抽壳旁边还有 <strong class="ui">“编辑”</strong>。它以同样的方式撤销该处理，但会立刻用相同的边和原来的数值重新打开工具。你改完数值再应用即可：3 mm 的圆角变成 5 mm，无需再点一遍边。如果上面叠着更新的处理，这里它们也会一并撤销。这适用于从今往后做的边处理；更早的处理只提供撤销，分组中的单个部件也是如此。</p>
+<p>对分组，比如带孔圆柱体，被处理的边属于最终成形的实体，而不属于其中某个部件。因此分组会变成一个实体。<strong class="ui">“取消分组”</strong> 对它仍然有效：它会先撤销边处理特征，再解散分组，整个过程一步完成，<span dir="ltr"><kbd>Ctrl</kbd>+<kbd>Z</kbd></span> 即可撤销。若按上文所述撤销该处理，分组会带着所有部件恢复。最省事的做法是把边处理留到最后。螺纹也是如此：边工具把螺纹当作它的精确实体，所以带螺纹孔的方块可以在螺纹就位的情况下倒圆边。计算螺纹的边比普通形状更耗时，M6 需要几秒，G1/2 管螺纹约需半分钟。</p>
+<aside class="tip"><p><strong>值得了解：</strong> PrintCaddy 对圆角和倒角使用真正的 CAD 几何，而不只是三角网格。因此在 STEP 导出中，倒圆的边依然是倒圆的边。</p></aside>
+<p>以 STEP 导入的零件也会保留其 CAD 几何：倒角、圆角和抽壳都作用在文件中的实体上，无论屏幕上把零件画得多精细。STL、OBJ 和 3MF 只带来三角面，绘制精细的零件可能对边工具来说过于稠密。如果某个零件同时有 STEP 版本，就导入它。</p>
+</section></section><section class="guide-part"><h2 id="hollowing-bodies">抽壳实体</h2>
+<p>盒子、杯子、壳体和盖子都有一个共同点：内部是空的，壁厚均匀。这正是 <strong class="ui">“抽壳”</strong> 做的事。</p>
+<ol><li>选中实体并点击 <strong class="ui">“抽壳”</strong>，或右键点击实体并从菜单中选择。</li><li>设置 <strong class="ui">“壁厚”</strong>。</li><li>在 <strong class="ui">“开口侧”</strong> 下打开要保持开口的各个面：<strong class="ui">“顶部”</strong>、<strong class="ui">“底部”</strong>、<strong class="ui">“前”</strong>、<strong class="ui">“后”</strong>、<strong class="ui">“左”</strong> 或 <strong class="ui">“右”</strong>，想开几个都行——只开 <strong class="ui">“前”</strong> 会做出抽屉槽，开 <strong class="ui">“左”</strong> 和 <strong class="ui">“右”</strong> 则做成通道。一个面都不开时，实体四周封闭，中间留有空腔。<strong class="ui">“封闭（内腔）”</strong> 一键关掉所有面。面板打开时 <strong class="ui">“顶部”</strong> 已经处于打开状态；再点击它就会把顶部重新封上。四周封闭的实体从外面看没有变化：剖视图能显示空腔。</li><li>选择 <strong class="ui">“内部边”</strong> 是 <strong class="ui">“圆角”</strong> 还是 <strong class="ui">“尖角”</strong>。</li><li>点击 <strong class="ui">“抽壳”</strong>。</li></ol>
+<figure><img src="/guide/img/hollow-panel.webp" alt="抽壳面板，包含壁厚、每个保持开口的面各自的开关，以及内壁的边。" width="1280" height="800" loading="lazy"><figcaption>抽壳面板，包含壁厚、每个保持开口的面各自的开关，以及内壁的边。</figcaption></figure>
+<p>壁向内部生长。外部保持不变。</p>
+<p><strong class="ui">“内部边”</strong> 只在内壁分开的地方才有影响——实体上的台阶处或开口周围。普通长方体空腔的角在两种设置下都是尖的。想要圆润的内壁，先对实体的外边倒圆（见上文），再抽壳：内壁会按半径减去壁厚来跟随。如果圆润的内壁无法生成，例如轮廓由大量很短的直线段组成时（比如描摹的图形），PrintCaddy 会改用尖锐的内角来构建同样的抽壳实体。</p>
+<figure><img src="/guide/img/hollow-result.webp" alt="结果：壁厚 3 mm、顶部开口的壳体。" width="1280" height="800" loading="lazy"><figcaption>结果：壁厚 3 mm、顶部开口的壳体。</figcaption></figure>
+<figure><img src="/guide/img/hollow-sides.webp" alt="同一个盒子，只打开前面：一个抽屉槽。" width="1280" height="800" loading="lazy"><figcaption>同一个盒子，只打开前面：一个抽屉槽。</figcaption></figure>
+<p>每个开口面都要求实体在该侧的最边缘有一块平面。因此球体和自由曲面形状不能这样抽壳。如果壁厚对实体来说太厚，PrintCaddy 会提示并要求更小的值。上下边也做了圆角的长方体就是这种情况：它的壁厚必须明显小于那个圆角，或者先把圆角设为 0。</p>
+<p>带凹槽的实体——比如把长方体与一个抬高的孔分组，做出不通透的孔——也能抽壳，顶部开口：凹槽周围的壁同样会被抽空，于是外壁与凹槽之间留下一圈顶部开口的空腔，凹槽底面之下还有一层薄空腔。</p>
+<p><strong>以尖端收尾的实体，</strong>例如圆锥或旋转出的三角形，顶部没有可以保持开口的平面。全封闭空腔在这里也行不通，因为尖端无法向内偏移：即使壁厚只有 1 mm，也会提示无法使用这样的壁厚。改为在旋转之前把壁画进轮廓：复制轮廓，将副本等比缩小，把它放到大轮廓中间并用它切掉大轮廓，再整体旋转（见“草图”章节的“旋转”一节）。两条轮廓之间的距离就是壁厚。</p>
+<p>如果之后调整已抽壳实体的尺寸，PrintCaddy 会立即按新尺寸重新抽壳。壁厚保持你选择的厚度，圆形实体也一样。圆柱体若某一方向拉得比另一方向多，就会变成椭圆。</p>
+<aside class="tip"><p><strong>提示：</strong> 使用 0.4 mm 喷嘴时，1.2 到 2 mm 的壁厚是个不错的起点：够薄以节省材料，够厚以保证零件结实。</p></aside>
+</section><section class="guide-part"><h2 id="offsetting-bodies">偏移实体</h2>
+<p>实体的每个面都可以向外或向内移动相同的距离。配合、盖子或卡扣连接需要的正是这个：四周留出 0.1 到 0.3 mm 的间隙，而各个特征留在原位，这是缩放做不到的。</p>
+<ol><li>选择一个实体并点击 <strong class="ui">“偏移”</strong>，或在实体上点右键后在菜单中选择。</li><li>选择 <strong class="ui">“放大”</strong> 或 <strong class="ui">“缩小”</strong>，并设置 <strong class="ui">“距离”</strong>。</li><li><strong class="ui">“外角”</strong> 决定外角：圆角让偏移后的曲面在外角保持圆滑，尖角让各面延伸直到相交。</li><li>勾选 <strong class="ui">“保留原件，并把偏移后的实体作为孔添加”</strong> 可保持零件不变，并把放大后的实体作为已经是孔的副本。把这个孔和配合件编组，它就切出你选定的间隙。</li><li>点击 <strong class="ui">“偏移”</strong>。</li></ol>
+<p>不勾选时偏移的是实体本身。它会变成固定的精确实体，就像倒角之后：面板顶部的列表可以撤回偏移，<strong class="ui">“编辑”</strong> 会用原来的距离重新打开工具。只有精确的 CAD 实体可以偏移 - 长方体、圆柱体和其他形状、它们的组、导入的 STEP 零件。只是三角网格的实体，如许多 STL 导入，往往不行。对实体来说过大的距离，例如缩小到超过最薄的壁，会被拒绝。</p>
+</section><section class="guide-part"><h2 id="deleting-faces">删除面</h2>
+<p>挡路的圆角、位置不对的孔、不再需要的凸台：<strong class="ui">“删除面”</strong> 能把它从实体上去掉，而无需重建实体。</p>
+<ol><li>选中实体并点击 <strong class="ui">“删除面”</strong>，或右键点击实体并从菜单中选择。</li><li>点击要删除对象的每一个面：圆角的面、孔的壁面、凸台的侧面和顶面。选中的面会亮起；再点一次可取消。面板会统计面的数量。</li><li>点击 <strong class="ui">“删除”</strong> 或按 <kbd>Delete</kbd>。<kbd>Esc</kbd> 关闭工具，不做任何更改。</li></ol>
+<p>被删面周围的面会延伸，直到补上缺口。顶部边做了倒圆的长方体会恢复锋利的边，孔被填上，凸台消失。实体保持精确，因此还能再做圆角和倒角，STEP 导出也会保留真实的曲面。<span dir="ltr"><kbd>Ctrl</kbd>+<kbd>Z</kbd></span> 一步撤销删除。它也会与圆角、倒角一起列在 <strong class="ui">“撤销边特征”</strong> 下，在那里可用 <strong class="ui">“撤销”</strong> 撤销；它没有 <strong class="ui">“编辑”</strong>。对分组而言，结果是一个实体，与边处理相同。</p>
+<p>选中要删除对象的每一个面，而且只选这些面。如果周围的面无法补上缺口，PrintCaddy 会提示，且不做任何更改：例如长方体的一个主侧面，没有能顶替它的相邻面。只删除凹槽的底面，会让它变成通透的孔，因为凹槽的壁会一直延伸到另一侧。</p>
+<p><strong class="ui">“删除面”</strong> 需要精确的面：它适用于以 STEP 导入的零件和 PrintCaddy 的形状。凡是 PrintCaddy 以网格保存的都没有精确面：导入的 STL、OBJ 或 3MF，分割、包裹或简化过的实体，或者非常精细的形状，例如很长的文字。能导入 STEP 时就导入 STEP。对精细的导入零件，少数几个面也可能超出 CAD 内核的处理能力：45 秒后删除会被中止，且不做任何更改。如果实体在边处理之后调整了尺寸，同时保留了边的尺寸，那么在新尺寸下它没有精确的面，直到撤销这次尺寸调整。</p></section>
+<div class="pager"><a href="/zh-cn/solids-and-holes.html"><small>上一章</small>实体与孔</a><a class="next" href="/zh-cn/sketches.html"><small>下一章</small>草图：从轮廓到实体</a></div>
+      </main>
+    </div>
+    <footer class="note">本指南随程序一同完善。如有缺漏或错误，请到</footer>
+    <footer class="site-footer"><div></div><div><a href="/source/">Source code &amp; license (AGPL-3.0)</a></div><p class="trademark">Tinkercad 是 Autodesk, Inc. 的商标。PrintCaddy 是一个独立项目，与 Autodesk 无关联，也未获其认可或赞助。</p><p class="trademark">PrintCaddy – Based on layerling by henmedia (github.com/henmedia/layerling), licensed under the GNU AGPL-3.0. Copyright © henmedia and the layerling contributors.</p></footer>
+    <script>(function(){var b=document.getElementById("open-editor");if(!b||typeof BroadcastChannel==="undefined")return;var elsewhere=false,c=new BroadcastChannel("layerling-tabs"),id="guide-"+Math.random().toString(36).slice(2);c.onmessage=function(e){var m=e.data;if(m&&m.kind==="here"&&m.tabId!==id&&!elsewhere){elsewhere=true;b.textContent="返回编辑器";}};c.postMessage({kind:"ask",tabId:id});b.addEventListener("click",function(e){if(!elsewhere)return;e.preventDefault();window.close();setTimeout(function(){elsewhere=false;b.textContent="打开编辑器";var n=document.getElementById("editor-elsewhere");if(n)n.hidden=false;},400);});})();</script>
+    <script>
+function guideFold(text        )         {
+  var out = "";
+  for (var i = 0; i < text.length; i++) {
+    var letter = text.charAt(i).toLowerCase().normalize("NFD").charAt(0);
+    // "ł" has no decomposition, so it is mapped by hand (Polish): one letter in, one letter out.
+    out += letter === "ł" ? "l" : letter;
+  }
+  return out;
+}
+function guideForms(word        , umlauts         )           {
+  var forms = [word];
+  if (umlauts) { var plain = word.split("ae").join("a").split("oe").join("o").split("ue").join("u"); if (plain !== word) forms.push(plain); }
+  if (word.indexOf("ss") >= 0) forms.push(word.split("ss").join(String.fromCharCode(223)));
+  if (word.indexOf(String.fromCharCode(223)) >= 0) forms.push(word.split(String.fromCharCode(223)).join("ss"));
+  return forms;
+}
+function guideFind(text        , forms          , from        )                    {
+  var best                    = null;
+  for (var i = 0; i < forms.length; i++) { var k = text.indexOf(forms[i], from); if (k >= 0 && (!best || k < best.at)) best = { at: k, len: forms[i].length }; }
+  return best;
+}
+function guidePrepare(entries                    )                  {
+  return entries.map(function (e) { return { e: e, c: guideFold(e.c), h: guideFold(e.h), t: guideFold(e.t) }; });
+}
+function guideTokens(query        )           {
+  return guideFold(query).split(" ").filter(function (w) { return w.length > 0; });
+}
+function guideSearch(prepared                 , query        , limit         , umlauts          )             {
+  var tokens = guideTokens(query); if (!tokens.length) return [];
+  var forms = tokens.map(function (w) { return guideForms(w, !!umlauts); }), phrase = guideForms(tokens.join(" "), !!umlauts), found             = [];
+  prepared.forEach(function (p) {
+    var score = 0;
+    for (var i = 0; i < tokens.length; i++) {
+      var inH = guideFind(p.h, forms[i], 0), inC = guideFind(p.c, forms[i], 0), at = guideFind(p.t, forms[i], 0);
+      if (!inH && !inC && !at) return;
+      if (inH) score += 10;
+      if (inC) score += 3;
+      if (at) { score += 1; var n = 0, k                    = at; while (k && n < 5) { n++; k = guideFind(p.t, forms[i], k.at + k.len); } score += n * 0.3; }
+    }
+    if (tokens.length > 1 && (guideFind(p.h, phrase, 0) || guideFind(p.t, phrase, 0))) score += 6;
+    found.push({ entry: p.e, score: score, folded: p.t, forms: forms });
+  });
+  found.sort(function (a, b) { return b.score - a.score; });
+  return found.slice(0, limit || 8);
+}
+
+function guideSnippet(hit){
+  var text=hit.entry.t,first=-1;
+  hit.forms.forEach(function(group){var f=guideFind(hit.folded,group,0);if(f&&(first<0||f.at<first))first=f.at;});
+  var from=first>40?first-40:0;
+  if(from>0){var gap=text.indexOf(" ",from);if(gap>=0&&gap<first)from=gap+1;}
+  var end=Math.min(text.length,from+150),marked=[];
+  for(var i=from;i<end;i++)marked.push(false);
+  hit.forms.forEach(function(group){var f=guideFind(hit.folded,group,from);while(f&&f.at<end){for(var j=f.at;j<f.at+f.len&&j<end;j++)marked[j-from]=true;f=guideFind(hit.folded,group,f.at+f.len);}});
+  var parts=[],run="",state=false;
+  if(from>0)parts.push({text:"... ",mark:false});
+  for(var m=0;m<marked.length;m++){if(marked[m]!==state&&run){parts.push({text:run,mark:state});run="";}state=marked[m];run+=text.charAt(from+m);}
+  if(run)parts.push({text:run,mark:state});
+  if(end<text.length)parts.push({text:" ...",mark:false});
+  return parts;
+}
+(function(){
+  var form=document.getElementById("guide-search");if(!form||!window.fetch)return;
+  var input=form.querySelector("input"),box=document.getElementById("guide-results"),prepared=null,loading=null;
+  function load(){if(!loading){loading=fetch(form.getAttribute("data-index")).then(function(r){return r.json();}).then(function(list){prepared=guidePrepare(list);}).catch(function(){loading=null;});}return loading;}
+  function close(){box.hidden=true;input.setAttribute("aria-expanded","false");}
+  function render(){
+    if(!guideTokens(input.value).length){close();return;}
+    if(!prepared){load().then(function(){if(prepared)render();});return;}
+    var hits=guideSearch(prepared,input.value,8,form.getAttribute("data-umlauts")==="true");
+    box.textContent="";
+    if(!hits.length){var none=document.createElement("p");none.textContent=form.getAttribute("data-nothing");box.appendChild(none);}
+    hits.forEach(function(hit){
+      var link=document.createElement("a"),title=document.createElement("b"),line=document.createElement("span");
+      link.href=hit.entry.u;
+      title.textContent=hit.entry.h?hit.entry.c+" > "+hit.entry.h:hit.entry.c;
+      guideSnippet(hit).forEach(function(part){if(part.mark){var mark=document.createElement("mark");mark.textContent=part.text;line.appendChild(mark);}else line.appendChild(document.createTextNode(part.text));});
+      link.appendChild(title);link.appendChild(line);box.appendChild(link);
+    });
+    box.hidden=false;input.setAttribute("aria-expanded","true");
+  }
+  input.addEventListener("input",render);
+  input.addEventListener("focus",function(){load();if(input.value)render();});
+  input.addEventListener("keydown",function(e){
+    if(e.key==="ArrowDown"){var first=box.querySelector("a");if(first){e.preventDefault();first.focus();}}
+    else if(e.key==="Escape"){input.value="";close();}
+  });
+  form.addEventListener("submit",function(e){e.preventDefault();var first=box.querySelector("a");if(first)window.location.href=first.href;});
+  box.addEventListener("keydown",function(e){
+    var current=document.activeElement;
+    if(e.key==="ArrowDown"&&current.nextElementSibling){e.preventDefault();current.nextElementSibling.focus();}
+    else if(e.key==="ArrowUp"){e.preventDefault();if(current.previousElementSibling)current.previousElementSibling.focus();else input.focus();}
+    else if(e.key==="Escape"){input.focus();close();}
+  });
+  box.addEventListener("click",close);
+  document.addEventListener("click",function(e){if(!form.contains(e.target))close();});
+})();
+</script>
+  </body>
+</html>

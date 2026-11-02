@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" font-family="Arial,Helvetica,sans-serif" font-size="12">
+<rect x="1" y="1" width="318" height="178" rx="10" fill="#f6f8fb" stroke="#c9d3df"/>
+<rect x="110" y="10" width="100" height="160" rx="14" fill="#fff" stroke="#999" stroke-width="2"/>
+<rect x="120" y="24" width="80" height="14" rx="7" fill="#eee"/><text x="126" y="35" font-size="9" fill="#777">tinkercad.com</text>
+<rect x="122" y="140" width="76" height="20" rx="4" fill="#f1f3f4"/><text x="132" y="154" font-size="10" fill="#1a73e8" font-weight="bold">☆ Bookmarks</text>
+<text x="10" y="40" fill="#333" font-weight="bold">1. Long-press</text><text x="10" y="56" fill="#333">“Copy the code”</text>
+<text x="10" y="84" fill="#333" font-weight="bold">2. Add any</text><text x="10" y="100" fill="#333">bookmark, then</text><text x="10" y="116" fill="#333">edit it: paste</text><text x="10" y="132" fill="#333">into the address</text>
+<text x="220" y="60" fill="#e8710a" font-weight="bold">3. In Tinkercad,</text><text x="220" y="76" fill="#e8710a">open the</text><text x="220" y="92" fill="#e8710a">bookmark</text>
+<path d="M240 100 C230 130 215 145 200 150" stroke="#e8710a" stroke-width="3" fill="none" marker-end="url(#a)"/><defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#e8710a"/></marker></defs>
+</svg>

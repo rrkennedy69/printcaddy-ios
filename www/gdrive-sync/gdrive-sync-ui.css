@@ -1,0 +1,8 @@
+.pcs-w{position:fixed;right:16px;bottom:16px;z-index:9999;font:13px system-ui,sans-serif;background:#fff;color:#222;border:1px solid #ccd;border-radius:10px;box-shadow:0 4px 16px #0002;padding:8px 10px;display:flex;gap:8px;align-items:center}
+.pcs-w button{font:inherit;border:1px solid #bbc;background:#f6f7fb;border-radius:6px;padding:4px 8px;cursor:pointer}
+.pcs-dot{width:9px;height:9px;border-radius:50%;background:#999}
+.pcs-saved .pcs-dot,.pcs-signed-in .pcs-dot{background:#2a2}.pcs-saving .pcs-dot,.pcs-pending .pcs-dot,.pcs-connecting .pcs-dot{background:#e90}.pcs-error .pcs-dot{background:#d33}.pcs-offline .pcs-dot{background:#888}
+.pcs-dlg{position:fixed;inset:0;background:#0005;z-index:10000;display:flex;align-items:center;justify-content:center}
+.pcs-box{background:#fff;color:#222;border-radius:10px;padding:16px;min-width:320px;max-width:90vw;max-height:80vh;overflow:auto;font:13px system-ui,sans-serif}
+.pcs-box li{display:flex;justify-content:space-between;gap:10px;padding:4px 0;border-bottom:1px solid #eee}
+.pcs-reconnect .pcs-dot{background:#e90}
