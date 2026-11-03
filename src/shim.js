@@ -132,6 +132,18 @@ if (Capacitor.isNativePlatform()) {
     } catch (e) { return { available: false, error: String(e && e.message || e) }; }
   }
   async function provisioning() { try { return await Native.provisioning(); } catch (e) { return { found: false }; } }
+  // Generic native bridge: web code feature-detects and calls plugins directly, so new features ship as web updates.
+  const P = (window.Capacitor && window.Capacitor.Plugins) || {};
+  window.PrintCaddyNativeAPI = {
+    version: 2,
+    plugins: P,
+    has: (name) => !!(P[name]),
+    call: (plugin, method, args) => P[plugin] && typeof P[plugin][method] === "function" ? P[plugin][method](args || {}) : Promise.reject(new Error("unavailable: " + plugin + "." + method)),
+  };
+  App.addListener("appUrlOpen", (ev) => {
+    const u = String(ev && ev.url || "");
+    if (u.startsWith("file:")) window.dispatchEvent(new CustomEvent("printcaddy:open-url", { detail: { url: u } }));
+  });
   window.PrintCaddyApp = { checkNative, provisioning, ipaUrl: IPA_URL, info: () => ({ webBuild: bundled, nativeVersion }), check, install, nativeUpdateUrl: NATIVE_URL, altStoreSourceUrl: ALTSTORE_URL };
   if (!sessionStorage.getItem("pc-update-checked")) {
     sessionStorage.setItem("pc-update-checked", "1");

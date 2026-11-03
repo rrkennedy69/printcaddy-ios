@@ -3,6 +3,7 @@ import Capacitor
 import UIKit
 import WebKit
 import AuthenticationServices
+import UniformTypeIdentifiers
 
 /// Native helpers for the PrintCaddy iPad app. JS name: PrintCaddyNative.
 @objc(PrintCaddyNativePlugin)
@@ -13,6 +14,8 @@ public class PrintCaddyNativePlugin: CAPPlugin, CAPBridgedPlugin, UIDocumentPick
         CAPPluginMethod(name: "provisioning", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "exportFile", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "authenticate", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "openFiles", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "capabilities", returnType: CAPPluginReturnPromise),
     ]
     private var exportCall: CAPPluginCall?
     private var authSession: ASWebAuthenticationSession?
@@ -59,10 +62,53 @@ public class PrintCaddyNativePlugin: CAPPlugin, CAPBridgedPlugin, UIDocumentPick
             self.bridge?.viewController?.present(picker, animated: true)
         }
     }
+    private var openCall: CAPPluginCall?
+    /// Files app open picker; returns [{name, size, data(base64)}]. Generic: any type, optional multiple.
+    @objc func openFiles(_ call: CAPPluginCall) {
+        let exts = call.getArray("extensions", String.self) ?? []
+        var types: [UTType] = exts.compactMap { UTType(filenameExtension: $0) }
+        if types.isEmpty { types = [.item] }
+        DispatchQueue.main.async {
+            let picker = UIDocumentPickerViewController(forOpeningContentTypes: types, asCopy: true)
+            picker.allowsMultipleSelection = call.getBool("multiple") ?? false
+            picker.delegate = self
+            self.openCall = call
+            self.bridge?.viewController?.present(picker, animated: true)
+        }
+    }
+    /// Device facts for the web layer (feature-detect instead of shipping new native code).
+    @objc func capabilities(_ call: CAPPluginCall) {
+        DispatchQueue.main.async {
+            let d = UIDevice.current
+            call.resolve([
+                "model": d.model, "system": d.systemVersion,
+                "maxFps": UIScreen.main.maximumFramesPerSecond,
+                "scale": UIScreen.main.nativeScale,
+                "memory": ProcessInfo.processInfo.physicalMemory,
+                "cores": ProcessInfo.processInfo.activeProcessorCount,
+                "pencilOnly": UIPencilInteraction.prefersPencilOnlyDrawing,
+                "lowPower": ProcessInfo.processInfo.isLowPowerModeEnabled,
+                "nativeApi": 2
+            ])
+        }
+    }
     public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        if let c = openCall {
+            openCall = nil
+            var files: [[String: Any]] = []
+            for u in urls {
+                let ok = u.startAccessingSecurityScopedResource()
+                defer { if ok { u.stopAccessingSecurityScopedResource() } }
+                if let data = try? Data(contentsOf: u) {
+                    files.append(["name": u.lastPathComponent, "size": data.count, "data": data.base64EncodedString()])
+                }
+            }
+            c.resolve(["files": files]); return
+        }
         exportCall?.resolve(["saved": true, "url": urls.first?.absoluteString ?? ""]); exportCall = nil
     }
     public func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        if let c = openCall { openCall = nil; c.resolve(["files": []]); return }
         exportCall?.resolve(["saved": false]); exportCall = nil
     }
 

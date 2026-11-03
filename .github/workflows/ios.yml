@@ -41,6 +41,29 @@ jobs:
           $B -c "Add :CFBundleURLTypes:0:CFBundleURLName string com.rrkennedy.printcaddy" $P
           $B -c "Add :CFBundleURLTypes:0:CFBundleURLSchemes array" $P
           $B -c "Add :CFBundleURLTypes:0:CFBundleURLSchemes:0 string printcaddy" $P
+          # Broad, stable capability set added once so future features ship as web updates.
+          for kv in "NSCameraUsageDescription:PrintCaddy uses the camera to photograph parts and references." \
+                    "NSPhotoLibraryUsageDescription:PrintCaddy imports images for tracing and textures." \
+                    "NSPhotoLibraryAddUsageDescription:PrintCaddy saves renders to your photo library." \
+                    "NSMicrophoneUsageDescription:PrintCaddy uses the microphone for voice commands." \
+                    "NSLocalNetworkUsageDescription:PrintCaddy finds and sends jobs to 3D printers on your network."; do
+            $B -c "Delete :${kv%%:*}" $P || true; $B -c "Add :${kv%%:*} string ${kv#*:}" $P
+          done
+          $B -c "Delete :NSBonjourServices" $P || true
+          $B -c "Add :NSBonjourServices array" $P
+          i=0; for s in _http._tcp _octoprint._tcp _ipp._tcp _bambu._tcp _moonraker._tcp; do $B -c "Add :NSBonjourServices:$i string $s" $P; i=$((i+1)); done
+          $B -c "Add :NSAppTransportSecurity dict" $P || true
+          $B -c "Add :NSAppTransportSecurity:NSAllowsLocalNetworking bool true" $P || true
+          $B -c "Add :NSAppTransportSecurity:NSAllowsArbitraryLoadsInWebContent bool true" $P || true
+          $B -c "Delete :CFBundleDocumentTypes" $P || true
+          $B -c "Add :CFBundleDocumentTypes array" $P
+          $B -c "Add :CFBundleDocumentTypes:0 dict" $P
+          $B -c "Add :CFBundleDocumentTypes:0:CFBundleTypeName string 3D model" $P
+          $B -c "Add :CFBundleDocumentTypes:0:CFBundleTypeRole string Editor" $P
+          $B -c "Add :CFBundleDocumentTypes:0:LSHandlerRank string Alternate" $P
+          $B -c "Add :CFBundleDocumentTypes:0:LSItemContentTypes array" $P
+          $B -c "Add :CFBundleDocumentTypes:0:LSItemContentTypes:0 string public.data" $P
+          $B -c "Add :CFBundleDocumentTypes:0:LSItemContentTypes:1 string public.image" $P
           ICON=$(ls ios/App/App/Assets.xcassets/AppIcon.appiconset/*.png | head -1)
           cp resources/icon-1024.png "$ICON"
           sed -i '' 's/TARGETED_DEVICE_FAMILY = .*;/TARGETED_DEVICE_FAMILY = "1,2";/' ios/App/App.xcodeproj/project.pbxproj
