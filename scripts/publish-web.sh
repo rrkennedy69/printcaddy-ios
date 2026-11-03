@@ -11,5 +11,5 @@ gh release view web-latest >/dev/null 2>&1 || gh release create web-latest --tit
 gh release upload web-latest "$ZIP" --clobber
 gh release upload web-latest web.json --clobber
 # keep only the newest 3 bundles
-gh release view web-latest --json assets -q '.assets[].name' | grep '^web-.*\.zip$' | sort | head -n -3 | while read -r a; do gh release delete-asset web-latest "$a" -y; done
+gh release view web-latest --json assets -q '.assets[].name' | grep '^web-.*\.zip$' | sort -r | tail -n +4 | while read -r a; do gh release delete-asset web-latest "$a" -y; done
 echo "published web bundle $BUILD"
