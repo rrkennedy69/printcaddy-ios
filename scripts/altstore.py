@@ -10,7 +10,7 @@ print(json.dumps({
     "iconURL": f"https://raw.githubusercontent.com/{repo}/main/resources/icon-1024.png",
     "versions": [{"version": ver, "date": datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
       "localizedDescription": f"Web build {web}", "downloadURL": f"https://github.com/{repo}/releases/download/{tag}/PrintCaddy.ipa",
-      "size": int(size), "minOSVersion": "14.0"}],
+      "size": int(size), "minOSVersion": "15.0"}],
     "version": ver, "downloadURL": f"https://github.com/{repo}/releases/download/{tag}/PrintCaddy.ipa", "size": int(size),
   }],
 }, indent=2))

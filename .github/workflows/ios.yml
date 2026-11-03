@@ -17,7 +17,9 @@ jobs:
         run: scripts/make-www.sh site && rm -rf site
       - name: Add iOS platform
         run: |
-          npx cap add ios
+          npx cap add ios || true   # pod install can fail here until the deployment target is raised
+          sed -i '' "s/platform :ios, '[0-9.]*'/platform :ios, '15.0'/" ios/App/Podfile
+          sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*;/IPHONEOS_DEPLOYMENT_TARGET = 15.0;/' ios/App/App.xcodeproj/project.pbxproj
           npx cap sync ios
       - name: Configure app (name, icon, orientations, iPad, files)
         run: |
