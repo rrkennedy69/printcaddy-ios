@@ -1,6 +1,5 @@
 #!/bin/bash
-# Copy the PrintCaddy static export into www/ and inject the iOS shim into every page.
+# Local: rebuild the shim and copy /workspace/cad-site/dist into www/. (CI builds www from the live Pages repo itself.)
 set -euo pipefail; cd "$(dirname "$0")"
-rm -rf www && cp -a /workspace/cad-site/dist www && rm -f www/store.php
-cp resources/ios-shim.js www/ios-shim.js
-find www -name "*.html" -print0 | xargs -0 sed -i 's#<head>#<head><script src="/ios-shim.js"></script>#'
+npx esbuild src/shim.js --bundle --minify --format=iife --target=safari15 --outfile=resources/ios-shim.js
+scripts/make-www.sh /workspace/cad-site/dist
