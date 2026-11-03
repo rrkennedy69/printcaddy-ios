@@ -1,0 +1,2 @@
+{ "name": "printcaddy-native", "version": "1.0.0", "private": true, "description": "PrintCaddy native iOS helpers (Files export, provisioning expiry, ASWebAuthenticationSession sign-in, WKWebView tuning)",
+  "capacitor": { "ios": { "src": "ios" } } }

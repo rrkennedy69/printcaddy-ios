@@ -10,7 +10,8 @@
     "@capacitor/share": "^6.0.0",
     "@capacitor/app": "^6.0.0",
     "@capacitor/browser": "^6.0.0",
-    "@capgo/capacitor-updater": "^6.0.0"
+    "@capgo/capacitor-updater": "^6.0.0",
+    "printcaddy-native": "file:./native-plugin"
   },
   "devDependencies": {
     "esbuild": "^0.24.0"

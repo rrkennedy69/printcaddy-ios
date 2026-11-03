@@ -34,6 +34,7 @@ jobs:
           $B -c "Add :UIFileSharingEnabled bool true" $P || true
           $B -c "Add :LSSupportsOpeningDocumentsInPlace bool true" $P || true
           $B -c "Add :UIRequiresFullScreen bool false" $P || true
+          $B -c "Add :CADisableMinimumFrameDurationOnPhone bool true" $P || true
           $B -c "Delete :CFBundleURLTypes" $P || true
           $B -c "Add :CFBundleURLTypes array" $P
           $B -c "Add :CFBundleURLTypes:0 dict" $P

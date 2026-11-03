@@ -3,10 +3,10 @@
   "appName": "PrintCaddy",
   "webDir": "www",
   "ios": {
-    "scheme": "PrintCaddy",
     "contentInset": "never",
-    "limitsNavigationsToAppBoundDomains": false,
-    "webContentsDebuggingEnabled": true
+    "allowsLinkPreview": false,
+    "backgroundColor": "#faf7f2",
+    "limitsNavigationsToAppBoundDomains": false
   },
   "server": {
     "iosScheme": "capacitor",

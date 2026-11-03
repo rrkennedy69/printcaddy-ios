@@ -9,14 +9,19 @@ const Browser = registerPlugin("Browser");
 const Updater = registerPlugin("CapacitorUpdater");
 const Filesystem = registerPlugin("Filesystem");
 const Share = registerPlugin("Share");
+const Native = registerPlugin("PrintCaddyNative");
 
 const REPO = "rrkennedy69/printcaddy-ios";
 const WEB_JSON = `https://github.com/${REPO}/releases/download/web-latest/web.json`;
 const NATIVE_URL = `https://github.com/${REPO}/releases/latest`;
-const ALTSTORE_URL = `https://raw.githubusercontent.com/${REPO}/main/apps.json`;
+const IPA_URL = `https://github.com/${REPO}/releases/latest/download/PrintCaddy.ipa`;
+const APPS_JSON = `https://github.com/${REPO}/releases/latest/download/apps.json`;
+const ALTSTORE_URL = APPS_JSON;
 const AUTH_PAGE = "https://rrkennedy69.github.io/app-auth/";
 
 if (Capacitor.isNativePlatform()) {
+  document.documentElement.classList.add("pc-native-app");
+  { const st = document.createElement("style"); st.textContent = "html.pc-native-app,html.pc-native-app body{-webkit-touch-callout:none;overscroll-behavior:none;-webkit-tap-highlight-color:transparent}html.pc-native-app body :not(input):not(textarea):not([contenteditable]):not([contenteditable] *){-webkit-user-select:none;user-select:none}"; document.documentElement.appendChild(st); }
   // ---------- no service worker ----------
   if ("serviceWorker" in navigator) { try { navigator.serviceWorker.register = () => Promise.reject(new Error("no service worker in app")); } catch (e) {} }
 
@@ -26,8 +31,9 @@ if (Capacitor.isNativePlatform()) {
     try {
       const blob = await (await fetch(href)).blob();
       const safe = (name || "download").replace(/[\/\\:*?"<>|]/g, "_");
-      const w = await Filesystem.writeFile({ path: safe, data: await toBase64(blob), directory: "CACHE", recursive: true });
-      await Share.share({ title: safe, files: [w.uri], url: w.uri });
+      const w = await Filesystem.writeFile({ path: safe, data: await toBase64(blob), directory: "DOCUMENTS", recursive: true }); // kept in Files › On My iPad › PrintCaddy
+      try { await Native.exportFile({ url: w.uri }); } // Files app "Save to…"; the copy also stays in Files › On My iPad › PrintCaddy
+      catch (err) { await Share.share({ title: safe, files: [w.uri], url: w.uri }); }
     } catch (e) { if (!/cancel/i.test(String(e && e.message))) alert("Could not export: " + (e && e.message ? e.message : e)); }
   }
   function intercept(a) {
@@ -46,14 +52,15 @@ if (Capacitor.isNativePlatform()) {
 
   // ---------- Google sign-in bridge (replaces the GIS token client the web app uses) ----------
   let pending = null;
-  App.addListener("appUrlOpen", (ev) => {
-    const url = String(ev && ev.url || ""); if (!url.startsWith("printcaddy://auth")) return;
+  App.addListener("appUrlOpen", (ev) => handleAuthUrl(String(ev && ev.url || "")));
+  function handleAuthUrl(url) {
+    if (!url.startsWith("printcaddy://auth")) return;
     const p = new URLSearchParams(url.split("#")[1] || url.split("?")[1] || "");
     const cur = pending; if (!cur || p.get("state") !== cur.state) return; pending = null;
     Browser.close().catch(() => {});
     if (p.get("access_token")) cur.cb({ access_token: p.get("access_token"), expires_in: Number(p.get("expires_in") || 3600), scope: cur.scope, token_type: "Bearer" });
     else if (cur.err) cur.err({ type: p.get("error") || "popup_closed" }); else cur.cb({ error: p.get("error") || "failed" });
-  });
+  }
   Browser.addListener("browserFinished", () => { setTimeout(() => { const cur = pending; if (cur) { pending = null; cur.err ? cur.err({ type: "popup_closed" }) : cur.cb({ error: "cancelled" }); } }, 800); });
   const oauth2 = {
     initTokenClient(conf) {
@@ -63,7 +70,12 @@ if (Capacitor.isNativePlatform()) {
           pending = { state, cb: conf.callback, err: conf.error_callback, scope: conf.scope };
           const q = new URLSearchParams({ state, scope: conf.scope || "" });
           if (cfg && cfg.login_hint) q.set("hint", cfg.login_hint);
-          Browser.open({ url: AUTH_PAGE + "?" + q.toString(), presentationStyle: "popover" });
+          const url = AUTH_PAGE + "?" + q.toString();
+          Native.authenticate({ url, callbackScheme: "printcaddy" }).then((r) => handleAuthUrl(r.url)).catch((e) => {
+            const m = String(e && (e.code || e.message) || e);
+            if (/cancel/i.test(m)) { const cur = pending; pending = null; if (cur) cur.err ? cur.err({ type: "popup_closed" }) : cur.cb({ error: "cancelled" }); }
+            else Browser.open({ url, presentationStyle: "popover" }); // older shell without the native plugin
+          });
         },
       };
     },
@@ -98,6 +110,7 @@ if (Capacitor.isNativePlatform()) {
       let el = document.getElementById("pc-update-banner");
       if (!el) { el = document.createElement("div"); el.id = "pc-update-banner"; el.style.cssText = "position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom));z-index:2147483647;background:#1f2937;color:#fff;font:15px -apple-system,system-ui,sans-serif;padding:10px 12px 10px 16px;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.3);display:flex;gap:10px;align-items:center"; document.body.appendChild(el); }
       el.innerHTML = ""; const s = document.createElement("span"); s.textContent = text; el.appendChild(s);
+      el.onclick = onInstall ? null : () => el.remove();
       if (onInstall) {
         const b = document.createElement("button"); b.textContent = "Install"; b.style.cssText = "background:#1a6fd6;color:#fff;border:0;border-radius:8px;padding:6px 14px;font:inherit";
         b.onclick = () => onInstall().catch((e) => showBanner("Update failed: " + (e && e.message || e), null)); el.appendChild(b);
@@ -106,9 +119,26 @@ if (Capacitor.isNativePlatform()) {
     };
     document.body ? go() : document.addEventListener("DOMContentLoaded", go);
   }
-  window.PrintCaddyApp = { info: () => ({ webBuild: bundled, nativeVersion }), check, install, nativeUpdateUrl: NATIVE_URL, altStoreSourceUrl: ALTSTORE_URL };
+  async function checkNative() {
+    try {
+      const i = await App.getInfo();
+      const r = await CapacitorHttp.get({ url: APPS_JSON + "?x=" + Date.now() });
+      const j = typeof r.data === "string" ? JSON.parse(r.data) : r.data;
+      const latestV = j && j.apps && j.apps[0] && j.apps[0].version;
+      const num = (v) => String(v || "0").split(".").map(Number);
+      const a = num(latestV), b = num(i.version); let newer = false;
+      for (let k = 0; k < Math.max(a.length, b.length); k++) { if ((a[k] || 0) !== (b[k] || 0)) { newer = (a[k] || 0) > (b[k] || 0); break; } }
+      return { available: newer, version: latestV, current: i.version, ipaUrl: IPA_URL, releaseUrl: NATIVE_URL };
+    } catch (e) { return { available: false, error: String(e && e.message || e) }; }
+  }
+  async function provisioning() { try { return await Native.provisioning(); } catch (e) { return { found: false }; } }
+  window.PrintCaddyApp = { checkNative, provisioning, ipaUrl: IPA_URL, info: () => ({ webBuild: bundled, nativeVersion }), check, install, nativeUpdateUrl: NATIVE_URL, altStoreSourceUrl: ALTSTORE_URL };
   if (!sessionStorage.getItem("pc-update-checked")) {
     sessionStorage.setItem("pc-update-checked", "1");
+    setTimeout(() => provisioning().then((pr) => {
+      if (!pr.expires) return; const left = new Date(pr.expires) - Date.now();
+      if (left < 36 * 3600e3) showBanner(left > 0 ? `PrintCaddy's signing expires ${new Date(pr.expires).toLocaleString()} – re-sign it with Sideloadly before then.` : "PrintCaddy's signing has expired – re-install it with Sideloadly.", null);
+    }), 1500);
     setTimeout(() => check().then((c) => { if (c.available) showBanner(`PrintCaddy update available (${c.build})`, install); }), 3000);
   }
 }
